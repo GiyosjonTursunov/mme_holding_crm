@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,15 +9,15 @@ import {
   TouchableOpacity,
   Dimensions,
   RefreshControl,
-} from "react-native";
-import tw from "twrnc";
-import directorGController from "../../controllers/directorManager/get";
-import ThreeBtn from "../../components/global/ThreeBtn";
-import { useNavigation } from "@react-navigation/native";
-import Header from "../../components/global/Header";
-import CostDatePicker from "../../components/global/CostDatePicker";
+} from 'react-native';
+import tw from 'twrnc';
+import directorGController from '../../controllers/directorManager/get';
+import ThreeBtn from '../../components/global/ThreeBtn';
+import {useNavigation} from '@react-navigation/native';
+import Header from '../../components/global/Header';
+import CostDatePicker from '../../components/global/CostDatePicker';
 
-const CostTypesScreen = ({ route }) => {
+const CostTypesScreen = ({route}) => {
   const navigation = useNavigation();
   const [serioList, setSerioList] = useState([]);
   const [isSerio, setIsSerio] = useState(true);
@@ -26,12 +27,12 @@ const CostTypesScreen = ({ route }) => {
     directorGController.getCosts(setSerioList, true);
   }, []);
 
-  const ItemSalon = ({ item }) => (
+  const ItemSalon = ({item}) => (
     <View
       style={[
         tw`flex-row justify-between items-center p-[4%] m-auto w-11/12 bg-[#FEF6E1] rounded-xl my-2`,
         {
-          shadowColor: "#000",
+          shadowColor: '#000',
           shadowOpacity: 0.16,
           shadowRadius: 2.5,
           shadowOffset: {
@@ -40,15 +41,14 @@ const CostTypesScreen = ({ route }) => {
           },
           elevation: 2,
         },
-      ]}
-    >
+      ]}>
       <Text style={tw`text-base`}>{item.name}</Text>
       <Text style={tw`text-base`}>{item.number} ta</Text>
       <Text style={tw`text-base`}>{item.price} sum</Text>
     </View>
   );
 
-  const renderItemSalon = ({ item }) => <ItemSalon item={item} />;
+  const renderItemSalon = ({item}) => <ItemSalon item={item} />;
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -57,53 +57,50 @@ const CostTypesScreen = ({ route }) => {
           route.params?.director ? (
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                source={require("../../../assets/back.png")}
+                source={require('../../../assets/back.png')}
                 style={tw`w-9 h-9`}
               />
             </TouchableOpacity>
           ) : (
-            "Xarajatlar"
+            'Xarajatlar'
           )
         }
       />
-        <ThreeBtn
-          firstBtnName={"SERIO"}
-          firstBtnNavigation={() => {
-            directorGController.getCosts(setSerioList, true);
-            setIsSerio(true);
-          }}
-          secondBtnName={"PROCHI"}
-          secondBtnNavigation={() => {
-            directorGController.getCosts(setSerioList, false);
-            setIsSerio(false);
-          }}
-          thirdBtnName={
-            <Image
-              source={require("../../../assets/plus.png")}
-              resizeMode="contain"
-              style={tw`w-11 h-11 m-auto`}
-            />
-          }
-          thirdBtnNavigation={() => navigation.navigate("CostsRegister")}
-          fourth
-        />
-
-    
+      <ThreeBtn
+        firstBtnName={'SERIO'}
+        firstBtnNavigation={() => {
+          directorGController.getCosts(setSerioList, true);
+          setIsSerio(true);
+        }}
+        secondBtnName={'PROCHI'}
+        secondBtnNavigation={() => {
+          directorGController.getCosts(setSerioList, false);
+          setIsSerio(false);
+        }}
+        thirdBtnName={
+          <Image
+            source={require('../../../assets/plus.png')}
+            resizeMode="contain"
+            style={tw`w-11 h-11 m-auto`}
+          />
+        }
+        thirdBtnNavigation={() => navigation.navigate('CostsRegister')}
+        fourth
+      />
 
       <CostDatePicker isSerio={isSerio} />
       <View>
         <View
-          style={tw`w-11.6/12 mx-auto flex-row justify-between px-2 items-center border-b h-10`}
-        >
+          style={tw`w-11.6/12 mx-auto flex-row justify-between px-2 items-center border-b h-10`}>
           <Text style={tw`text-lg`}>Nomi</Text>
           <Text style={tw`text-lg`}>Soni</Text>
           <Text style={tw`text-lg`}>Narxi</Text>
         </View>
-        <View style={tw`h-[${Dimensions.get("screen").height / 1.9}px]`}>
+        <View style={tw`h-[${Dimensions.get('screen').height / 1.9}px]`}>
           <FlatList
             data={serioList}
             renderItem={renderItemSalon}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
