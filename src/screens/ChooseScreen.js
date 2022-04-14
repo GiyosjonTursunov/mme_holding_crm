@@ -15,7 +15,8 @@ const ChooseScreen = () => {
       } else {
         switch (JSON.parse(value)?.role) {
           case 'DIRECTOR':
-            navigation.navigate('AboutWorkScreen');
+            navigation.navigate('MainPageScreen');
+            // navigation.navigate('AboutWorkScreen');
             break;
 
           case 'MANAGER':

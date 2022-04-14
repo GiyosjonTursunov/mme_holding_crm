@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 import tw from 'twrnc';
 import Input from '../../components/global/Input';
@@ -23,7 +24,7 @@ const LoginScreen = ({route}) => {
 
   const sendLogin = () => {
     if (route.params?.key !== 'lastoria') {
-      alert('Bu akkauntga faqat LaStoria hamkorligi ruxsat berilgan!');
+      Alert.alert('Bu akkauntga faqat LaStoria hamkorligi ruxsat berilgan!');
     } else {
       const loginData = {
         username: phone,
@@ -41,7 +42,8 @@ const LoginScreen = ({route}) => {
           if (data.token) {
             switch (data.role) {
               case 'DIRECTOR':
-                navigation.navigate('AboutWorkScreen');
+                navigation.navigate('MainPageScreen');
+                // navigation.navigate('AboutWorkScreen');
                 break;
               case 'MANAGER':
                 navigation.navigate('CostTypesScreen');
@@ -68,12 +70,12 @@ const LoginScreen = ({route}) => {
                 break;
             }
           } else {
-            alert("You don't have permission");
+            Alert.alert("You don't have permission");
           }
         })
         .catch(_err => {
           console.warn('err =>', _err);
-          alert("You don't have permission");
+          Alert.alert("You don't have permission");
         });
     }
   };

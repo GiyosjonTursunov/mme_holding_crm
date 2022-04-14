@@ -1,10 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
-import * as React from "react";
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
-import tw from "twrnc";
-import { mainUrl } from "../../config/apiUrl";
+import {useNavigation} from '@react-navigation/native';
+import * as React from 'react';
+import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
+import tw from 'twrnc';
+import {mainUrl} from '../../config/apiUrl';
 
-const { useEffect } = React;
+const {useEffect} = React;
 
 const Item = ({
   name,
@@ -18,16 +18,16 @@ const Item = ({
 }) => (
   <TouchableOpacity
     onPress={() =>
-      navigation.navigate("AboutShopsScreen", {
+      navigation.navigate('AboutShopsScreen', {
         id: id,
-        "name": name,
+        name: name,
       })
     }
     style={[
       tw`w-38 h-46 flex-col bg-[#F6F8FA] rounded-xl m-auto mx-2.2 bg-white rounded-tr-3xl rounded-tl-3xl`,
       // eslint-disable-next-line react-native/no-inline-styles
       {
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOpacity: 0.17,
         shadowRadius: 5,
         shadowOffset: {
@@ -36,8 +36,7 @@ const Item = ({
         },
         elevation: 4,
       },
-    ]}
-  >
+    ]}>
     {imgUrl ? (
       <Image
         source={{
@@ -48,25 +47,21 @@ const Item = ({
       />
     ) : (
       <Image
-        source={require("../../../assets/icon.png")}
+        source={require('../../../assets/icon.png')}
         style={tw`w-11/12 h-22 mx-auto rounded-3xl mt-1.1`}
       />
     )}
     <View style={tw`flex-col m-auto w-full pl-1`}>
       <Text style={tw`font-bold italic text-[#2296F3] mx-auto`}>{name}</Text>
-      <Text style={tw`text-sm mx-auto`}>{address || "---"}</Text>
+      <Text style={tw`text-sm mx-auto`}>{address || '---'}</Text>
     </View>
   </TouchableOpacity>
 );
 
-const ListMagazines = ({ magazineList }) => {
+const ListMagazines = ({magazineList}) => {
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log("magazineList", magazineList);
-  }, []);
-
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <Item
       name={item.name}
       address={item.address}
@@ -86,7 +81,7 @@ const ListMagazines = ({ magazineList }) => {
         showsHorizontalScrollIndicator={false}
         data={magazineList}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
       />
     </View>
   );

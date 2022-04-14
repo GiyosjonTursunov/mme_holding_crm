@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Modal,
+  Alert,
 } from 'react-native';
 import * as React from 'react';
 import tw from 'twrnc';
@@ -43,7 +44,7 @@ const RegisterMagazineModal = ({setMagazineList, magazineList}) => {
     );
   }, []);
 
-  const createMagazine = useCallback(async () => {
+  const createMagazine = async () => {
     formDataMagazine.append('name', magazineName);
     formDataMagazine.append('address', magazineAddress);
 
@@ -68,9 +69,9 @@ const RegisterMagazineModal = ({setMagazineList, magazineList}) => {
       setMagazineName('');
       setModalVisible(false);
     } else {
-      alert('Serverda Xatolik');
+      Alert.alert('Serverda Xatolik');
     }
-  });
+  };
 
   return (
     <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -144,6 +145,3 @@ const RegisterMagazineModal = ({setMagazineList, magazineList}) => {
 };
 
 export default RegisterMagazineModal;
-
-// Todo
-// 1. Save MagazineList to async storage. ✅

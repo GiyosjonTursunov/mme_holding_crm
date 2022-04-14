@@ -194,42 +194,54 @@ class directorGController {
       ? `${mainUrl}lastoria/costs-serio/`
       : `${mainUrl}lastoria/costs-prochi/`;
 
-    AsyncStorage.getItem(keyForAsyncStorage)
-      .then(data => {
-        if (data === null) {
-          axios(urlGetCosts)
-            .then(res => {
-              setSerioList(res.data);
-              AsyncStorage.setItem(
-                keyForAsyncStorage,
-                JSON.stringify(res.data),
-              );
-            })
-            .catch(err => {
-              console.error(err);
-            });
-        } else {
-          setSerioList(JSON.parse(data));
+    AsyncStorage.getItem('@user')
+      .then(stringJson => {
+        AsyncStorage.getItem(keyForAsyncStorage)
+          .then(data => {
+            if (data === null) {
+              axios({
+                url: urlGetCosts,
+                method: 'GET',
+                headers: {
+                  Authorization: `token ${JSON.parse(stringJson).token}`,
+                },
+              })
+                .then(res => {
+                  setSerioList(res.data);
+                  AsyncStorage.setItem(
+                    keyForAsyncStorage,
+                    JSON.stringify(res.data),
+                  );
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+            } else {
+              setSerioList(JSON.parse(data));
 
-          axios(urlGetCosts)
-            .then(res => {
-              if (res.data.length !== JSON.parse(data).length) {
-                setSerioList(res.data);
-                AsyncStorage.setItem(
-                  keyForAsyncStorage,
-                  JSON.stringify(res.data),
-                );
-              } else {
-                console.log('seriolist yoki prochilist length teng ekan.');
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-        }
+              axios(urlGetCosts)
+                .then(res => {
+                  if (res.data.length !== JSON.parse(data).length) {
+                    setSerioList(res.data);
+                    AsyncStorage.setItem(
+                      keyForAsyncStorage,
+                      JSON.stringify(res.data),
+                    );
+                  } else {
+                    console.log('seriolist yoki prochilist length teng ekan.');
+                  }
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+            }
+          })
+          .catch(_err => {
+            console.log(_err);
+          });
       })
-      .catch(_err => {
-        console.log(_err);
+      .catch(err => {
+        console.log(err);
       });
   };
 
@@ -356,6 +368,7 @@ class directorGController {
     let urlGetAllSalesForVendor = `${mainUrl}lastoria/sale/`;
     axios({
       url: urlGetAllSalesForVendor,
+      method: 'GET',
     })
       .then(res => {
         setAllSalesForVendor(res.data);

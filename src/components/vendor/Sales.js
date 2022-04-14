@@ -203,7 +203,7 @@ const Sales = () => {
         sold_by_phone: soldByPhone,
         salon: salonId,
         need_send: needSend,
-        magazine_id: userJson.magazins_id,
+        magazine_id: userJson.magazines_id,
         user: userJson.id,
       };
 

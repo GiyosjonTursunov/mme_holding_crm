@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import tw from 'twrnc';
@@ -7,7 +8,6 @@ const DoubleBtn = ({
   firstBtnFunction,
   secondBtnName,
   secondBtnFunction,
-  setSerioProchi,
 }) => {
   const [isAll, setIsAll] = useState(true);
   const [isSale, setIsSale] = useState(false);
@@ -24,10 +24,9 @@ const DoubleBtn = ({
             setIsAll(true);
             setIsSale(false);
             firstBtnFunction ? firstBtnFunction() : null;
-            // setSerioProchi ? setSerioProchi("serio") : null;
           }}
-          style={tw`flex-1 rounded-full ${isAll ? `bg-white` : null}`}>
-          <Text style={tw`m-auto  ${isAll ? `text-black` : `text-white`}`}>
+          style={tw`flex-1 rounded-full ${isAll ? 'bg-white' : null}`}>
+          <Text style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'}`}>
             {firstBtnName}
           </Text>
         </TouchableOpacity>
@@ -36,10 +35,9 @@ const DoubleBtn = ({
             setIsAll(false);
             setIsSale(true);
             secondBtnFunction ? secondBtnFunction() : null;
-            // setSerioProchi ? setSerioProchi("prochi") : null;
           }}
-          style={tw`flex-1 rounded-full ${isSale ? `bg-white` : null}`}>
-          <Text style={tw`m-auto ${isSale ? `text-black` : `text-white`}`}>
+          style={tw`flex-1 rounded-full ${isSale ? 'bg-white' : null}`}>
+          <Text style={tw`m-auto ${isSale ? 'text-black' : 'text-white'}`}>
             {secondBtnName}
           </Text>
         </TouchableOpacity>

@@ -241,7 +241,7 @@ const Fifty = () => {
         ispassport: isPassport,
         salon_given_price: salonGivenPrice,
         salon: salonId,
-        magazine_id: userJson.magazins_id,
+        magazine_id: userJson.magazines_id,
         user: userJson.id,
       };
 

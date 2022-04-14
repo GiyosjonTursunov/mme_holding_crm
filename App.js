@@ -20,6 +20,7 @@ import AdminScreen from './src/screens/admin/AdminScreen';
 import RegisterResidenceScreen from './src/screens/admin/RegisterResidenceScreen';
 import LaStoriaNewsScreen from './src/screens/salon/LaStoriaNewsScreen';
 import ChooseCompanyScreen from './src/screens/account/ChooseCompanyScreen';
+import MainPageScreen from './src/screens/directorAndManager/MainPageScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,10 +51,11 @@ const App = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen
-          name="AboutWorkScreen"
-          component={AboutWorkScreen}
+          name="MainPageScreen"
+          component={MainPageScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="AboutWorkScreen" component={AboutWorkScreen} />
         <Stack.Screen
           name="SupplierStatisticsScreen"
           component={SupplierStatisticsScreen}

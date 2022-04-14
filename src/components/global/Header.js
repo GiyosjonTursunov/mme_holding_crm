@@ -11,6 +11,7 @@ import tw from 'twrnc';
 
 const {useState, useEffect} = React;
 import {useNavigation} from '@react-navigation/native';
+import {mainUrl} from '../../config/apiUrl';
 
 const Header = ({headerName, isRegister}) => {
   const navigation = useNavigation();
@@ -32,6 +33,7 @@ const Header = ({headerName, isRegister}) => {
             });
         } else if (parsedJson.token) {
           setUser_data(parsedJson);
+          console.log(' user => ', parsedJson);
         }
       } else {
         console.warn('invalid user =>', jsonValue);
@@ -101,11 +103,19 @@ const Header = ({headerName, isRegister}) => {
       <Text style={tw`text-lg text-black font-bold`}>{user_data?.name}</Text>
       <View style={tw`flex-row`}>
         <TouchableOpacity activeOpacity={0.7} onPress={ExitAccount}>
-          <Image
-            source={require('../../../assets/profile-user.png')}
-            style={tw`w-10 h-10`}
-            onPress={ExitAccount}
-          />
+          {user_data?.img ? (
+            <Image
+              source={{uri: mainUrl + 'media/' + user_data.img}}
+              style={tw`w-10 h-10 rounded-full`}
+              onPress={ExitAccount}
+            />
+          ) : (
+            <Image
+              source={require('../../../assets/profile-user.png')}
+              style={tw`w-10 h-10`}
+              onPress={ExitAccount}
+            />
+          )}
         </TouchableOpacity>
       </View>
     </View>

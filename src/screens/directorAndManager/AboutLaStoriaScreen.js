@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import tw from 'twrnc';
 import ListMagazines from '../../components/director/ListMagazines';
@@ -28,7 +28,10 @@ const AboutLaStoriaScreen = () => {
   const [dostavkaCount, setDostavkaCount] = useState('0');
   const [productCount, setProductCount] = useState('0');
 
+  const [refreshing, setRefreshing] = useState(false);
+
   const getAllDataForThisPage = () => {
+    setRefreshing(true);
     directorGController.getCountDressNeedSend(setDostavkaCount);
     directorGController.getCountProduct(setProductCount);
 
@@ -36,6 +39,8 @@ const AboutLaStoriaScreen = () => {
       directorGController.getSalonList(setSalonList);
       directorGController.getMagazineList(setMagazineList);
     }, 100);
+
+    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -43,110 +48,103 @@ const AboutLaStoriaScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={tw`flex-1`}>
-      <ScrollView style={tw`bg-white`}>
-        <View style={tw`flex-row w-10/12 mx-auto`}>
-          <Text style={tw`text-lg font-bold m-auto text-black`}>
-            Ish haqida ma'lumotlar
-          </Text>
+    <ScrollView
+      style={tw`bg-white`}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={getAllDataForThisPage}
+        />
+      }>
+      <Text style={tw`text-lg font-bold m-auto text-black`}>
+        Ish haqida ma'lumotlar
+      </Text>
 
-          <TouchableOpacity onPress={getAllDataForThisPage}>
-            <Image
-              source={require('../../../assets/reloading.png')}
-              style={tw`w-11 h-11 m-auto my-2`}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={tw`w-full h-25 flex-row`}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[
-              tw`w-26 h-22.5 bg-[#FEF6E1] rounded-3xl m-auto items-center justify-center`,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                shadowColor: '#000',
-                shadowOpacity: 0.17,
-                shadowRadius: 5,
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-                elevation: 5,
+      <View style={tw`w-full h-25 flex-row`}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[
+            tw`w-26 h-22.5 bg-[#FEF6E1] rounded-3xl m-auto items-center justify-center`,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              shadowColor: '#000',
+              shadowOpacity: 0.17,
+              shadowRadius: 5,
+              shadowOffset: {
+                width: 1,
+                height: 1,
               },
-            ]}>
-            <Text style={tw`text-black`}>{magazineList?.length || 0}</Text>
-            <Text style={tw`text-base font-semibold text-black`}>
-              Do'konlar
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SupplierStatisticsScreen')}
-            style={[
-              tw`w-26 h-22.5 bg-[#E3F3FF] rounded-3xl m-auto items-center justify-center`,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                shadowColor: '#000',
-                shadowOpacity: 0.17,
-                shadowRadius: 5,
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-                elevation: 5,
+              elevation: 5,
+            },
+          ]}>
+          <Text style={tw`text-black`}>{magazineList?.length || 0}</Text>
+          <Text style={tw`text-base font-semibold text-black`}>Do'konlar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SupplierStatisticsScreen')}
+          style={[
+            tw`w-26 h-22.5 bg-[#E3F3FF] rounded-3xl m-auto items-center justify-center`,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              shadowColor: '#000',
+              shadowOpacity: 0.17,
+              shadowRadius: 5,
+              shadowOffset: {
+                width: 1,
+                height: 1,
               },
-            ]}>
-            <Text style={tw`text-black`}>{dostavkaCount}</Text>
-            <Text style={tw`text-base font-semibold text-black`}>Dostavka</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('LaStoriaWareHouseScreen')}
-            style={[
-              tw`w-26 h-22.5 bg-[#DDFFDA] rounded-3xl m-auto items-center justify-center`,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                shadowColor: '#000',
-                shadowOpacity: 0.17,
-                shadowRadius: 5,
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-                elevation: 5,
+              elevation: 5,
+            },
+          ]}>
+          <Text style={tw`text-black`}>{dostavkaCount}</Text>
+          <Text style={tw`text-base font-semibold text-black`}>Dostavka</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('LaStoriaWareHouseScreen')}
+          style={[
+            tw`w-26 h-22.5 bg-[#DDFFDA] rounded-3xl m-auto items-center justify-center`,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              shadowColor: '#000',
+              shadowOpacity: 0.17,
+              shadowRadius: 5,
+              shadowOffset: {
+                width: 1,
+                height: 1,
               },
-            ]}>
-            <Text style={tw`text-black`}>{productCount}</Text>
-            <Text style={tw`text-base font-semibold text-black`}>Ombor</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto mt-[3%] pb-[1.5%] items-end`}>
-          <Text style={tw`font-semibold text-base text-black`}>
-            Magazinlar ro'yhati
-          </Text>
-          <RegisterMagazineModal
-            magazineList={magazineList}
-            setMagazineList={setMagazineList}
-          />
-        </View>
-        <ListMagazines magazineList={magazineList} />
-        <View
-          style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto`}>
-          <Text
-            style={tw`font-bold text-base`}
-            onPress={() => console.warn(salonList)}>
-            Salonlar ro`yxati
-          </Text>
+              elevation: 5,
+            },
+          ]}>
+          <Text style={tw`text-black`}>{productCount}</Text>
+          <Text style={tw`text-base font-semibold text-black`}>Ombor</Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto mt-[3%] pb-[1.5%] items-end`}>
+        <Text style={tw`font-semibold text-base text-black`}>
+          Magazinlar ro'yhati
+        </Text>
+        <RegisterMagazineModal
+          magazineList={magazineList}
+          setMagazineList={setMagazineList}
+        />
+      </View>
+      <ListMagazines magazineList={magazineList} />
+      <View
+        style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto`}>
+        <Text
+          style={tw`font-bold text-base`}
+          onPress={() => console.warn(salonList)}>
+          Salonlar ro`yxati
+        </Text>
 
-          <Text style={tw`font-bold text-base`}>{salonList?.length || 0}</Text>
-        </View>
+        <Text style={tw`font-bold text-base`}>{salonList?.length || 0}</Text>
+      </View>
 
-        <View style={tw`h-[${Dimensions.get('screen').height / 8}px]`}>
-          <ListSalons dataList={salonList} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <View style={tw`h-[${Dimensions.get('screen').height / 8}px]`}>
+        <ListSalons dataList={salonList} />
+      </View>
+    </ScrollView>
   );
 };
 

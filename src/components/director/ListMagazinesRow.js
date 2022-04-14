@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React from 'react';
 import {Text, FlatList, TouchableOpacity} from 'react-native';
 import tw from 'twrnc';
