@@ -8,16 +8,18 @@ import {
   SafeAreaView,
   Alert,
   AsyncStorage,
+  FlatList,
 } from 'react-native';
 import tw from 'twrnc';
 import Header from '../global/Header';
 import axios from 'axios';
 
 const {useState, useEffect} = React;
-import {mainUrl} from '../../config/apiUrl';
+import {baseUrl, mainUrl} from '../../config/apiUrl';
 
 const DressById = ({route}) => {
-  const [dress, setDress] = useState([]);
+  const [sale, setSale] = useState([]);
+  const [dressImg, setDressImg] = useState([]);
 
   const delivered = () => {
     AsyncStorage.getItem('@user')
@@ -46,14 +48,20 @@ const DressById = ({route}) => {
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
-          url: `${mainUrl}lastoria/sale/${route.params.saleId}`,
+          url: `${mainUrl}lastoria/orders/${route.params.saleId}`,
           method: 'GET',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,
           },
         })
           .then(res => {
-            setDress(res.data);
+            setSale(res.data);
+            setDressImg([
+              res.data.dress.img1,
+              res.data.dress.img2,
+              res.data.dress.img3,
+              res.data.dress.img4,
+            ]);
           })
           .catch(_err => {
             const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
@@ -73,21 +81,21 @@ const DressById = ({route}) => {
       <Header
         headerName={route.params?.supplier ? 'Yetkazib beruvchi' : 'Sotuvchi'}
       />
-      <View style={tw`w-10/12 h-50 mx-auto`}>
-        {dress.dress?.img ? (
-          <Image
-            source={{uri: `${mainUrl + dress.dress.img.substring(1)}`}}
-            style={tw`w-full h-full rounded-xl`}
-            resizeMode="contain"
-          />
-        ) : (
-          <Image
-            source={require('../../../assets/wedding-dress.png')}
-            style={tw`w-full h-full rounded-xl`}
-            resizeMode="contain"
-          />
+      <FlatList
+        horizontal
+        data={dressImg}
+        renderItem={({item, index}) => (
+          <View style={tw`w-40 h-50 mx-auto`}>
+            {/* <Text>{item}</Text> */}
+            <Image
+              source={{uri: `${baseUrl + item}`}}
+              style={tw`w-full h-full rounded-xl`}
+              resizeMode="contain"
+            />
+          </View>
         )}
-      </View>
+        keyExtractor={(item, index) => index.toString()}
+      />
       <ScrollView
         style={tw`w-11/12 bg-white mx-auto`}
         showsVerticalScrollIndicator={false}>
@@ -97,7 +105,7 @@ const DressById = ({route}) => {
             Ko`ylak nomi
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.dress?.name}
+            {sale?.dress?.name}
           </Text>
         </View>
 
@@ -107,7 +115,7 @@ const DressById = ({route}) => {
             Ko`ylak narxi
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.dress?.price}
+            {sale?.dress?.price}
           </Text>
         </View>
 
@@ -117,7 +125,7 @@ const DressById = ({route}) => {
             Berilgan summa
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.given_price ? dress?.given_price : dress?.salon_given_price}
+            {sale?.given_price ? sale?.given_price : sale?.salon_given_price}
           </Text>
         </View>
 
@@ -127,7 +135,7 @@ const DressById = ({route}) => {
             Qolgan summa
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.left_price}
+            {sale?.left_price}
           </Text>
         </View>
 
@@ -137,7 +145,7 @@ const DressById = ({route}) => {
             Jo'natilish sanasi
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.delivery_date}
+            {sale?.delivery_date}
           </Text>
         </View>
 
@@ -145,7 +153,7 @@ const DressById = ({route}) => {
           style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
           <Text style={tw`text-base font-semibold text-black`}>Salon nomi</Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.salon?.salon_name}
+            {sale?.salon?.salon_name}
           </Text>
         </View>
         <View
@@ -154,7 +162,7 @@ const DressById = ({route}) => {
             Telefon raqam
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.salon?.user}
+            {sale?.salon?.user}
           </Text>
         </View>
         <View
@@ -163,7 +171,7 @@ const DressById = ({route}) => {
             Salon manzili
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress?.salon?.address}
+            {sale?.salon?.address}
           </Text>
         </View>
         <View
@@ -172,7 +180,7 @@ const DressById = ({route}) => {
             Yetkazib berish
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {dress.need_send ? 'SHART' : 'SHART EMAS'}
+            {sale.need_send ? 'SHART' : 'SHART EMAS'}
           </Text>
         </View>
 

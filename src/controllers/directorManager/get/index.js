@@ -69,7 +69,7 @@ class directorGController {
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
-          url: `${mainUrl}lastoria/sale-send-count/`,
+          url: `${mainUrl}lastoria/orders-send-count/`,
           method: 'GET',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,
@@ -365,14 +365,14 @@ class directorGController {
     refresh,
   ) => {
     refresh ? setRefreshing(true) : null;
-    let urlGetAllSalesForVendor = `${mainUrl}lastoria/sale/`;
+    let urlGetAllSalesForVendor = `${mainUrl}lastoria/orders/`;
     axios({
       url: urlGetAllSalesForVendor,
       method: 'GET',
     })
       .then(res => {
         setAllSalesForVendor(res.data);
-        console.log('sotuvlar', res.data);
+        console.log('zakazlar =>', res.data);
         refresh ? setRefreshing(false) : null;
       })
       .catch(err => {

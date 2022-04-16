@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import tw from 'twrnc';
@@ -20,7 +21,7 @@ const ThreeBtn = ({
       style={[
         tw`w-${
           Dimensions.get('screen').width / 4.9
-        } h-14 mx-auto flex-row rounded-full p-1`,
+        } h-14 mx-auto flex-row rounded-2xl p-1`,
         {backgroundColor: '#242424'},
       ]}>
       <TouchableOpacity
@@ -30,8 +31,8 @@ const ThreeBtn = ({
           setIsSale(false);
           setIsFifty(false);
         }}
-        style={tw`flex-1 rounded-full ${isAll ? `bg-white` : null}`}>
-        <Text style={tw`m-auto  ${isAll ? `text-black` : `text-white`}`}>
+        style={tw`flex-1 rounded-2xl ${isAll ? 'bg-white' : null}`}>
+        <Text style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'}`}>
           {/* Ish haqida */}
           {firstBtnName}
         </Text>
@@ -43,8 +44,8 @@ const ThreeBtn = ({
           setIsSale(true);
           setIsFifty(false);
         }}
-        style={tw`flex-1 rounded-full ${isSale ? `bg-white` : null}`}>
-        <Text style={tw`m-auto ${isSale ? `text-black` : `text-white`}`}>
+        style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
+        <Text style={tw`m-auto ${isSale ? 'text-black' : 'text-white'}`}>
           {/* Xarajatlar */}
           {secondBtnName}
         </Text>
@@ -57,7 +58,7 @@ const ThreeBtn = ({
           setIsSale(false);
           setIsFifty(true);
         }}
-        style={tw`flex-1 rounded-full ${isFifty ? 'bg-white' : null}`}>
+        style={tw`flex-1 rounded-2xl ${isFifty ? 'bg-white' : null}`}>
         {fourth ? (
           thirdBtnName
         ) : (

@@ -9,6 +9,7 @@ const Stack = createNativeStackNavigator();
 import ThreeBtn from '../../components/global/ThreeBtn';
 import Header from '../../components/global/Header';
 import {useNavigation} from '@react-navigation/native';
+import OrderDress from '../../components/vendor/OrderDress';
 
 const VendorScreen = () => {
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ const VendorScreen = () => {
         firstBtnName={'Hammasi'}
         firstBtnNavigation={() => navigation.navigate('All')}
         secondBtnName={'Sotish'}
-        secondBtnNavigation={() => navigation.navigate('Sales')}
+        secondBtnNavigation={() => navigation.navigate('OrderDress')}
         thirdBtnName={'50/50'}
         thirdBtnNavigation={() => navigation.navigate('Fifty')}
       />
@@ -33,9 +34,14 @@ const VendorScreen = () => {
         />
         <Stack.Screen
           options={{headerShown: false}}
+          name="OrderDress"
+          component={OrderDress}
+        />
+        {/* <Stack.Screen
+          options={{headerShown: false}}
           name="Sales"
           component={Sales}
-        />
+        /> */}
         <Stack.Screen
           options={{headerShown: false}}
           name="Fifty"

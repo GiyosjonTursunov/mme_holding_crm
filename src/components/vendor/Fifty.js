@@ -248,7 +248,7 @@ const Fifty = () => {
       AsyncStorage.getItem('@user')
         .then(stringJson => {
           axios({
-            url: `${mainUrl}lastoria/sale/`,
+            url: `${mainUrl}lastoria/orders/`,
             method: 'POST',
             data: dataCreateSale,
             headers: {

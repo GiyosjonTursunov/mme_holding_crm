@@ -51,10 +51,10 @@ const SalonScreen = ({navigation}) => {
             axios(`${mainUrl}lastoria/dress-news/`)
               .then(dressNewsRes => {
                 setNews(dressNewsRes.data);
-                axios(`${mainUrl}lastoria/sale-simple/`)
+                axios(`${mainUrl}lastoria/orders-simple/`)
                   .then(salesimpleRes => {
                     setSaleSimple(salesimpleRes.data);
-                    axios(`${mainUrl}lastoria/sale-5050/`)
+                    axios(`${mainUrl}lastoria/orders-5050/`)
                       .then(saleFiftyRes => {
                         setSaleFifty(saleFiftyRes.data);
                         setRefreshing(false);

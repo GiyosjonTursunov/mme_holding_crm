@@ -208,7 +208,7 @@ const Sales = () => {
       };
 
       axios({
-        url: `${mainUrl}lastoria/sale/`,
+        url: `${mainUrl}lastoria/orders/`,
         method: 'post',
         data: dataCreateSale,
         headers: {

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {View, Text} from 'react-native';
 import directorGController from '../../controllers/directorManager/get';
@@ -15,25 +16,24 @@ const CostDatePicker = ({isSerio}) => {
     <View style={tw`flex-col h-30`}>
       <View
         style={tw`w-full h-[50%] flex-row justify-between items-center px-1`}>
-        <View style={tw`w-5/12 flex flex-row items-center`}>
-          <DatePickerCustom
-            setNeedDate={data => {
-              setDateStart(data);
-              directorGController.getCostsStatisticsByDate(
-                {
-                  date_start: dateStart,
-                  date_end: data,
-                  is_serio: isSerio,
-                },
-                setFilteredCosts,
-              );
-            }}
-          />
-          <Text style={tw`m-auto text-black`}>{dateStart}</Text>
-        </View>
+        <DatePickerCustom
+          text={dateStart}
+          setNeedDate={data => {
+            setDateStart(data);
+            directorGController.getCostsStatisticsByDate(
+              {
+                date_start: dateStart,
+                date_end: data,
+                is_serio: isSerio,
+              },
+              setFilteredCosts,
+            );
+          }}
+        />
         <Text style={tw`font-bold text-xl text-black`}>{'<->'}</Text>
-        <View style={tw`w-5/12 flex flex-row items-center`}>
+        <View style={tw`w-10/12 flex flex-row items-center`}>
           <DatePickerCustom
+            text={dateEnd}
             setNeedDate={data => {
               setDateEnd(data);
               directorGController.getCostsStatisticsByDate(
@@ -46,9 +46,9 @@ const CostDatePicker = ({isSerio}) => {
               );
             }}
           />
-          <Text style={tw`m-auto text-black`}>{dateEnd}</Text>
         </View>
       </View>
+
       <View
         style={[
           tw`flex-row justify-between items-center p-[3%] m-auto w-11/12 bg-[#FEF6E1] rounded-xl`,

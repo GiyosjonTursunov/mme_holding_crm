@@ -56,7 +56,7 @@ const All = () => {
     <View style={tw`flex-1 bg-white`}>
       <View
         style={tw`flex-row border-b mx-auto justify-start w-10/12 justify-between my-2 items-center`}>
-        <Text style={tw`text-lg font-bold mr-3`}>Sotuvlar</Text>
+        <Text style={tw`text-lg font-bold mr-3`}>Buyurtmalar</Text>
       </View>
       <View style={tw`w-full h-${Dimensions.get('screen').height / 5.6}`}>
         <FlatList

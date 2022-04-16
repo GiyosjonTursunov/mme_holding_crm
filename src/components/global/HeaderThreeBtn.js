@@ -22,7 +22,7 @@ const HeaderThreeBtn = ({
     <View style={tw`flex-col justify-around mb-[3%]`}>
       <View
         style={[
-          tw`w-5/6 h-12 mx-auto mt-[8%] flex-row border rounded-full p-1`,
+          tw`w-5/6 h-12 mx-auto mt-[8%] flex-row border rounded-2xl p-1`,
           {backgroundColor: newLocal},
         ]}>
         <TouchableOpacity
@@ -32,7 +32,7 @@ const HeaderThreeBtn = ({
             setIsSale(false);
             setIsFifty(false);
           }}
-          style={tw`flex-1 rounded-full ${isAll ? 'bg-white' : null}`}>
+          style={tw`flex-1 rounded-2xl ${isAll ? 'bg-white' : null}`}>
           <Text style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'}`}>
             {/* Ish haqida */}
             {firstBtnName}
@@ -47,7 +47,7 @@ const HeaderThreeBtn = ({
             setIsSale(true);
             setIsFifty(false);
           }}
-          style={tw`flex-1 rounded-full ${isSale ? 'bg-white' : null}`}>
+          style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
           <Text style={tw`m-auto ${isSale ? 'text-black' : 'text-white'}`}>
             {secondBtnName}
           </Text>
@@ -60,7 +60,7 @@ const HeaderThreeBtn = ({
             setIsSale(false);
             setIsFifty(true);
           }}
-          style={tw`flex-1 rounded-full ${isFifty ? 'bg-white' : null}`}>
+          style={tw`flex-1 rounded-2xl ${isFifty ? 'bg-white' : null}`}>
           <Text style={tw`m-auto ${isFifty ? 'text-black' : 'text-white'}`}>
             {thirdBtnName}
           </Text>

@@ -1,41 +1,48 @@
-import React, { useState } from "react";
-import { Pressable, Image } from "react-native";
-import DatePicker from "react-native-date-picker";
-import tw from "twrnc";
+import React, {useState} from 'react';
+import {Pressable, Image, Text, View, TouchableOpacity} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import tw from 'twrnc';
 
-const DatePickerCustom = ({ setNeedDate, func }) => {
+const DatePickerCustom = ({setNeedDate, func, text}) => {
   const date = new Date();
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <Pressable onPress={() => setOpen(true)} style={tw`ml-1`}>
+    <TouchableOpacity
+      onPress={() => setOpen(true)}
+      activeOpacity={0.8}
+      style={tw`w-6/12 flex flex-row items-center border border-[rgba(0,0,0,0.7)] rounded-2xl h-10.5`}>
+      <Text style={tw`m-auto text-black text-base`}>
+        {text || '15/04/2022'}
+      </Text>
+      <View
+        style={tw`bg-black h-full w-5/12 rounded-tr-2xl rounded-br-2xl items-center justify-center`}>
         <Image
-          source={require("../../../assets/calendar.png")}
+          source={require('../../../assets/calendar.png')}
           resizeMode="contain"
-          style={tw`w-8 h-8 ml-2`}
+          style={tw`w-7 h-7`}
         />
-      </Pressable>
-      <DatePicker
-        mode="date"
-        modal
-        open={open}
-        date={date}
-        onConfirm={(dateF) => {
-          setOpen(false);
-          const year = dateF.getFullYear();
-          const month = dateF.getMonth() + 1;
-          const day = dateF.getDate();
-          const validMonth = month < 10 ? `0${month}` : month;
-          const validDay = day < 10 ? `0${day}` : day;
-          const date_today = `${year}-${validMonth}-${validDay}`;
-          setNeedDate(date_today);
-          func ? func() : null;
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
-    </>
+        <DatePicker
+          mode="date"
+          modal
+          open={open}
+          date={date}
+          onConfirm={dateF => {
+            setOpen(false);
+            const year = dateF.getFullYear();
+            const month = dateF.getMonth() + 1;
+            const day = dateF.getDate();
+            const validMonth = month < 10 ? `0${month}` : month;
+            const validDay = day < 10 ? `0${day}` : day;
+            const date_today = `${year}-${validMonth}-${validDay}`;
+            setNeedDate(date_today);
+            func ? func() : null;
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+      </View>
+    </TouchableOpacity>
   );
 };
 
