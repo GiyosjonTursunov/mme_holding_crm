@@ -225,21 +225,27 @@ const RegisterDress = ({userJson, setDressId}) => {
 
   return (
     <View
-      style={tw`w-11/12 h-12 flex-row justify-between items-center mx-auto my-[1%]`}>
+      style={tw`w-11/12 h-11 flex-row justify-between items-center mx-auto my-[1%]`}>
       <TouchableOpacity
         onPress={() => {
           setDressModalVisible(true);
           getDress();
         }}
-        style={tw`w-10.5/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl pl-3`}>
-        <View style={tw`flex-row my-auto`}>
-          <Text style={tw`text-base font-semibold text-gray-400`}>
+        style={tw`w-10.5/12 h-11 border border-[rgba(0,0,0,0.5)] rounded-xl pl-3 flex-row justify-between items-center pr-5`}>
+        <View style={tw`h-full flex-row items-center `}>
+          <Text style={tw`text-base font-semibold text-gray-500`}>
             Ko`ylak:
           </Text>
           <Text style={tw`font-semibold text-black ml-2 text-base`}>
             {dressForSelect}
           </Text>
         </View>
+
+        <Image
+          style={tw`w-8 h-8`}
+          source={require('../../../../assets/down.png')}
+        />
+        {/* </View> */}
         <Modal
           animationType="fade"
           transparent={true}

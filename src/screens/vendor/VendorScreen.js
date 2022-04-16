@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native';
 import tw from 'twrnc';
 import All from '../../components/vendor/All';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Sales from '../../components/vendor/Sales';
+// import Sales from /'../../components/vendor/Sales';
 import Fifty from '../../components/vendor/Fifty';
 const Stack = createNativeStackNavigator();
 import ThreeBtn from '../../components/global/ThreeBtn';

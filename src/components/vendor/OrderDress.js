@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import {
   ScrollView,
@@ -60,6 +61,10 @@ const OrderDress = () => {
   const toggleNeedSendSwitch = () =>
     setNeedSend(previousState => !previousState);
 
+  const [colorModalVisible, setColorModalVisible] = useState(false);
+  const [selectedColorName, setSelectedColorName] = useState('');
+  const [selectedColorId, setSelectedColorId] = useState('');
+
   useEffect(() => {
     getToken.token(setUserJson);
   }, []);
@@ -108,6 +113,7 @@ const OrderDress = () => {
         sold_by_phone: isPhoneEnabled,
         need_send: needSend,
         date_left_price: moneyGiveDate,
+        color: selectedColorId,
       };
 
       axios({
@@ -138,6 +144,89 @@ const OrderDress = () => {
         style={tw`flex-1`}
         behavior={Platform.OS === 'ios' ? 'position' : null}>
         <RegisterDress userJson={userJson} setDressId={setDressId} />
+
+        <TouchableOpacity
+          style={tw`flex-row w-11/12 h-11 border my-2 mx-auto px-5 rounded-xl justify-between items-center border-[rgba(0,0,0,0.5)]`}
+          onPress={() => setColorModalVisible(true)}>
+          <Text style={tw`my-auto text-lg text-gray-500`}>
+            Rang : {selectedColorName}
+          </Text>
+
+          <Image
+            source={require('../../../assets/down.png')}
+            style={tw`w-8 h-8`}
+            resizeMode="contain"
+          />
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={colorModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setColorModalVisible(!colorModalVisible);
+            }}>
+            <View style={tw`flex-1 bg-[rgba(0,0,0,0.3)]`}>
+              <View
+                style={tw`absolute bottom-27 w-full h-40 justify-around items-center`}>
+                <View
+                  style={tw`w-11.5/12 bg-white h-40 justify-around items-center rounded-lg`}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedColorName('Telesniy');
+                      setSelectedColorId('1');
+                      setColorModalVisible(!colorModalVisible);
+                    }}
+                    style={[
+                      tw`w-11/12 h-15 rounded-xl`,
+                      {
+                        shadowColor: '#000',
+                        shadowOpacity: 0.5,
+                        shadowRadius: 3,
+                        shadowOffset: {
+                          width: 1,
+                          height: 1,
+                        },
+                        elevation: 3,
+                        backgroundColor: '#ffff',
+                      },
+                    ]}>
+                    <Text style={tw`text-2xl m-auto`}>Telesniy</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedColorName('Ayveri');
+                      setSelectedColorId('2');
+                      setColorModalVisible(!colorModalVisible);
+                    }}
+                    style={[
+                      tw`w-11/12 h-15 rounded-xl`,
+                      {
+                        shadowColor: '#000',
+                        shadowOpacity: 0.5,
+                        shadowRadius: 3,
+                        shadowOffset: {
+                          width: 1,
+                          height: 1,
+                        },
+                        elevation: 3,
+                        backgroundColor: '#ffff',
+                      },
+                    ]}>
+                    <Text style={tw`text-2xl m-auto`}>Ayveri</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity
+                onPress={() => setColorModalVisible(!colorModalVisible)}
+                activeOpacity={0.9}
+                style={tw`absolute bottom-10 w-10/12 h-15 bg-white rounded-xl left-[7.5%]`}>
+                <Text style={tw`text-[#007AFF] font-semibold m-auto text-2xl`}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </TouchableOpacity>
         <View style={tw`flex-row w-11/12 mx-auto justify-between items-center`}>
           <TextInput
             placeholder="Soni"
@@ -228,6 +317,7 @@ const OrderDress = () => {
             keyboardType="numeric"
           />
         </View>
+
         <TextInput
           multiline
           placeholder="Qo'shimcha ma'lumot"
@@ -327,7 +417,10 @@ const OrderDress = () => {
               {selectedSalonName}
             </Text>
           </Text>
-          <Text style={tw`text-base text-[rgba(0,0,0,0.5)]`}>➡️</Text>
+          <Image
+            source={require('../../../assets/down.png')}
+            style={tw`w-8 h-8`}
+          />
           <Modal
             animationType="fade"
             transparent={true}
