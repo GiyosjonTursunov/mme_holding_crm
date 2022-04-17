@@ -1,17 +1,13 @@
-import {SafeAreaView, View, Text, FlatList} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import React from 'react';
 import Header from '../../components/global/Header';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import tw from 'twrnc';
 import ListOrderedDresses from '../../components/warehouse/ListOrderedDresses';
-import WareHouseScreen from './WareHouseScreen';
 import DoubleBtn from '../../components/global/DoubleBtn';
-
-const Stack = createNativeStackNavigator();
 
 const OrdersListScreen = ({navigation}) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={tw`flex-1 bg-white`}>
       <Header headerName={'Buyurtmalar'} />
 
       <DoubleBtn

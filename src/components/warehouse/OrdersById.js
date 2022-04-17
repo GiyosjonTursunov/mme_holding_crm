@@ -28,39 +28,42 @@ const OrdersById = ({route}) => {
 
   const started = () => {
     console.warn('change status to Started');
-    // AsyncStorage.getItem('@user')
-    //   .then(stringJson => {
-    //     axios({
-    //       url: `${mainUrl}lastoria/need-send/${Number(route.params.saleId)}/`,
-    //       method: 'POST',
-    //       headers: {
-    //         Authorization: `token ${JSON.parse(stringJson).token}`,
-    //       },
-    //     })
-    //       .then(res => {
-    //         Alert.alert('Yangilandi');
-    //       })
-    //       .catch(_error => {
-    //         console.log(_error);
-    //       });
-    //   })
-    //   .catch(_err => {
-    //     console.log(_err);
-    //     Alert.alert('Xatolik');
-    //   });
+    AsyncStorage.getItem('@user')
+      .then(stringJson => {
+        axios({
+          url: `${mainUrl}lastoria/warehouse-order-views/${Number(
+            route.params.saleId,
+          )}/`,
+          method: 'POST',
+          headers: {
+            Authorization: `token ${JSON.parse(stringJson).token}`,
+          },
+        })
+          .then(res => {
+            Alert.alert('Yangilandi');
+          })
+          .catch(_error => {
+            console.log(_error);
+          });
+      })
+      .catch(_err => {
+        console.log(_err);
+        Alert.alert('Xatolik');
+      });
   };
 
   useEffect(() => {
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
-          url: `${mainUrl}lastoria/orders/${route.params.saleId}`,
+          url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
           method: 'GET',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,
           },
         })
           .then(res => {
+            console.warn(res.data.dress.img1);
             setSale(res.data);
             setDressImg([
               res.data.dress.img1,
@@ -92,22 +95,22 @@ const OrdersById = ({route}) => {
         horizontal
         pagingEnabled
         data={dressImg}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <TouchableOpacity
             style={tw`w-60 h-80 mx-auto mb-[${
               Dimensions.get('window').height / 7
             }px]`}
             activeOpacity={0.8}
-            onPress={() => setSelectedDressImg(baseUrl + item)}>
+            onPress={() => setSelectedDressImg(mainUrl + 'media/' + item)}>
             <Image
-              source={{uri: `${baseUrl + item}`}}
+              source={{uri: `${mainUrl + 'media/' + item}`}}
               style={tw`w-full h-full rounded-xl`}
               resizeMode="contain"
             />
             <Modal
               animationType="slide"
               transparent={true}
-              visible={selectedDressImg === baseUrl + item}
+              visible={selectedDressImg === mainUrl + 'media/' + item}
               onRequestClose={() => {
                 setSelectedDressImg(false);
               }}>
@@ -118,7 +121,7 @@ const OrdersById = ({route}) => {
                   imageWidth={Dimensions.get('window').width}
                   imageHeight={Dimensions.get('window').height}>
                   <Image
-                    source={{uri: `${baseUrl + item}`}}
+                    source={{uri: `${selectedDressImg}`}}
                     style={tw`w-full h-full`}
                     resizeMode="contain"
                   />

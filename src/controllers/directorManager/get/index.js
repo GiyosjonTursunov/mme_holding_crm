@@ -365,14 +365,13 @@ class directorGController {
     refresh,
   ) => {
     refresh ? setRefreshing(true) : null;
-    let urlGetAllSalesForVendor = `${mainUrl}lastoria/orders/`;
+    let urlGetAllSalesForVendor = `${mainUrl}lastoria/warehouse-order-views/`;
     axios({
       url: urlGetAllSalesForVendor,
       method: 'GET',
     })
       .then(res => {
         setAllSalesForVendor(res.data);
-        console.log('zakazlar =>', res.data);
         refresh ? setRefreshing(false) : null;
       })
       .catch(err => {
