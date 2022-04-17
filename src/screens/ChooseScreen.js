@@ -33,7 +33,7 @@ const ChooseScreen = () => {
             break;
 
           case 'WAREHOUSE':
-            navigation.navigate('WareHouseScreen');
+            navigation.navigate('OrdersListScreen');
             break;
 
           case 'SALON':

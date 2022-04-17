@@ -21,6 +21,8 @@ import RegisterResidenceScreen from './src/screens/admin/RegisterResidenceScreen
 import LaStoriaNewsScreen from './src/screens/salon/LaStoriaNewsScreen';
 import ChooseCompanyScreen from './src/screens/account/ChooseCompanyScreen';
 import MainPageScreen from './src/screens/directorAndManager/MainPageScreen';
+import OrdersListScreen from './src/screens/warehouse/OrdersListScreen';
+import OrdersById from './src/components/warehouse/OrdersById';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,14 +37,12 @@ const App = () => {
             headerShown: false,
           }}
         />
-
         {/* Admin */}
         <Stack.Screen
           name="AdminScreen"
           component={AdminScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           component={RegisterResidenceScreen}
           name="RegisterResidenceScreen"
@@ -73,7 +73,6 @@ const App = () => {
           component={CostsRegister}
           options={{title: "Xarajat qo'shish"}}
         />
-
         {/* Manager */}
         <Stack.Screen
           name="CostTypesScreen"
@@ -81,7 +80,6 @@ const App = () => {
           options={{headerShown: false}}
         />
         {/* Manager uchun boshqalarni register qilish oynasini tayyor qilish kerak . shart emas ekan.*/}
-
         {/* Sotuvchi - Vendor */}
         <Stack.Screen
           name="VendorScreen"
@@ -94,21 +92,22 @@ const App = () => {
           component={DressById}
           options={{headerTitle: "Sotilgan ko'ylak"}}
         />
-
         {/* Supplier */}
-
         <Stack.Screen
           name="SupplierScreen"
           component={SupplierScreen}
           options={{headerShown: false}}
         />
-
         {/* Omborchi == WAREHOUSE */}
+        <Stack.Screen name="WareHouseScreen" component={WareHouseScreen} />
+
         <Stack.Screen
-          name="WareHouseScreen"
-          component={WareHouseScreen}
+          name="OrdersListScreen"
+          component={OrdersListScreen}
           options={{headerShown: false}}
         />
+
+        <Stack.Screen name="OrdersById" component={OrdersById} />
 
         {/* Salonchi== SALON */}
         <Stack.Screen
@@ -116,13 +115,11 @@ const App = () => {
           component={SalonScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="LaStoriaNewsScreen"
           component={LaStoriaNewsScreen}
           options={{title: 'Yangiliklar'}}
         />
-
         <Stack.Screen
           name="ChooseCompanyScreen"
           component={ChooseCompanyScreen}

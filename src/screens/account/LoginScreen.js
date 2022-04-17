@@ -58,7 +58,7 @@ const LoginScreen = ({route}) => {
                 break;
 
               case 'WAREHOUSE':
-                navigation.navigate('WareHouseScreen');
+                navigation.navigate('OrdersListScreen');
                 break;
 
               case 'SALON':
