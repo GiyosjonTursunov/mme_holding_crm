@@ -3,13 +3,12 @@ import {SafeAreaView} from 'react-native';
 import tw from 'twrnc';
 import All from '../../components/vendor/All';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import Sales from /'../../components/vendor/Sales';
-import Fifty from '../../components/vendor/Fifty';
 const Stack = createNativeStackNavigator();
 import ThreeBtn from '../../components/global/ThreeBtn';
 import Header from '../../components/global/Header';
 import {useNavigation} from '@react-navigation/native';
 import OrderDress from '../../components/vendor/OrderDress';
+import FiftyOrderDress from '../../components/vendor/FiftyOrderDress';
 
 const VendorScreen = () => {
   const navigation = useNavigation();
@@ -23,7 +22,7 @@ const VendorScreen = () => {
         secondBtnName={'Sotish'}
         secondBtnNavigation={() => navigation.navigate('OrderDress')}
         thirdBtnName={'50/50'}
-        thirdBtnNavigation={() => navigation.navigate('Fifty')}
+        thirdBtnNavigation={() => navigation.navigate('FiftyOrderDress')}
       />
 
       <Stack.Navigator>
@@ -37,15 +36,10 @@ const VendorScreen = () => {
           name="OrderDress"
           component={OrderDress}
         />
-        {/* <Stack.Screen
-          options={{headerShown: false}}
-          name="Sales"
-          component={Sales}
-        /> */}
         <Stack.Screen
           options={{headerShown: false}}
-          name="Fifty"
-          component={Fifty}
+          name="FiftyOrderDress"
+          component={FiftyOrderDress}
         />
       </Stack.Navigator>
     </SafeAreaView>

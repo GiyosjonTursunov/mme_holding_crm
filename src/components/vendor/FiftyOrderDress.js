@@ -1,36 +1,32 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import {
+  View,
+  Text,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  TextInput,
-  View,
-  Text,
-  Switch,
-  Alert,
-  Modal,
-  Image,
   TouchableOpacity,
+  Image,
+  Modal,
+  Alert,
+  TextInput,
   FlatList,
+  Switch,
 } from 'react-native';
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import RegisterDress from './modals/RegisterDress';
-import getToken from '../../controllers/getToken';
-import DatePickerCustom from '../global/DatePickerCustom';
-import RegisterSalonModal from './RegisterSalonModal';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
+import getToken from '../../controllers/getToken';
+import DatePickerCustom from '../global/DatePickerCustom';
 import ListSalon from './ListSalon';
+import RegisterSalonModal from './RegisterSalonModal';
 
-const {useEffect, useState} = React;
-
-const OrderDress = () => {
+const FiftyOrderDress = () => {
   const [userJson, setUserJson] = useState([]);
 
   const [dressId, setDressId] = useState('');
-  const [dressCount, setDressCount] = useState('');
   const [shleftList, setShleftList] = useState([]);
   const [shleftListModalVisible, setShleftListModalVisible] = useState(false);
   const [shleftId, setShleftId] = useState('');
@@ -40,7 +36,6 @@ const OrderDress = () => {
   const [note, setNote] = useState('');
   const [givenPrice, setGivenPrice] = useState('');
   const [leftPrice, setLeftPrice] = useState('');
-  const [moneyGiveDate, setMoneyGiveDate] = useState('');
 
   const [isPhoneEnabled, setIsPhoneEnabled] = useState(false);
   const togglePhoneSwitch = () =>
@@ -64,6 +59,14 @@ const OrderDress = () => {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [selectedColorName, setSelectedColorName] = useState('');
   const [selectedColorId, setSelectedColorId] = useState('');
+
+  const [girlName, setGirlName] = useState('');
+  const [weddingDate, setWeddingDate] = useState('');
+
+  const [isPassportEnabled, setIsPassportEnabled] = useState(false);
+  const togglePassportSwitch = () =>
+    setIsPassportEnabled(previousState => !previousState);
+  const [salonGivenPrice, setSalonGivenPrice] = useState('');
 
   useEffect(() => {
     getToken.token(setUserJson);
@@ -89,17 +92,15 @@ const OrderDress = () => {
   const sendSale = () => {
     if (
       Number(dressId) &&
-      Number(dressCount) &&
       Number(mainPrice) &&
       note &&
       Number(givenPrice) &&
       Number(leftPrice) &&
-      moneyGiveDate &&
       Number(salonId) &&
       deliveryDate
     ) {
       let dataCreateSale = {
-        dress_count: dressCount,
+        dress_count: 1,
         main_price: mainPrice,
         dress_note: note,
         given_price: givenPrice,
@@ -113,8 +114,12 @@ const OrderDress = () => {
         sold_by_phone: isPhoneEnabled,
         need_send: needSend,
         status: 1,
-        date_left_price: moneyGiveDate,
         color: selectedColorId,
+        isFifty: true,
+        girl_name: girlName,
+        wedding_date: weddingDate,
+        ispassport: isPassportEnabled,
+        salon_given_price: salonGivenPrice,
       };
 
       axios({
@@ -132,10 +137,21 @@ const OrderDress = () => {
         })
         .catch(err => {
           console.warn(err);
-          Alert.alert("To'ldirishda hatolik bor qayta tekshiring…");
+          Alert.alert(
+            "To'ldirishda hatolik yoki serverda hatolik bor qayta tekshiring…",
+          );
         });
     } else {
       Alert.alert("To'ldirishda hatolik bor qayta tekshiring…");
+      console.warn(
+        Number(dressId),
+        Number(mainPrice),
+        note,
+        Number(givenPrice),
+        Number(leftPrice),
+        Number(salonId),
+        deliveryDate,
+      );
     }
   };
 
@@ -229,14 +245,6 @@ const OrderDress = () => {
           </Modal>
         </TouchableOpacity>
         <View style={tw`flex-row w-11/12 mx-auto justify-between items-center`}>
-          <TextInput
-            placeholder="Soni"
-            value={dressCount}
-            onChangeText={setDressCount}
-            style={tw`w-3/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center`}
-            keyboardType="numeric"
-          />
-
           <TouchableOpacity
             onPress={() => {
               axios({
@@ -251,13 +259,18 @@ const OrderDress = () => {
                   console.error(err);
                 });
             }}
-            style={tw`w-4/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center`}>
+            style={tw`flex-row items-center pr-2 w-5/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center`}>
             <Text
               style={tw`m-auto text-black text-base ${
                 shleftName ? 'text-black' : 'text-[rgba(0,0,0,0.5)]'
               }`}>
               {shleftName ? shleftName : 'Shleft'}
             </Text>
+
+            <Image
+              source={require('../../../assets/down.png')}
+              style={tw`w-8 h-8`}
+            />
             <Modal
               animationType="slide"
               transparent={true}
@@ -314,7 +327,7 @@ const OrderDress = () => {
             placeholder="Narx"
             value={mainPrice}
             onChangeText={setMainPrice}
-            style={tw`w-4/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center`}
+            style={tw`w-5/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center`}
             keyboardType="numeric"
           />
         </View>
@@ -327,9 +340,17 @@ const OrderDress = () => {
           style={tw`w-11/12 h-25 border text-base font-semibold rounded-2xl border-[rgba(0,0,0,0.7)] mx-auto pl-1 pt-1 my-2`}
         />
 
+        <TextInput
+          placeholder="Kelin ismi"
+          value={girlName}
+          onChangeText={setGirlName}
+          style={tw`w-11/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-2 mx-auto mb-2`}
+          keyboardType="numeric"
+        />
+
         <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
           <TextInput
-            placeholder="Berildi"
+            placeholder="Kelin bergan pul"
             value={givenPrice}
             onChangeText={text => {
               setGivenPrice(text);
@@ -348,24 +369,35 @@ const OrderDress = () => {
 
         <View
           style={tw`flex-row justify-between w-11/12 mx-auto my-2 items-center`}>
-          <Text style={tw`text-lg`}>Pul berish sanasi:</Text>
+          <Text style={tw`text-lg`}>To'y sanasi:</Text>
 
-          <DatePickerCustom
-            setNeedDate={setMoneyGiveDate}
-            text={moneyGiveDate}
-          />
+          <DatePickerCustom setNeedDate={setWeddingDate} text={weddingDate} />
         </View>
 
-        <View style={tw`flex-row justify-between w-11/12 mx-auto`}>
-          <Text style={tw`text-lg`}>Telefonda sotildi</Text>
+        <View style={tw`flex-row w-full justify-around`}>
+          <View style={tw`flex-row justify-between w-5/12 mx-auto`}>
+            <Text style={tw`text-lg`}>Passport :</Text>
 
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isPhoneEnabled ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={togglePhoneSwitch}
-            value={isPhoneEnabled}
-          />
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isPassportEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={togglePassportSwitch}
+              value={isPassportEnabled}
+            />
+          </View>
+
+          <View style={tw`flex-row justify-between w-5/12 mx-auto`}>
+            <Text style={tw`text-lg`}>Telda :</Text>
+
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isPhoneEnabled ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={togglePhoneSwitch}
+              value={isPhoneEnabled}
+            />
+          </View>
         </View>
 
         <View
@@ -409,60 +441,80 @@ const OrderDress = () => {
           </Modal>
         </View>
 
-        <TouchableOpacity
-          onPress={getSalonList}
-          style={tw`w-11/12 h-10 border mx-auto rounded-2xl justify-between border-[rgba(0,0,0,0.3)] flex-row px-5 items-center`}>
-          <Text style={tw`text-base text-[rgba(0,0,0,0.5)]`}>
-            Salon:{' '}
-            <Text style={tw`font-semibold text-black`}>
-              {selectedSalonName}
+        <View style={tw`flex-row`}>
+          <TouchableOpacity
+            onPress={getSalonList}
+            style={tw`w-5/12 h-10 border mx-auto rounded-2xl justify-between border-[rgba(0,0,0,0.3)] flex-row px-5 items-center`}>
+            <Text style={tw`text-base text-[rgba(0,0,0,0.5)]`}>
+              Salon:{' '}
+              <Text style={tw`font-semibold text-black`}>
+                {selectedSalonName}
+              </Text>
             </Text>
-          </Text>
-          <Image
-            source={require('../../../assets/down.png')}
-            style={tw`w-8 h-8`}
-          />
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={salonListModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-              setSalonListModalVisible(!salonListModalVisible);
-            }}>
-            <View
-              style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
+            <Image
+              source={require('../../../assets/down.png')}
+              style={tw`w-8 h-8`}
+            />
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={salonListModalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setSalonListModalVisible(!salonListModalVisible);
+              }}>
               <View
-                style={tw`w-10.5/12 h-110 bg-[#F1EFF7] rounded-2xl justify-around`}>
+                style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
                 <View
-                  style={tw`w-full h-8 pl-3 flex-row justify-start px-5 items-center`}>
-                  <TouchableOpacity
-                    style={tw`absolute right-2 top-[-10px]`}
-                    onPress={() => setSalonListModalVisible(false)}>
-                    <Image
-                      source={require('../../../assets/x-button.png')}
-                      style={tw`w-8 h-8`}
-                    />
-                  </TouchableOpacity>
-                  <Text style={tw`text-base font-semibold mx-auto`}>
-                    Salonlar ro'yhati.
-                  </Text>
+                  style={tw`w-10.5/12 h-110 bg-[#F1EFF7] rounded-2xl justify-around`}>
+                  <View
+                    style={tw`w-full h-8 pl-3 flex-row justify-start px-5 items-center`}>
+                    <TouchableOpacity
+                      style={tw`absolute right-2 top-[-10px]`}
+                      onPress={() => setSalonListModalVisible(false)}>
+                      <Image
+                        source={require('../../../assets/x-button.png')}
+                        style={tw`w-8 h-8`}
+                      />
+                    </TouchableOpacity>
+                    <Text style={tw`text-base font-semibold mx-auto`}>
+                      Salonlar ro'yhati.
+                    </Text>
+                  </View>
+                  <ListSalon
+                    closeModal={setSalonListModalVisible}
+                    onPress={setSalonId}
+                    listSalon={salonList}
+                    selectedSalonName={setSelectedSalonName}
+                  />
                 </View>
-                <ListSalon
-                  closeModal={setSalonListModalVisible}
-                  onPress={setSalonId}
-                  listSalon={salonList}
-                  selectedSalonName={setSelectedSalonName}
-                />
               </View>
-            </View>
-          </Modal>
-        </TouchableOpacity>
+            </Modal>
+          </TouchableOpacity>
+
+          <TextInput
+            placeholder="Salon bergan pul"
+            value={salonGivenPrice}
+            onChangeText={text => {
+              setSalonGivenPrice(text);
+            }}
+            style={tw`w-5/12 h-10 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-2 mx-auto`}
+            keyboardType="numeric"
+          />
+        </View>
 
         <View
           style={tw`flex-row justify-between w-11/12 mx-auto my-2 items-center`}>
           <Text style={tw`text-lg`}>Jo'natish sanasi : </Text>
-          <DatePickerCustom setNeedDate={setDeliveryDate} text={deliveryDate} />
+          <DatePickerCustom
+            setNeedDate={setDeliveryDate}
+            text={deliveryDate}
+            func={() =>
+              setLeftPrice(
+                prevState => Number(prevState) - Number(salonGivenPrice),
+              )
+            }
+          />
         </View>
 
         <View style={tw`flex-row justify-between w-11/12 mx-auto`}>
@@ -488,4 +540,4 @@ const OrderDress = () => {
   );
 };
 
-export default OrderDress;
+export default FiftyOrderDress;

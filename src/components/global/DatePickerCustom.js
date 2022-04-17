@@ -11,7 +11,7 @@ const DatePickerCustom = ({setNeedDate, func, text}) => {
       onPress={() => setOpen(true)}
       activeOpacity={0.8}
       style={tw`w-6/12 flex flex-row items-center border border-[rgba(0,0,0,0.7)] rounded-2xl h-10.5`}>
-      <Text style={tw`m-auto text-black text-base`}>
+      <Text style={tw`m-auto text-${text ? 'black' : 'gray-500'} text-base`}>
         {text || '15/04/2022'}
       </Text>
       <View
