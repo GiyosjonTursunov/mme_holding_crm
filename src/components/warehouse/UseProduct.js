@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Pressable,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import tw from 'twrnc';
@@ -60,10 +61,20 @@ const UseProduct = () => {
             console.warn('err use_product => ', err);
           });
       } else {
-        alert('Maxsulot yetmidi');
+        Alert.alert('Maxsulot yetmidi');
       }
     } else {
-      alert("Ma'lumotni qayta tekshiring!");
+      Alert.alert("Ma'lumotni qayta tekshiring!");
+    }
+  };
+
+  const convertAmount = amount => {
+    if (amount === 1) {
+      return 'dona';
+    } else if (amount === 2) {
+      return 'kg';
+    } else if (amount === 3) {
+      return 'metr';
     }
   };
 
@@ -91,7 +102,7 @@ const UseProduct = () => {
       </View>
       <Text style={tw`w-5.5/12 text-base font-semibold ml-3`}>{name}</Text>
       <Text style={tw`w-2/12 text-base`}>{count}</Text>
-      <Text style={tw`w-2/12`}>{amount ? 'metr' : 'dona'}</Text>
+      <Text style={tw`w-2/12`}>{convertAmount(amount)}</Text>
     </TouchableOpacity>
   );
 

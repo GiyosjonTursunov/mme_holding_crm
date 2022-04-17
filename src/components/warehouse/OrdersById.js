@@ -18,7 +18,7 @@ import axios from 'axios';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 const {useState, useEffect} = React;
-import {baseUrl, mainUrl} from '../../config/apiUrl';
+import {mainUrl} from '../../config/apiUrl';
 
 const OrdersById = ({route}) => {
   const [sale, setSale] = useState([]);
@@ -27,14 +27,13 @@ const OrdersById = ({route}) => {
   const [selectedDressImg, setSelectedDressImg] = useState([]);
 
   const started = () => {
-    console.warn('change status to Started');
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
           url: `${mainUrl}lastoria/warehouse-order-views/${Number(
             route.params.saleId,
           )}/`,
-          method: 'POST',
+          method: 'PUT',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,
           },
@@ -190,7 +189,7 @@ const OrdersById = ({route}) => {
             Telefon raqam
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.salon?.user}
+            {sale?.salon?.phone}
           </Text>
         </View>
         <View

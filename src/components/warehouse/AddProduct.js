@@ -61,6 +61,8 @@ const AddProduct = () => {
   const registerProduct = async () => {
     if (product_name && current) {
       formDataWareHouseProduct.append('name', product_name);
+      formDataWareHouseProduct.append('amount', current);
+      // 1 bolsa dona 2 bolsa kg 3 bolsa metr
       formDataWareHouseProduct.append('img', {
         uri: uriImage,
         type: typeImage,
@@ -84,7 +86,12 @@ const AddProduct = () => {
         console.log(responseJson);
         setProduct_name('');
         setModalVisible(false);
-        Alert.alert("Maxsulot ro'yhatdan o'tdi");
+        console.error(res.status);
+        if (res.status === 201) {
+          Alert.alert("Maxsulot ro'yhatdan o'tdi");
+        } else {
+          Alert.alert('Ошибка при регистрации продукта');
+        }
       } else {
         Alert.alert('Ошибка при регистрации продукта');
       }
@@ -118,7 +125,11 @@ const AddProduct = () => {
               setProduct_count('');
               setProduct_price('');
               setNote('');
-              Alert.alert("Maxsulot qo'shildi");
+              if (res.status === 201) {
+                Alert.alert("Maxsulot qo'shildi");
+              } else {
+                Alert.alert('Ошибка при добавлении продукта');
+              }
             })
             .catch(err => {
               console.error(err);
@@ -160,6 +171,16 @@ const AddProduct = () => {
     getAllProducts();
   }, []);
 
+  const convertAmount = amount => {
+    if (amount === 1) {
+      return 'dona';
+    } else if (amount === 2) {
+      return 'kg';
+    } else if (amount === 3) {
+      return 'metr';
+    }
+  };
+
   const Item = ({name, count, amount, id, image}) => (
     <TouchableOpacity
       onPress={() => {
@@ -183,7 +204,7 @@ const AddProduct = () => {
       </View>
       <Text style={tw`w-5.5/12 text-base font-semibold ml-3`}>{name}</Text>
       <Text style={tw`w-2/12 text-base`}>{count}</Text>
-      <Text style={tw`w-2/12`}>{amount ? 'metr' : 'dona'}</Text>
+      <Text style={tw`w-2/12`}>{convertAmount(amount)}</Text>
     </TouchableOpacity>
   );
 
@@ -256,7 +277,7 @@ const AddProduct = () => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              alert('Modal has been closed.');
+              Alert.alert('Modal has been closed.');
               setModalVisible(!modalVisible);
             }}>
             <View style={tw`flex-1 bg-[rgba(0,0,0,0.7)]`}>
@@ -265,7 +286,6 @@ const AddProduct = () => {
                 <Pressable
                   onPress={() => setModalVisible(false)}
                   style={tw`absolute top-[-12px] right-0`}>
-                  {/* <Text style={tw`text-blue-600 text-xl`}>Close</Text> */}
                   <Image
                     source={require('../../../assets/x-button.png')}
                     style={tw`w-8 h-8`}
@@ -299,20 +319,30 @@ const AddProduct = () => {
                 <View
                   style={tw`flex-row justify-around items-center mx-auto h-13`}>
                   <TouchableOpacity
-                    onPress={() => setCurrent('metr')}
+                    onPress={() => setCurrent(3)}
+                    // 1 bolsa dona 2 bolsa kg 3 bolsa metr
                     style={tw`w-3/12 h-full border rounded-lg mx-2 border-[rgba(0,0,0,0.5)]`}>
                     <Text style={tw`m-auto`}>
                       Metr
-                      {current === 'metr' && '✅'}
+                      {current === 3 && '✅'}
                     </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    onPress={() => setCurrent('dona')}
+                    onPress={() => setCurrent(1)}
                     style={tw`w-3/12 h-full border rounded-lg mx-2 border-[rgba(0,0,0,0.5)]`}>
                     <Text style={tw`m-auto`}>
                       Dona
-                      {current === 'dona' && '✅'}
+                      {current === 1 && '✅'}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => setCurrent(2)}
+                    style={tw`w-3/12 h-full border rounded-lg mx-2 border-[rgba(0,0,0,0.5)]`}>
+                    <Text style={tw`m-auto`}>
+                      Dona
+                      {current === 2 && '✅'}
                     </Text>
                   </TouchableOpacity>
                 </View>

@@ -25,7 +25,7 @@ const ListOrderedDresses = () => {
     );
   }, []);
 
-  const Item = ({name, date_created, id, del_date, index}) => (
+  const Item = ({name, date_created, id, del_date, index, status}) => (
     <View style={tw`flex-row justify-around items-center`}>
       <View
         style={[
@@ -39,7 +39,7 @@ const ListOrderedDresses = () => {
               height: 0.5,
             },
             elevation: 2,
-            backgroundColor: '#F7B699',
+            backgroundColor: status === 0 ? '#ff0000' : '#00ff00',
           },
         ]}>
         <Text style={tw`m-auto`}>{index + 1}</Text>
@@ -65,6 +65,7 @@ const ListOrderedDresses = () => {
       date_created={item?.date_created}
       del_date={item?.delivery_date}
       index={index}
+      status={item?.status}
     />
   );
 

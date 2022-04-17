@@ -48,6 +48,16 @@ const Product = () => {
     getAllProducts();
   }, []);
 
+  const convertAmount = amount => {
+    if (amount === 1) {
+      return 'dona';
+    } else if (amount === 2) {
+      return 'kg';
+    } else if (amount === 3) {
+      return 'metr';
+    }
+  };
+
   const Item = ({name, count, amount, image}) => (
     <TouchableOpacity
       style={tw`w-10.5/12 h-16 border border-[rgba(0,0,0,0.5)] rounded-xl mx-auto my-[1.5%] flex-row justify-center items-center`}>
@@ -64,7 +74,7 @@ const Product = () => {
       )}
       <Text style={tw`w-5.5/12 text-base font-semibold ml-3`}>{name}</Text>
       <Text style={tw`w-2/12 text-base`}>{count}</Text>
-      <Text style={tw`w-2/12`}>{amount ? 'metr' : 'dona'}</Text>
+      <Text style={tw`w-2/12`}>{convertAmount(amount)}</Text>
     </TouchableOpacity>
   );
 
