@@ -124,7 +124,7 @@ const OrdersById = ({route}) => {
                   />
                 </ImageZoom>
                 <TouchableOpacity
-                  style={tw`absolute top-0 left-0 mt-10 ml-5`}
+                  style={tw`absolute top-0 left-0 mt-15 ml-5`}
                   onPress={() => {
                     setSelectedDressImg(false);
                   }}>
@@ -209,11 +209,15 @@ const OrdersById = ({route}) => {
           </Text>
         </View>
 
+        <Text style={tw`text-xl mx-auto`}>
+          Komentariya : {sale?.dress_note}
+        </Text>
+
         {route.params?.director || route.params?.type ? null : (
           <TouchableOpacity
             onPress={started}
             activeOpacity={0.8}
-            style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3`}>
+            style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3 mb-5`}>
             <Text style={tw`text-white font-semibold m-auto text-xl`}>
               Qabul qilindi
             </Text>
