@@ -58,6 +58,13 @@ class directorCController {
               .catch(err => {
                 console.error(err);
                 Alert.alert('To`liq yozilmagan ');
+                console.warn(
+                  dataCostsCreate.name,
+                  Number(dataCostsCreate.number),
+                  Number(dataCostsCreate.price),
+                  dataCostsCreate.note,
+                  left_balance,
+                );
               });
           })
           .catch(err => {

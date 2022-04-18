@@ -341,7 +341,7 @@ const AddProduct = () => {
                     onPress={() => setCurrent(2)}
                     style={tw`w-3/12 h-full border rounded-lg mx-2 border-[rgba(0,0,0,0.5)]`}>
                     <Text style={tw`m-auto`}>
-                      Dona
+                      Kg
                       {current === 2 && '✅'}
                     </Text>
                   </TouchableOpacity>
