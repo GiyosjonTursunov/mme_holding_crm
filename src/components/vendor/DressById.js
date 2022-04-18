@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import tw from 'twrnc';
 import Header from '../global/Header';
 import axios from 'axios';
 
-const {useState, useEffect} = React;
 import {baseUrl, mainUrl} from '../../config/apiUrl';
 
 const DressById = ({route}) => {
@@ -25,7 +24,7 @@ const DressById = ({route}) => {
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
-          url: `${mainUrl}lastoria/need-send/${Number(route.params.saleId)}/`,
+          url: `${mainUrl}lastoria/need-send/${route.params.saleId}/`,
           method: 'POST',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,
@@ -64,8 +63,7 @@ const DressById = ({route}) => {
             ]);
           })
           .catch(_err => {
-            const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
-            Alert.alert(newLocal);
+            Alert.alert('Bazaga ulanishda xatolik yuz berdi!');
             console.log(_err);
           });
       })
