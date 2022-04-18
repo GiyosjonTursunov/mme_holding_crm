@@ -48,7 +48,7 @@ const SupplierStatisticsScreen = () => {
           })
         }
         style={[
-          tw`w-11/12 h-18 bg-[#F7F7F7] mx-auto my-1.5 flex-row items-center px-2 rounded-xl`,
+          tw`w-11/12 h-18 bg-[#F7F7F7] mx-auto my-2 flex-row items-center px-2 rounded-xl`,
           {
             shadowColor: newLocal,
             shadowOpacity: 0.5,
@@ -97,7 +97,7 @@ const SupplierStatisticsScreen = () => {
       given_price={item.given_price}
       salon_given_price={item.salon_given_price}
       date_created={item.date_created}
-      image={item.dress?.img}
+      image={item.dress?.img1}
     />
   );
 

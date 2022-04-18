@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   RefreshControl,
+  Image,
 } from 'react-native';
 import tw from 'twrnc';
 import ListMagazines from '../../components/director/ListMagazines';
@@ -48,7 +49,7 @@ const AboutLaStoriaScreen = () => {
 
   return (
     <ScrollView
-      style={tw`bg-white`}
+      style={tw`bg-white border-4`}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -99,7 +100,7 @@ const AboutLaStoriaScreen = () => {
           <Text style={tw`text-base font-semibold text-black`}>Dostavka</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('LaStoriaWareHouseScreen')}
+          onPress={() => navigation.navigate('OrdersListScreen')}
           style={[
             tw`w-26 h-22.5 bg-[#DDFFDA] rounded-3xl m-auto items-center justify-center`,
             // eslint-disable-next-line react-native/no-inline-styles

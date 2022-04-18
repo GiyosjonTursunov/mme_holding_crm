@@ -6,6 +6,7 @@ import {
   FlatList,
   Dimensions,
   RefreshControl,
+  Image,
 } from 'react-native';
 import tw from 'twrnc';
 import directorGController from '../../controllers/directorManager/get';
@@ -45,7 +46,7 @@ const All = () => {
   const renderItem = ({item}) => (
     <Item
       id={item.id}
-      name={item?.salon}
+      name={item?.salon?.salon_name}
       given_price={item?.given_price}
       salon_given_price={item?.salon_given_price}
       date_created={item?.date_created}
@@ -77,6 +78,14 @@ const All = () => {
           }
         />
       </View>
+
+      <TouchableOpacity onPress={() => navigation.navigate('ReportOrders')}>
+        <Image
+          source={require('../../../assets/reportIcon.png')}
+          style={tw`w-15 h-15 absolute bottom-10 right-5`}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -23,6 +23,8 @@ import ChooseCompanyScreen from './src/screens/account/ChooseCompanyScreen';
 import MainPageScreen from './src/screens/directorAndManager/MainPageScreen';
 import OrdersListScreen from './src/screens/warehouse/OrdersListScreen';
 import OrdersById from './src/components/warehouse/OrdersById';
+import ReportScreen from './src/screens/directorAndManager/ReportScreen';
+import ReportOrders from './src/components/vendor/ReportOrders';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +57,7 @@ const App = () => {
           component={MainPageScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="ReportScreen" component={ReportScreen} />
         <Stack.Screen name="AboutWorkScreen" component={AboutWorkScreen} />
         <Stack.Screen
           name="SupplierStatisticsScreen"
@@ -92,6 +95,12 @@ const App = () => {
           component={DressById}
           options={{headerTitle: "Sotilgan ko'ylak"}}
         />
+
+        <Stack.Screen
+          name="ReportOrders"
+          component={ReportOrders}
+          options={{headerTitle: 'Otchet topshirish buyurtmalar'}}
+        />
         {/* Supplier */}
         <Stack.Screen
           name="SupplierScreen"
@@ -101,11 +110,7 @@ const App = () => {
         {/* Omborchi == WAREHOUSE */}
         <Stack.Screen name="WareHouseScreen" component={WareHouseScreen} />
 
-        <Stack.Screen
-          name="OrdersListScreen"
-          component={OrdersListScreen}
-          options={{headerShown: false}}
-        />
+        <Stack.Screen name="OrdersListScreen" component={OrdersListScreen} />
 
         <Stack.Screen name="OrdersById" component={OrdersById} />
 

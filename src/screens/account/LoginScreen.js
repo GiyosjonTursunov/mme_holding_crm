@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,6 @@ import tw from 'twrnc';
 import Input from '../../components/global/Input';
 import axios from 'axios';
 
-const {useState} = React;
 import {mainUrl} from '../../config/apiUrl';
 
 const LoginScreen = ({route}) => {
@@ -38,12 +37,10 @@ const LoginScreen = ({route}) => {
       })
         .then(({data}) => {
           storeData(data);
-          console.warn('dataToken', data.token);
           if (data.token) {
             switch (data.role) {
               case 'DIRECTOR':
                 navigation.navigate('MainPageScreen');
-                // navigation.navigate('AboutWorkScreen');
                 break;
               case 'MANAGER':
                 navigation.navigate('CostTypesScreen');
@@ -85,7 +82,6 @@ const LoginScreen = ({route}) => {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('@user', jsonValue);
     } catch (e) {
-      // saving error
       console.warn(e);
     }
   };

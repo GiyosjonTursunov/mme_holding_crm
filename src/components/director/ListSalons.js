@@ -2,12 +2,13 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import tw from 'twrnc';
 import {useNavigation} from '@react-navigation/native';
+import {baseUrl} from '../../config/apiUrl';
 
 const ListSalons = ({dataList}) => {
   const navigation = useNavigation();
-  // console.log('ListSalons dataList', dataList);
+  console.error('ListSalons dataList', dataList);
 
-  const ItemSalon = ({salon_name, salon_address, salon_id}) => (
+  const ItemSalon = ({salon_name, salon_address, salon_id, image}) => (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('AboutSalonScreen', {
@@ -21,18 +22,25 @@ const ListSalons = ({dataList}) => {
         {
           shadowColor: '#000',
           shadowOpacity: 0.17,
-          shadowRadius: 5,
+          shadowRadius: 3,
           shadowOffset: {
             width: 1,
             height: 1,
           },
-          elevation: 4,
+          elevation: 2,
         },
       ]}>
-      <Image
-        source={require('../../../assets/magazin1.png')}
-        style={tw`w-15 h-15 rounded-xl m-auto`}
-      />
+      {image ? (
+        <Image
+          source={{uri: baseUrl + image}}
+          style={tw`w-15 h-15 rounded-xl m-auto`}
+        />
+      ) : (
+        <Image
+          source={require('../../../assets/magazin1.png')}
+          style={tw`w-15 h-15 rounded-xl m-auto`}
+        />
+      )}
 
       <View style={tw`w-7/12 h-full pl-3 justify-around`}>
         <Text style={tw`text-lg font-bold`}>{salon_name}</Text>
@@ -55,6 +63,7 @@ const ListSalons = ({dataList}) => {
       salon_name={item.salon_name}
       salon_address={item.address}
       salon_id={item.id}
+      image={item.img}
     />
   );
 
@@ -66,7 +75,6 @@ const ListSalons = ({dataList}) => {
       data={dataList}
       renderItem={renderItemSalon}
       keyExtractor={item => item.id}
-      
     />
   );
 };
