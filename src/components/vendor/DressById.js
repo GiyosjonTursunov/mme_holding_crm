@@ -86,7 +86,6 @@ const DressById = ({route}) => {
         data={dressImg}
         renderItem={({item, index}) => (
           <View style={tw`w-40 h-50 mx-auto`}>
-            {/* <Text>{item}</Text> */}
             <Image
               source={{uri: `${baseUrl + item}`}}
               style={tw`w-full h-full rounded-xl`}
@@ -102,42 +101,48 @@ const DressById = ({route}) => {
         <View
           style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
           <Text style={tw`text-base font-semibold text-black`}>
-            Ko`ylak nomi
+            Ko`ylak nomi {route.params.saleId}
           </Text>
           <Text style={tw`text-base font-semibold text-black`}>
             {sale?.dress?.name}
           </Text>
         </View>
 
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Ko`ylak narxi
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.dress?.price}
-          </Text>
-        </View>
+        {route.params?.supplier ? null : (
+          <>
+            <View
+              style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+              <Text style={tw`text-base font-semibold text-black`}>
+                Ko`ylak narxi
+              </Text>
+              <Text style={tw`text-base font-semibold text-black`}>
+                {sale?.dress?.price}
+              </Text>
+            </View>
 
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Berilgan summa
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.given_price ? sale?.given_price : sale?.salon_given_price}
-          </Text>
-        </View>
+            <View
+              style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+              <Text style={tw`text-base font-semibold text-black`}>
+                Berilgan summa
+              </Text>
+              <Text style={tw`text-base font-semibold text-black`}>
+                {sale?.given_price
+                  ? sale?.given_price
+                  : sale?.salon_given_price}
+              </Text>
+            </View>
 
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Qolgan summa
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.left_price}
-          </Text>
-        </View>
+            <View
+              style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+              <Text style={tw`text-base font-semibold text-black`}>
+                Qolgan summa
+              </Text>
+              <Text style={tw`text-base font-semibold text-black`}>
+                {sale?.left_price}
+              </Text>
+            </View>
+          </>
+        )}
 
         <View
           style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>

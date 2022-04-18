@@ -28,7 +28,6 @@ const SupplierStatisticsScreen = () => {
   }, []);
 
   const Item = ({
-    dress_id,
     id,
     name,
     given_price,
@@ -41,9 +40,7 @@ const SupplierStatisticsScreen = () => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('DressById', {
-            dressId: dress_id,
             saleId: id,
-            supplier: true,
             director: true,
           })
         }
@@ -57,7 +54,7 @@ const SupplierStatisticsScreen = () => {
               width: 0,
               height: 0,
             },
-            elevation: 8,
+            elevation: 3,
           },
         ]}>
         {image?.length > 1 ? (
@@ -91,7 +88,6 @@ const SupplierStatisticsScreen = () => {
 
   const renderItem = ({item}) => (
     <Item
-      dress_id={item.id}
       id={item.id}
       name={item.salon}
       given_price={item.given_price}

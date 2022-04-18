@@ -112,7 +112,6 @@ const OrderDress = () => {
         user: userJson.id,
         sold_by_phone: isPhoneEnabled,
         need_send: needSend,
-        status: 1,
         date_left_price: moneyGiveDate,
         color: selectedColorId,
       };

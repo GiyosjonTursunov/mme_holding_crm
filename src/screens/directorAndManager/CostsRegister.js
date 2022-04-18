@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -19,12 +19,9 @@ import DoubleBtn from '../../components/global/DoubleBtn';
 import {baseUrl, mainUrl} from '../../config/apiUrl';
 import axios from 'axios';
 
-const {useState, useEffect} = React;
-
 const CostsRegister = () => {
   const [xarajatNomi, setXarajatNomi] = useState('');
   const [soni, setSoni] = useState('');
-  const [metrDona, setMetrDona] = useState('');
   const [narxi, setNarxi] = useState('');
   const [note, setNote] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,14 +34,6 @@ const CostsRegister = () => {
   const [companies, setCompanies] = useState([]);
 
   const [current, setCurrent] = useState('');
-  //   {
-  //     "name":"Olaaa",
-  //     "number":4,
-  //     "amount":1,
-  //     "price":1000,
-  //     "company":1,
-  //     "note":"Qalesan ukam"
-  // }
 
   const dataCostsCreate = {
     name: xarajatNomi,
@@ -82,8 +71,6 @@ const CostsRegister = () => {
       });
     directorGController.getBalance(setBalance, setQoldiq);
   }, []);
-
-  // useEffect(() => {}, []);
 
   const dataReport = {
     note: note,
@@ -188,7 +175,6 @@ const CostsRegister = () => {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
-      {/* ModalEnd */}
 
       <View
         style={tw`w-9/12 h-10 flex-row justify-between items-center mx-auto`}>
@@ -198,7 +184,6 @@ const CostsRegister = () => {
         </View>
       </View>
 
-      {/* sendFormStart */}
       <View style={tw`w-full justify-around`}>
         <TextInput
           placeholder="Xarajat nomi"
@@ -355,7 +340,6 @@ const CostsRegister = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* sendFormEnd */}
     </ScrollView>
   );
 };

@@ -11,14 +11,12 @@ import {
   AsyncStorage,
   Alert,
 } from 'react-native';
-import * as React from 'react';
+import React, {useState, useCallback} from 'react';
 import tw from 'twrnc';
 import {ImagePickerModal} from '../../../screens/directorAndManager/modals/image-picker-modal';
 import axios from 'axios';
 import {mainUrl} from '../../../config/apiUrl';
 import * as ImagePicker from 'react-native-image-picker';
-
-const {useState, useCallback} = React;
 
 const RegisterDress = ({userJson, setDressId}) => {
   const [dressModalVisible, setDressModalVisible] = useState(false);

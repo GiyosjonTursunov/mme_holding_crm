@@ -50,6 +50,28 @@ const OrdersById = ({route}) => {
         Alert.alert('Xatolik');
       });
   };
+  const sended = () => {
+    AsyncStorage.getItem('@user')
+      .then(stringJson => {
+        axios({
+          url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
+          method: 'POST',
+          headers: {
+            Authorization: `token ${JSON.parse(stringJson).token}`,
+          },
+        })
+          .then(res => {
+            Alert.alert('Yangilandi');
+          })
+          .catch(_error => {
+            console.log(_error);
+          });
+      })
+      .catch(_err => {
+        console.log(_err);
+        Alert.alert('Xatolik');
+      });
+  };
 
   useEffect(() => {
     AsyncStorage.getItem('@user')
@@ -62,7 +84,7 @@ const OrdersById = ({route}) => {
           },
         })
           .then(res => {
-            console.warn(res.data.dress.img1);
+            console.warn(res.data);
             setSale(res.data);
             setDressImg([
               res.data.dress.img1,
@@ -215,7 +237,16 @@ const OrdersById = ({route}) => {
           Komentariya : {sale?.dress_note}
         </Text>
 
-        {route.params?.director || route.params?.type ? null : (
+        {sale?.status === 1 ? (
+          <TouchableOpacity
+            onPress={sended}
+            activeOpacity={0.8}
+            style={tw`bg-blue-500 mx-10 rounded-xl h-15 mt-3 mb-5`}>
+            <Text style={tw`text-white font-semibold m-auto text-xl`}>
+              Jo'natish
+            </Text>
+          </TouchableOpacity>
+        ) : (
           <TouchableOpacity
             onPress={started}
             activeOpacity={0.8}
