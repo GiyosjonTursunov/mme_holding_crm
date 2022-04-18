@@ -94,9 +94,7 @@ const CostsRegister = () => {
     <TouchableOpacity
       onPress={() => setCompanyId(id)}
       style={[
-        tw`w-20 h-20 m-auto mx-1 rounded-xl p-1 my-0.5 bg-[${
-          id == companyId ? '#00ff00' : '#fff'
-        }]`,
+        tw`w-20 h-20 m-auto mx-1 rounded-xl p-1 my-0.5`,
         {
           shadowColor: '#000',
           shadowOpacity: 0.5,
@@ -105,8 +103,8 @@ const CostsRegister = () => {
             width: 1,
             height: 1,
           },
-          elevation: 3,
-          backgroundColor: '#ffff',
+          elevation: 2,
+          backgroundColor: `${id === companyId ? '#00ff00' : '#fff'}`,
         },
       ]}>
       <Image
