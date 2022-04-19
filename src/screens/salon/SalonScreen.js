@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,6 @@ import tw from 'twrnc';
 import Header from '../../components/global/Header';
 import axios from 'axios';
 
-const {useState, useEffect, useRef} = React;
 import {mainUrl, baseUrl} from '../../config/apiUrl';
 const {width} = Dimensions.get('screen');
 const Item_width = width * 0.8;

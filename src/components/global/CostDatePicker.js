@@ -1,11 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import directorGController from '../../controllers/directorManager/get';
 import DatePickerCustom from './DatePickerCustom';
 import tw from 'twrnc';
-
-const {useState} = React;
 
 const CostDatePicker = ({isSerio}) => {
   const [dateStart, setDateStart] = useState('');

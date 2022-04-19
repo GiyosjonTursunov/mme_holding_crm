@@ -7,13 +7,11 @@ import {
   FlatList,
   RefreshControl,
 } from 'react-native';
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import tw from 'twrnc';
 import {PieChart} from 'react-native-svg-charts';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
-
-const {useState, useEffect} = React;
 
 const AboutWorkSubScreen = ({route}) => {
   const [companiesProfit, setCompaniesProfit] = useState([]);

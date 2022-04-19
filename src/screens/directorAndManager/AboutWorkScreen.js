@@ -14,9 +14,6 @@ import tw from 'twrnc';
 
 import Header from '../../components/global/Header';
 import directorGController from '../../controllers/directorManager/get';
-
-// import AboutLaStoriaScreen from './AboutLaStoriaScreen';
-
 import RegisterMagazineModal from './modals/RegisterMagazineModal';
 import ListMagazines from '../../components/director/ListMagazines';
 import ListSalons from '../../components/director/ListSalons';

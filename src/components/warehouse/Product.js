@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,8 +11,6 @@ import {
 import {mainUrl} from '../../config/apiUrl';
 import axios from 'axios';
 import tw from 'twrnc';
-
-const {useState, useEffect} = React;
 
 const Product = () => {
   const [allProducts, setAllProducts] = useState([]);

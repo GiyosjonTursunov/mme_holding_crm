@@ -4,8 +4,6 @@ import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import tw from 'twrnc';
 import {mainUrl} from '../../config/apiUrl';
 
-const {useEffect} = React;
-
 const Item = ({
   name,
   address,

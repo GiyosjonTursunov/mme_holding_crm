@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,6 @@ import Header from '../global/Header';
 import axios from 'axios';
 import ImageZoom from 'react-native-image-pan-zoom';
 
-const {useState, useEffect} = React;
 import {mainUrl} from '../../config/apiUrl';
 
 const OrdersById = ({route}) => {

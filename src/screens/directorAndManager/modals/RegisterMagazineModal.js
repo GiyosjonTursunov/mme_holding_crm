@@ -7,12 +7,11 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import * as React from 'react';
+import React, {useState, useCallback} from 'react';
 import tw from 'twrnc';
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerModal} from './image-picker-modal';
 
-const {useState, useCallback} = React;
 import {mainUrl} from '../../../config/apiUrl';
 
 const RegisterMagazineModal = ({setMagazineList, magazineList}) => {

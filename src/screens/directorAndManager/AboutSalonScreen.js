@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,10 @@ import {
 } from 'react-native';
 import Header from '../../components/global/Header';
 import AboutShopSalonStatistics from '../../components/director/AboutShopSalonStatistics';
-// import ThreeBtn from '../../components/global/ThreeBtn';
 import tw from 'twrnc';
 import axios from 'axios';
 import {PieChart} from 'react-native-svg-charts';
 
-const {useEffect, useState} = React;
 import {mainUrl} from '../../config/apiUrl';
 
 const AboutSalonScreen = ({route}) => {

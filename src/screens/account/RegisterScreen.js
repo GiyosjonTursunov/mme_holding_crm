@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import tw from 'twrnc';
 import Input from '../../components/global/Input';
 import axios from 'axios';
 
-const {useState} = React;
 import {mainUrl} from '../../config/apiUrl';
 import {useNavigation} from '@react-navigation/native';
 

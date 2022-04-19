@@ -6,7 +6,6 @@ import {
   ScrollView,
   Dimensions,
   RefreshControl,
-  Image,
 } from 'react-native';
 import tw from 'twrnc';
 import ListMagazines from '../../components/director/ListMagazines';

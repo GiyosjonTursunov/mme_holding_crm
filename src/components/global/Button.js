@@ -1,10 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import tw from 'twrnc';
 
 const Button = ({btnName, w, onPress}) => {
-  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={[

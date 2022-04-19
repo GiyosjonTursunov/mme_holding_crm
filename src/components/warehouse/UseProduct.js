@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,6 @@ import {
 import axios from 'axios';
 import tw from 'twrnc';
 
-const {useState, useEffect} = React;
 import {mainUrl} from '../../config/apiUrl';
 
 const UseProduct = () => {

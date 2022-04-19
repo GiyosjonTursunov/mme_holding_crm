@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Alert,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, Alert, FlatList} from 'react-native';
+import React, {useEffect} from 'react';
 import tw from 'twrnc';
 import Header from '../../components/global/Header';
 import DoubleBtn from '../../components/global/DoubleBtn';

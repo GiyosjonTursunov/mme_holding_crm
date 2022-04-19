@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, SafeAreaView, FlatList, Image, Text} from 'react-native';
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import DoubleBtn from '../../components/global/DoubleBtn';
 import {useNavigation} from '@react-navigation/native';
@@ -11,8 +11,6 @@ import Header from '../../components/global/Header';
 import axios from 'axios';
 import {baseUrl, mainUrl} from '../../config/apiUrl';
 import {TouchableOpacity} from 'react-native';
-
-const {useState, useEffect} = React;
 
 const Stack = createNativeStackNavigator();
 

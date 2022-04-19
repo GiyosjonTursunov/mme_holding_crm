@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import tw from 'twrnc';
 import RegisterDress from './modals/RegisterDress';
 import getToken from '../../controllers/getToken';
@@ -23,8 +23,6 @@ import RegisterSalonModal from './RegisterSalonModal';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import ListSalon from './ListSalon';
-
-const {useEffect, useState} = React;
 
 const OrderDress = () => {
   const [userJson, setUserJson] = useState([]);

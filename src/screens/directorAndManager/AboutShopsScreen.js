@@ -3,7 +3,6 @@ import {View, Text, Dimensions, Image, ScrollView} from 'react-native';
 import tw from 'twrnc';
 import AboutShopSalonStatistics from '../../components/director/AboutShopSalonStatistics';
 import Header from '../../components/global/Header';
-// import ThreeBtn from '../../components/global/ThreeBtn';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import {PieChart} from 'react-native-svg-charts';

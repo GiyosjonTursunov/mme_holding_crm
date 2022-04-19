@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,6 @@ import axios from 'axios';
 import directorGController from '../../controllers/directorManager/get';
 import directorCController from '../../controllers/directorManager/create';
 
-const {useEffect, useState} = React;
 import {useNavigation} from '@react-navigation/native';
 import {mainUrl} from '../../config/apiUrl';
 

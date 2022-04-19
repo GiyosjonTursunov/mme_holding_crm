@@ -8,11 +8,10 @@ import {
   RefreshControl,
   Alert,
 } from 'react-native';
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import axios from 'axios';
 
-const {useState, useEffect} = React;
 import {mainUrl, baseUrl} from '../../config/apiUrl';
 
 const LaStoriaNewsScreen = () => {

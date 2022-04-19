@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import tw from 'twrnc';
-
-const {useEffect} = React;
 import {View, Text, AsyncStorage} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -16,7 +14,6 @@ const ChooseScreen = () => {
         switch (JSON.parse(value)?.role) {
           case 'DIRECTOR':
             navigation.navigate('MainPageScreen');
-            // navigation.navigate('AboutWorkScreen');
             break;
 
           case 'MANAGER':

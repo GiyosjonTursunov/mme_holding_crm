@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, Image, Text, View, TouchableOpacity} from 'react-native';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import tw from 'twrnc';
 

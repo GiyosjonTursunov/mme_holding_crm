@@ -5,7 +5,6 @@ import {
   Dimensions,
   FlatList,
   RefreshControl,
-  refres,
 } from 'react-native';
 import * as React from 'react';
 import tw from 'twrnc';

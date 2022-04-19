@@ -10,7 +10,6 @@ const ChooseCompanyScreen = ({navigation}) => {
         Hamkoringizni tanlang
       </Text>
 
-      {/* <ScrollView style={tw`bg-[#E4F3FB]`}> */}
       <View
         style={tw`w-full h-full rounded-tr-3xl rounded-tl-3xl pt-10 flex-row flex-wrap justify-around items-center bg-[#E4F3FB]`}>
         <TouchableOpacity
@@ -82,7 +81,6 @@ const ChooseCompanyScreen = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

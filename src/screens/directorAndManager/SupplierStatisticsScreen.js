@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import tw from 'twrnc';
 import Header from '../../components/global/Header';
 import directorGController from '../../controllers/directorManager/get';
 
-const {useState, useEffect} = React;
 import {mainUrl} from '../../config/apiUrl';
 import {useNavigation} from '@react-navigation/native';
 

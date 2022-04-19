@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,6 @@ import {
 import tw from 'twrnc';
 import directorGController from '../../controllers/directorManager/get';
 
-const {useEffect, useState} = React;
 import {useNavigation} from '@react-navigation/native';
 
 const All = () => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
