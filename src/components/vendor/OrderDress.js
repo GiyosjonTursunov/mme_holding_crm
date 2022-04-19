@@ -93,7 +93,7 @@ const OrderDress = () => {
       Number(mainPrice) &&
       note &&
       Number(givenPrice) &&
-      Number(leftPrice) &&
+      Number(leftPrice) >= 0 &&
       moneyGiveDate &&
       Number(salonId) &&
       deliveryDate
@@ -127,13 +127,35 @@ const OrderDress = () => {
         .then(res => {
           if (res.status === 201) {
             Alert.alert('Saqlandi');
+            // clear all fields
+            setDressId('');
+            setDressCount('');
+            setMainPrice('');
+            setNote('');
+            setGivenPrice('');
+            setLeftPrice('');
+            setMoneyGiveDate('');
+            setSalonId('');
+            setDeliveryDate('');
+            setNeedSend(false);
+            setSelectedColorName('');
+            setSelectedColorId('');
+            setSelectedSalonName('');
+            setSalonId('');
+            setShleftId('');
+            setShleftName('');
+          } else {
+            Alert.alert('Xatolik');
           }
         })
         .catch(err => {
           console.warn(err);
-          Alert.alert("To'ldirishda hatolik bor qayta tekshiring…");
+          Alert.alert(
+            "To'ldirishda hatolik bor yoki bazada xatolik qayta tekshiring…",
+          );
         });
     } else {
+      console.warn(leftPrice);
       Alert.alert("To'ldirishda hatolik bor qayta tekshiring…");
     }
   };

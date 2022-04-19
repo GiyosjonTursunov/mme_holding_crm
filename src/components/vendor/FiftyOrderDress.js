@@ -95,7 +95,7 @@ const FiftyOrderDress = () => {
       Number(mainPrice) &&
       note &&
       Number(givenPrice) &&
-      Number(leftPrice) &&
+      Number(leftPrice) >= 0 &&
       Number(salonId) &&
       deliveryDate
     ) {
@@ -133,6 +133,23 @@ const FiftyOrderDress = () => {
         .then(res => {
           if (res.status === 201) {
             Alert.alert('Saqlandi');
+            // clear all fields
+            setDressId('');
+            setMainPrice('');
+            setNote('');
+            setGivenPrice('');
+            setLeftPrice('');
+            setSalonId('');
+            setDeliveryDate('');
+            setNeedSend(false);
+            setSelectedColorName('');
+            setSelectedColorId('');
+            setSelectedSalonName('');
+            setSalonId('');
+            setShleftId('');
+            setShleftName('');
+          } else {
+            Alert.alert('Xatolik');
           }
         })
         .catch(err => {
@@ -345,7 +362,6 @@ const FiftyOrderDress = () => {
           value={girlName}
           onChangeText={setGirlName}
           style={tw`w-11/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-2 mx-auto mb-2`}
-          keyboardType="numeric"
         />
 
         <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
