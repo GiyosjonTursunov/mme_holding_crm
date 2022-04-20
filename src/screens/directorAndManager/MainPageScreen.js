@@ -65,7 +65,7 @@ const MainPageScreen = () => {
   const renderItem = ({item}) => <Item img={item.img} name={item.name} />;
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white border`}>
+    <SafeAreaView style={tw`flex-1 bg-white`}>
       <Header headerName={'Asosiy sahifa'} />
       <DoubleBtn
         firstBtnName={'Ish haqida'}

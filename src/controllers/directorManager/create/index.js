@@ -18,7 +18,7 @@ class directorCController {
           },
         })
           .then(res => {
-            console.log('Magazin yaratildi!: =>', res.data);
+            Alert.alert('Magazin yaratildi!');
           })
           .catch(err => {
             console.error(err);
@@ -54,6 +54,7 @@ class directorCController {
                   '@left_balance',
                   String(res.data.left_balance),
                 );
+                Alert.alert('Ishlatildi');
               })
               .catch(err => {
                 console.error(err);
