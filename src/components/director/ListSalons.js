@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import tw from 'twrnc';
@@ -6,7 +7,6 @@ import {baseUrl} from '../../config/apiUrl';
 
 const ListSalons = ({dataList}) => {
   const navigation = useNavigation();
-  console.error('ListSalons dataList', dataList);
 
   const ItemSalon = ({salon_name, salon_address, salon_id, image}) => (
     <TouchableOpacity
@@ -18,7 +18,6 @@ const ListSalons = ({dataList}) => {
       }
       style={[
         tw`w-90 h-20 mx-auto mt-[2%] flex-row justify-center items-center rounded-xl bg-white my-2 mx-4`,
-        // eslint-disable-next-line react-native/no-inline-styles
         {
           shadowColor: '#000',
           shadowOpacity: 0.17,

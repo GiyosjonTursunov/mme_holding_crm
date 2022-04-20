@@ -139,9 +139,6 @@ class directorGController {
     const balanceStorage = await AsyncStorage.getItem('@balance');
     const qoldiqStorage = await AsyncStorage.getItem('@left_balance');
 
-    console.warn('balanceStorage: ', balanceStorage);
-    console.warn('qoldiqStorage: ', qoldiqStorage);
-
     if (balanceStorage && qoldiqStorage) {
       setBalance(balanceStorage);
       setQoldiq(qoldiqStorage);
@@ -162,9 +159,6 @@ class directorGController {
               '@left_balance',
               String(res.data.left_balance),
             );
-
-            console.warn(String(res.data.balance));
-            console.warn(String(res.data.left_balance));
           }
         })
         .catch(err => {
@@ -228,7 +222,7 @@ class directorGController {
                       JSON.stringify(res.data),
                     );
                   } else {
-                    console.log('seriolist yoki prochilist length teng ekan.');
+                    console.log('seriolist yoki prochilist length teng');
                   }
                 })
                 .catch(err => {
@@ -237,11 +231,11 @@ class directorGController {
             }
           })
           .catch(_err => {
-            console.log(_err);
+            console.error(_err);
           });
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -266,7 +260,6 @@ class directorGController {
       .then(res => {
         setSalonList(res.data);
         setRefreshing ? setRefreshing(false) : null;
-        console.warn('salonlist ', res.data);
         // const firstArr = ["2", "1"];
 
         // const secondArr = ["2", "1"];

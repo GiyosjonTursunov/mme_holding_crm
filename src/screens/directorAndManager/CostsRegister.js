@@ -289,8 +289,8 @@ const CostsRegister = () => {
                 dataCostsCreate,
                 setQoldiq,
                 qoldiq,
+                clearAllHooks,
               );
-              clearAllHooks();
             }}>
             <Text style={tw`m-auto text-white text-base`}>Ishlatish</Text>
           </TouchableOpacity>

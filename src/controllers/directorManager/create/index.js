@@ -29,7 +29,12 @@ class directorCController {
       });
   };
 
-  static sendCostCreate = (dataCostsCreate, setQoldiq, left_balance) => {
+  static sendCostCreate = (
+    dataCostsCreate,
+    setQoldiq,
+    left_balance,
+    lastFunc,
+  ) => {
     if (
       dataCostsCreate.name &&
       Number(dataCostsCreate.number) &&
@@ -55,17 +60,11 @@ class directorCController {
                   String(res.data.left_balance),
                 );
                 Alert.alert('Ishlatildi');
+                lastFunc ? lastFunc() : null;
               })
               .catch(err => {
                 console.error(err);
                 Alert.alert('To`liq yozilmagan ');
-                console.warn(
-                  dataCostsCreate.name,
-                  Number(dataCostsCreate.number),
-                  Number(dataCostsCreate.price),
-                  dataCostsCreate.note,
-                  left_balance,
-                );
               });
           })
           .catch(err => {
