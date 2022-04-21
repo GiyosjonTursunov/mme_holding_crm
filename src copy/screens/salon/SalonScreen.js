@@ -270,7 +270,6 @@ const SalonScreen = ({navigation}) => {
               inputRange,
               outputRange: [-width * 0.7, 0, width * 0.7],
             });
-
             return (
               <View
                 key={item.id}
@@ -296,17 +295,17 @@ const SalonScreen = ({navigation}) => {
                   <View
                     style={{
                       width: Item_width,
-                      height: Item_height,
+                      height: Item_height * 1.34,
                       overflow: 'hidden',
                       alignItems: 'center',
                       borderRadius: 14,
                     }}>
                     <Animated.Image
-                      source={{uri: baseUrl + item.img}}
+                      source={{uri: baseUrl + item.img1}}
                       style={{
                         width: Item_width * 1.1,
-                        height: Item_height / 1.5,
-                        resizeMode: 'contain',
+                        height: Item_height,
+                        resizeMode: 'cover',
                         transform: [{translateX}],
                       }}
                     />

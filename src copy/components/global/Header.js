@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,12 @@ import {
   AsyncStorage,
 } from 'react-native';
 import tw from 'twrnc';
+
+const {useState, useEffect} = React;
 import {useNavigation} from '@react-navigation/native';
 import {mainUrl} from '../../config/apiUrl';
 
-import {useDispatch} from 'react-redux';
-import {setIsLogIn, setRole} from '../../redux/actions';
-
 const Header = ({headerName, isRegister}) => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [user_data, setUser_data] = useState();
 
@@ -27,23 +25,22 @@ const Header = ({headerName, isRegister}) => {
         if (!parsedJson.token) {
           AsyncStorage.removeItem('@user')
             .then(() => {
-              dispatch(setIsLogIn(false));
-              dispatch(setRole(''));
+              navigation.navigate('ChooseCompanyScreen');
             })
             .catch(_err => {
-              dispatch(setIsLogIn(false));
-              dispatch(setRole(''));
+              console.warn('error remove item', _err);
+              navigation.navigate('ChooseCompanyScreen');
             });
         } else if (parsedJson.token) {
           setUser_data(parsedJson);
+          console.log(' user => ', parsedJson);
         }
       } else {
-        dispatch(setIsLogIn(false));
-        dispatch(setRole(''));
+        console.warn('invalid user =>', jsonValue);
       }
     };
     getData();
-  }, [dispatch]);
+  }, [navigation]);
 
   const ExitAccount = () => {
     if (isRegister) {
@@ -63,13 +60,12 @@ const Header = ({headerName, isRegister}) => {
           onPress: async () => {
             AsyncStorage.removeItem('@user')
               .then(() => {
-                dispatch(setIsLogIn(false));
-                dispatch(setRole(''));
+                navigation.navigate('ChooseCompanyScreen');
               })
               .catch(_err => {
-                dispatch(setIsLogIn(false));
-                dispatch(setRole(''));
+                console.error('ERROR!', _err);
               });
+            console.log('Logged out!');
           },
           style: 'destructive',
         },
@@ -86,12 +82,10 @@ const Header = ({headerName, isRegister}) => {
           onPress: async () => {
             AsyncStorage.removeItem('@user')
               .then(() => {
-                dispatch(setIsLogIn(false));
-                dispatch(setRole(''));
+                navigation.navigate('ChooseCompanyScreen');
               })
               .catch(err => {
-                dispatch(setIsLogIn(false));
-                dispatch(setRole(''));
+                console.error('ERROR!', err);
               });
             console.log('Logged out!');
           },
@@ -102,7 +96,7 @@ const Header = ({headerName, isRegister}) => {
   };
 
   return (
-    <View style={tw`w-full flex-row justify-between items-center px-2 my-1`}>
+    <View style={tw`w-full justify-between items-center flex-row px-5 my-1`}>
       <Text style={tw`text-base text-black font-semibold min-w-3/12 my-auto`}>
         {headerName}
       </Text>

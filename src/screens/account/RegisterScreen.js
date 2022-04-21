@@ -11,10 +11,10 @@ import {
   Alert,
 } from 'react-native';
 import tw from 'twrnc';
-import Input from '../../components/global/Input';
+import Input from '../../../src copy/components/global/Input';
 import axios from 'axios';
 
-import {mainUrl} from '../../config/apiUrl';
+import {mainUrl} from '../../../src copy/config/apiUrl';
 import {useNavigation} from '@react-navigation/native';
 
 const RegisterScreen = ({route}) => {
@@ -60,32 +60,8 @@ const RegisterScreen = ({route}) => {
           const {data} = res;
           if (data.token) {
             switch (data.role) {
-              case 'DIRECTOR':
-                navigation.navigate('MainPageScreen');
-                // navigation.navigate('AboutWorkScreen');
-                break;
-              case 'MANAGER':
-                navigation.navigate('CostTypesScreen');
-                break;
-
-              case 'VENDOR':
-                navigation.navigate('VendorScreen');
-                break;
-
-              case 'SUPPLIER':
-                navigation.navigate('SupplierScreen');
-                break;
-
-              case 'WAREHOUSE':
-                navigation.navigate('OrdersListScreen');
-                break;
-
               case 'SALON':
                 navigation.navigate('SalonScreen');
-                break;
-
-              default:
-                navigation.navigate('RegisterScreen');
                 break;
             }
           } else {

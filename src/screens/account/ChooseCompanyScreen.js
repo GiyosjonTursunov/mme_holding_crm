@@ -16,7 +16,7 @@ const ChooseCompanyScreen = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => navigation.navigate('RegisterScreen')}
           style={[
-            tw`w-5/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#00B6E4]`,
+            tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#00B6E4]`,
             {
               shadowColor: '#00B6E4',
               shadowOpacity: 0.5,
@@ -40,7 +40,7 @@ const ChooseCompanyScreen = ({navigation}) => {
             navigation.navigate('RegisterScreen', {key: 'lastoria'})
           }
           style={[
-            tw`w-5/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#821F81]`,
+            tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#821F81]`,
             {
               shadowColor: '#821F81',
               shadowOpacity: 0.5,
@@ -62,7 +62,7 @@ const ChooseCompanyScreen = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => navigation.navigate('RegisterScreen')}
           style={[
-            tw`w-5/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#D70000]`,
+            tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#D70000]`,
             {
               shadowColor: '#D70000',
               shadowOpacity: 0.5,

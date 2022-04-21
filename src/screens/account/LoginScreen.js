@@ -15,9 +15,13 @@ import axios from 'axios';
 
 import {mainUrl} from '../../config/apiUrl';
 
+import {useDispatch} from 'react-redux';
+import {setIsLogIn, setRole} from '../../redux/actions';
+
 const LoginScreen = ({route}) => {
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,38 +41,8 @@ const LoginScreen = ({route}) => {
       })
         .then(({data}) => {
           storeData(data);
-          if (data.token) {
-            switch (data.role) {
-              case 'DIRECTOR':
-                navigation.navigate('MainPageScreen');
-                break;
-              case 'MANAGER':
-                navigation.navigate('CostTypesScreen');
-                break;
-
-              case 'VENDOR':
-                navigation.navigate('VendorScreen');
-                break;
-
-              case 'SUPPLIER':
-                navigation.navigate('SupplierScreen');
-                break;
-
-              case 'WAREHOUSE':
-                navigation.navigate('OrdersListScreen');
-                break;
-
-              case 'SALON':
-                navigation.navigate('SalonScreen');
-                break;
-
-              case 'ADMIN':
-                navigation.navigate('AdminScreen');
-                break;
-            }
-          } else {
-            Alert.alert("You don't have permission");
-          }
+          dispatch(setIsLogIn(true));
+          dispatch(setRole(data.role));
         })
         .catch(_err => {
           console.warn('err =>', _err);

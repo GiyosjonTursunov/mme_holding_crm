@@ -21,8 +21,8 @@ const ChooseScreen = () => {
             navigation.navigate('CostTypesScreen');
             break;
 
-          case 'VENDOR':
-            navigation.navigate('VendorScreen');
+          case 'VENDOR_MANAGER':
+            navigation.navigate('VendorScreen_Manager');
             break;
 
           case 'SUPPLIER':
