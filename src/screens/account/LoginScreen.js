@@ -20,8 +20,8 @@ import {setIsLogIn, setRole} from '../../redux/actions';
 
 const LoginScreen = ({route}) => {
   const navigation = useNavigation();
-
   const dispatch = useDispatch();
+
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 

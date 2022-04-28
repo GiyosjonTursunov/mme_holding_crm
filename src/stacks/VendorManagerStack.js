@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import VendorScreen_Manager from '../screens/vendor_Manager/VendorScreen_Manager';
 import SaleDress from '../components/vendor_Manager/SaleDress';
+import ReportSales from '../components/vendor_Manager/ReportSales';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const VendorManagerStack = () => {
         component={VendorScreen_Manager}
       />
       <Stack.Screen name="SaleDress" component={SaleDress} />
+      <Stack.Screen name="ReportSales" component={ReportSales} />
     </Stack.Navigator>
   );
 };

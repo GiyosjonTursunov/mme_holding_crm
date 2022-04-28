@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {AsyncStorage} from 'react-native';
 import {useSelector} from 'react-redux';
 import NotLoggedIn from './stacks/NotLoggedIn';
 import VendorManagerStack from './stacks/VendorManagerStack';
+
+import {useDispatch} from 'react-redux';
+import {setRole} from './redux/actions';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
@@ -20,10 +24,17 @@ export const ChooseNavigation = role_user => {
 };
 
 const ChooseScreen = () => {
+  const dispatch = useDispatch();
+
   const {isLogIn, role} = useSelector(state => state.userReducer);
 
-  console.log('isLogIn => ', isLogIn);
-  console.log('role => ◊', role);
+  useEffect(() => {
+    AsyncStorage.getItem('@user').then(value => {
+      if (value) {
+        dispatch(setRole(JSON.parse(value).role));
+      }
+    });
+  }, [dispatch]);
 
   return isLogIn ? ChooseNavigation(role) : <NotLoggedIn />;
 };

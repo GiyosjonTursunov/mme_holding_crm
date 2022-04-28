@@ -300,11 +300,11 @@ const RegisterDress = ({userJson, setDressId}) => {
               </Text>
 
               <Pressable
-                style={tw`absolute right-2 top-[-10px]`}
+                style={tw`absolute right-[-2%] top-[-10px]`}
                 onPress={() => setRegisterDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-8 h-8`}
+                  style={tw`w-9 h-9`}
                 />
               </Pressable>
 
@@ -312,14 +312,14 @@ const RegisterDress = ({userJson, setDressId}) => {
                 onChangeText={setDressName}
                 value={dressName}
                 placeholder="Ko'ylak nomi"
-                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-3xl text-base font-semibold pl-3`}
+                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
               />
               <View style={tw`flex-row justify-between items-center w-10/12`}>
                 <TextInput
                   onChangeText={setMainPrice}
                   value={mainPrice}
                   placeholder="Ko'ylak narxi"
-                  style={tw`w-9/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-3xl text-base font-semibold pl-3`}
+                  style={tw`w-9/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
                 />
                 <Switch
                   trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -333,14 +333,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg1ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage1}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -358,14 +358,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg2ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage2}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -383,14 +383,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg3ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage3}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -408,14 +408,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg4ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage4}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -433,10 +433,10 @@ const RegisterDress = ({userJson, setDressId}) => {
 
               <TextInput
                 multiline
-                placeholder="Ko`ylak haqida"
+                placeholder="Qo'shimcha ma'lumotlar"
                 value={dressNote}
                 onChangeText={setDressNote}
-                style={tw`mb-[2%] w-10/12 h-20 border text-base font-semibold rounded-2xl border-[rgba(0,0,0,0.5)] mx-auto mb-[1%] p-1`}
+                style={tw`mb-[2%] w-10/12 h-20 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] mx-auto mb-[1%] p-1`}
               />
               <TouchableOpacity
                 onPress={createDress}

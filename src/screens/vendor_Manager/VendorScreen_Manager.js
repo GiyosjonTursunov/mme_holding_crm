@@ -1,8 +1,8 @@
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import Header from '../../components/global/Header';
 import DailySalesOrders from '../../components/vendor_Manager/DailySalesOrders';
-import OrderDress from '../../components/vendor_Manager/OrderDress';
+import OrderDress from '../../components/vendor_Manager/order/OrderDress';
 import ThreeBtn from '../../components/global/ThreeBtn';
 import tw from 'twrnc';
 
@@ -36,6 +36,14 @@ const VendorScreen_Manager = () => {
           options={{headerShown: false}}
         />
       </Stack.Navigator>
+
+      <TouchableOpacity onPress={() => navigation.navigate('ReportSales')}>
+        <Image
+          source={require('../../../assets/reportIcon.png')}
+          style={tw`w-15 h-15 absolute bottom-10 right-5`}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

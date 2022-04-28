@@ -7,18 +7,30 @@ import {
   Image,
   FlatList,
   TextInput,
-  Switch,
-  AsyncStorage,
   Alert,
 } from 'react-native';
 import React, {useState, useCallback} from 'react';
 import tw from 'twrnc';
-import {ImagePickerModal} from '../../../screens/directorAndManager/modals/image-picker-modal';
+import {ImagePickerModal} from '../../../modals/image-picker-modal';
 import axios from 'axios';
 import {mainUrl} from '../../../config/apiUrl';
 import * as ImagePicker from 'react-native-image-picker';
+import {useSelector} from 'react-redux';
+import ShleftList from './ShleftList';
+import ColorList from './ColorList';
 
-const RegisterDress = ({userJson, setDressId}) => {
+const RegisterDress = ({
+  setDressId,
+  setMainPriceSale,
+  setColorId,
+  setSelectedShleftId,
+  setSelectedShleftName,
+}) => {
+  const {token, userId} = useSelector(state => state.userReducer);
+
+  const [shleftId, setShleftId] = useState('');
+  const [selectedColorId, setSelectedColorId] = useState('');
+
   const [dressModalVisible, setDressModalVisible] = useState(false);
   const [registerDressModalVisible, setRegisterDressModalVisible] =
     useState(false);
@@ -38,37 +50,45 @@ const RegisterDress = ({userJson, setDressId}) => {
   const [dressImgPickerResponse, setDressImgPickerResponse] = useState(null);
 
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const getDressIdForSale = (id, name) => {
+  const getDressIdForSale = (
+    id,
+    name,
+    mainPriceSale,
+    color,
+    shleft,
+    all,
+    shleftName,
+  ) => {
     setDressId(id);
     setDressForSelect(name);
+    setMainPriceSale(mainPriceSale);
     setDressModalVisible(false);
+    setColorId(color);
+    console.warn('color', color);
+    console.warn('all ', all);
+    setSelectedShleftId(shleft);
+    setSelectedShleftName(shleftName);
   };
 
   const getDress = () => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        axios({
-          url: `${mainUrl}lastoria/dress/`,
-          method: 'GET',
-          headers: {
-            Authorization: 'token ' + JSON.parse(stringJson).token,
-          },
-        })
-          .then(res => {
-            if (res.data.length === dressList.length) {
-              return null;
-            } else {
-              setDressList(res.data);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+    axios({
+      url: `${mainUrl}lastoria/dress/`,
+      method: 'GET',
+      headers: {
+        Authorization: 'token ' + token,
+      },
+    })
+      .then(res => {
+        if (res.data.length === dressList.length) {
+          return null;
+        } else {
+          setDressList(res.data);
+          console.warn('dressList', dressList);
+        }
       })
-      .catch(error => {
-        console.log(error);
+      .catch(err => {
+        console.log(err);
       });
   };
 
@@ -90,10 +110,12 @@ const RegisterDress = ({userJson, setDressId}) => {
   const [typeImage3, setTypeImage3] = useState('');
   const [typeImage4, setTypeImage4] = useState('');
 
-  const DressItem = ({id, name}) => {
+  const DressItem = ({id, name, price, color, shleft, all, shleftName}) => {
     return (
       <TouchableOpacity
-        onPress={() => getDressIdForSale(id, name)}
+        onPress={() =>
+          getDressIdForSale(id, name, price, color, shleft, all, shleftName)
+        }
         style={tw`w-11.7/12 h-11.5 border-b pl-3 flex-row items-center border-[rgba(0,0,0,0.1)] mx-auto`}>
         <Text style={tw`w-1.5/12 text-base font-bold`}>{id}</Text>
         <Text style={tw`my-auto text-lg`}>{name}</Text>
@@ -101,7 +123,17 @@ const RegisterDress = ({userJson, setDressId}) => {
     );
   };
 
-  const renderDress = ({item}) => <DressItem name={item.name} id={item.id} />;
+  const renderDress = ({item}) => (
+    <DressItem
+      name={item.name}
+      id={item.id}
+      price={item.price}
+      color={item.color}
+      shleft={item.shleft.id}
+      shleftName={item.shleft.name}
+      all={item}
+    />
+  );
 
   const onImage1LibraryPress = useCallback(() => {
     const options = {
@@ -157,6 +189,7 @@ const RegisterDress = ({userJson, setDressId}) => {
       mediaType: 'photo',
       includeBase64: false,
     };
+
     ImagePicker.launchImageLibrary(options, setDressImgPickerResponse).then(
       async image => {
         setNameImage4(image.assets[0].fileName);
@@ -171,11 +204,13 @@ const RegisterDress = ({userJson, setDressId}) => {
 
   const createDress = async () => {
     if (dressName && Number(mainPrice)) {
+      console.log(dressName, mainPrice);
       formDataImg.append('name', dressName);
       formDataImg.append('price', mainPrice);
-      formDataImg.append('user', userJson.id);
+      formDataImg.append('user', userId);
       formDataImg.append('note', dressNote);
-      formDataImg.append('is_published', isEnabled);
+      formDataImg.append('shleft', shleftId);
+      formDataImg.append('color', selectedColorId);
 
       formDataImg.append('img1', {
         uri: uriImage1,
@@ -207,15 +242,18 @@ const RegisterDress = ({userJson, setDressId}) => {
         body: formDataImg,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: 'token ' + token,
         },
       });
       let responseJson = await res.json();
-      console.log(responseJson, 'responseJson');
-      Alert.alert("Ko'ylak qo'shildi");
-      setDressName('');
-      setMainPrice('');
-      setDressNote('');
-      setIsEnabled(false);
+      console.log(res.status, 'responseJson');
+      if (res.status === 201) {
+        Alert.alert("Ko'ylak qo'shildi");
+        setDressName('');
+        setMainPrice('');
+        setDressNote('');
+        setIsEnabled(false);
+      }
     } else {
       Alert.alert("Iltimos, majburiy ma'lumotlarni to'g'ri to'ldiring");
     }
@@ -257,11 +295,11 @@ const RegisterDress = ({userJson, setDressId}) => {
             <View
               style={tw`w-10.5/12 h-100 bg-[#F1EFF7] rounded-2xl justify-around relative`}>
               <Pressable
-                style={tw`absolute right-2 top-[-10px]`}
+                style={tw`absolute right-[-2%] top-[-10px]`}
                 onPress={() => setDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-8 h-8`}
+                  style={tw`w-9 h-9`}
                 />
               </Pressable>
               <View
@@ -289,22 +327,20 @@ const RegisterDress = ({userJson, setDressId}) => {
           onRequestClose={() => {
             setRegisterDressModalVisible(!registerDressModalVisible);
           }}>
-          <TouchableOpacity
-            onPress={() => setRegisterDressModalVisible(false)}
+          <View
             style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
-            <TouchableOpacity
-              onPress={() => setRegisterDressModalVisible(true)}
+            <View
               style={tw`w-11/12 h-120 bg-white rounded-3xl justify-around items-center`}>
               <Text style={tw`text-base mx-auto font-semibold`}>
                 Ko'ylak kiritish oynasi
               </Text>
 
               <Pressable
-                style={tw`absolute right-2 top-[-10px]`}
+                style={tw`absolute right-[-2%] top-[-10px]`}
                 onPress={() => setRegisterDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-8 h-8`}
+                  style={tw`w-9 h-9`}
                 />
               </Pressable>
 
@@ -312,35 +348,28 @@ const RegisterDress = ({userJson, setDressId}) => {
                 onChangeText={setDressName}
                 value={dressName}
                 placeholder="Ko'ylak nomi"
-                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-3xl text-base font-semibold pl-3`}
+                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
               />
-              <View style={tw`flex-row justify-between items-center w-10/12`}>
-                <TextInput
-                  onChangeText={setMainPrice}
-                  value={mainPrice}
-                  placeholder="Ko'ylak narxi"
-                  style={tw`w-9/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-3xl text-base font-semibold pl-3`}
-                />
-                <Switch
-                  trackColor={{false: '#767577', true: '#81b0ff'}}
-                  thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                />
-              </View>
-              {/* <View style={tw`w-10/12`}> */}
+
+              <TextInput
+                onChangeText={setMainPrice}
+                value={mainPrice}
+                placeholder="Ko'ylak narxi"
+                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
+                keyboardType="numeric"
+              />
+
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg1ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage1}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -352,20 +381,20 @@ const RegisterDress = ({userJson, setDressId}) => {
                   />
                 </TouchableOpacity>
 
-                <Text>Old tomon</Text>
+                <Text style={tw`ml-[2%]`}>Old tomoni</Text>
               </View>
 
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg2ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage2}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -383,14 +412,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg3ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage3}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -408,14 +437,14 @@ const RegisterDress = ({userJson, setDressId}) => {
               <View style={tw`flex-row items-center justify-between my-1`}>
                 <TouchableOpacity
                   onPress={() => setDressImg4ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-3xl border border-[rgba(0,0,0,0.5)]`}>
+                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                   <View style={tw`w-8/12 h-full pl-2`}>
                     <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
                       Rasmi: {nameImage4}
                     </Text>
                   </View>
                   <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-3xl rounded-tr-3xl`}>
+                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
                     <Text style={tw`text-base m-auto text-white`}>Files</Text>
                   </View>
 
@@ -429,15 +458,18 @@ const RegisterDress = ({userJson, setDressId}) => {
 
                 <Text>Orqa tomon</Text>
               </View>
-              {/* </View> */}
+              <View
+                style={tw`flex-row justify-between items-center w-10/12 mx-auto`}>
+                <ShleftList
+                  setShleftId={setShleftId}
+                  setSelectedShleftId={setSelectedShleftId}
+                />
+                <ColorList
+                  setSelectedColorId={setSelectedColorId}
+                  setColorId={setColorId}
+                />
+              </View>
 
-              <TextInput
-                multiline
-                placeholder="Ko`ylak haqida"
-                value={dressNote}
-                onChangeText={setDressNote}
-                style={tw`mb-[2%] w-10/12 h-20 border text-base font-semibold rounded-2xl border-[rgba(0,0,0,0.5)] mx-auto mb-[1%] p-1`}
-              />
               <TouchableOpacity
                 onPress={createDress}
                 style={tw`w-5.5/12 h-12 bg-[#242424] mx-auto rounded-full`}>
@@ -445,8 +477,8 @@ const RegisterDress = ({userJson, setDressId}) => {
                   Saqlash
                 </Text>
               </TouchableOpacity>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            </View>
+          </View>
         </Modal>
       </TouchableOpacity>
     </View>

@@ -12,7 +12,13 @@ import {useNavigation} from '@react-navigation/native';
 import {mainUrl} from '../../config/apiUrl';
 
 import {useDispatch} from 'react-redux';
-import {setIsLogIn, setRole} from '../../redux/actions';
+import {
+  setIsLogIn,
+  setRole,
+  setToken,
+  setUserId,
+  setMagazineId,
+} from '../../redux/actions';
 
 const Header = ({headerName, isRegister}) => {
   const dispatch = useDispatch();
@@ -36,6 +42,10 @@ const Header = ({headerName, isRegister}) => {
             });
         } else if (parsedJson.token) {
           setUser_data(parsedJson);
+          dispatch(setToken(parsedJson.token));
+          // console.log('userToken ', parsedJson.token);
+          dispatch(setMagazineId(parsedJson.magazine_id));
+          dispatch(setUserId(parsedJson.id));
         }
       } else {
         dispatch(setIsLogIn(false));
