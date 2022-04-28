@@ -32,7 +32,8 @@ const ThreeBtn = ({
           setIsFifty(false);
         }}
         style={tw`flex-1 rounded-2xl ${isAll ? 'bg-white' : null}`}>
-        <Text style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'}`}>
+        <Text
+          style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-lg`}>
           {/* Ish haqida */}
           {firstBtnName}
         </Text>
@@ -45,7 +46,8 @@ const ThreeBtn = ({
           setIsFifty(false);
         }}
         style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
-        <Text style={tw`m-auto ${isSale ? 'text-black' : 'text-white'}`}>
+        <Text
+          style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-lg`}>
           {/* Xarajatlar */}
           {secondBtnName}
         </Text>
@@ -62,7 +64,8 @@ const ThreeBtn = ({
         {fourth ? (
           thirdBtnName
         ) : (
-          <Text style={tw`m-auto ${isFifty ? 'text-black' : 'text-white'}`}>
+          <Text
+            style={tw`m-auto ${isFifty ? 'text-black' : 'text-white'} text-lg`}>
             {thirdBtnName}
           </Text>
         )}

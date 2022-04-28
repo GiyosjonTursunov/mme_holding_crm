@@ -32,6 +32,8 @@ const FiftySale = () => {
   // delievery_date
   const {userId, token, magazineId} = useSelector(state => state.userReducer);
 
+  const [selectedShleftName, setSelectedShleftName] = useState();
+
   const dataForFiftySale = {
     dress: dressId,
     color: colorId,
@@ -90,6 +92,7 @@ const FiftySale = () => {
           setMainPriceSale={setMainPrice}
           setColorId={setColorId}
           setSelectedShleftId={setSelectedShleftId}
+          setSelectedShleftName={setSelectedShleftName}
         />
       </View>
       <TextInput

@@ -1,4 +1,4 @@
-import {SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import {SafeAreaView, TouchableOpacity, Image, Text} from 'react-native';
 import React from 'react';
 import Header from '../../components/global/Header';
 import DailySalesOrders from '../../components/vendor_Manager/DailySalesOrders';
@@ -10,7 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
-const VendorScreen_Manager = () => {
+function VendorScreen_Manager() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -20,7 +20,7 @@ const VendorScreen_Manager = () => {
         firstBtnNavigation={() => navigation.navigate('DailySalesOrders')}
         secondBtnName={'Sotish'}
         secondBtnNavigation={() => navigation.navigate('SaleDress')}
-        thirdBtnName={'Zakaz qilish'}
+        thirdBtnName={'Zakaz'}
         thirdBtnNavigation={() => navigation.navigate('OrderDress')}
       />
       <Stack.Navigator>
@@ -44,8 +44,14 @@ const VendorScreen_Manager = () => {
           resizeMode="contain"
         />
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('DebtorsScreen')}
+        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
+        <Text style={tw`text-6xl m-auto`}>💰</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
-};
+}
 
 export default VendorScreen_Manager;

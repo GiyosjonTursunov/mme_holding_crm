@@ -18,10 +18,12 @@ const DailySalesOrders = () => {
   const {token} = useSelector(state => state.userReducer);
   const [simpleSales, setSimpleSales] = useState([]);
   const [saleFifty, setSaleFifty] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [red, setRed] = useState(true);
 
   useEffect(() => {
+    console.warn(token);
     if (red) {
       setRefreshing(true);
       axios({
@@ -42,8 +44,24 @@ const DailySalesOrders = () => {
           })
             .then(res => {
               setSaleFifty(res.data);
-              setRefreshing(false);
-              setRed(false);
+
+              axios({
+                url: `${mainUrl}lastoria/orders/`,
+                method: 'get',
+                headers: {
+                  Authorization: `token ${token}`,
+                },
+              })
+                .then(resOrder => {
+                  setOrders(resOrder.data);
+                  setRefreshing(false);
+                  setRed(false);
+                })
+                .catch(err => {
+                  console.log(err);
+                  setRefreshing(false);
+                  setRed(false);
+                });
             })
             .catch(err => {
               console.error(err);
@@ -108,12 +126,19 @@ const DailySalesOrders = () => {
           onRefresh={() => setRed(true)}
         />
       }>
-      {simpleSales.length ? (
-        <Text style={tw`text-2xl text-black ml-3 mt-3`}>Oddiy sotuvlar</Text>
-      ) : (
-        <Text style={tw`text-2xl text-black ml-3 mt-3`}>Ma'lumot yo'q</Text>
+      {simpleSales.length && saleFifty.length && orders.length ? null : (
+        <>
+          <Text style={tw`text-2xl text-black ml-3 mt-3`}>Ma'lumot yo'q</Text>
+          <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
+        </>
       )}
-      <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.01}]} />
+      {simpleSales.length ? (
+        <>
+          <Text style={tw`text-2xl text-black ml-3 mt-3`}>Oddiy sotuvlar</Text>
+          <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
+        </>
+      ) : null}
+
       <FlatList
         data={simpleSales}
         horizontal
@@ -122,11 +147,29 @@ const DailySalesOrders = () => {
         showsHorizontalScrollIndicator={false}
       />
       {saleFifty.length ? (
-        <Text style={tw`text-2xl text-black ml-3 mt-5`}>50/50 sotuvlar</Text>
+        <>
+          <Text style={tw`text-2xl text-black ml-3 mt-3`}>50/50 sotuvlar</Text>
+          <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
+        </>
       ) : null}
-      <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
+
       <FlatList
         data={saleFifty}
+        horizontal
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+      />
+
+      {orders.length ? (
+        <>
+          <Text style={tw`text-2xl text-black ml-3 mt-5`}>Buyurtmalar</Text>
+          <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
+        </>
+      ) : null}
+
+      <FlatList
+        data={orders}
         horizontal
         renderItem={renderItem}
         keyExtractor={item => item.id}

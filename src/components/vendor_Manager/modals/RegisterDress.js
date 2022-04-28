@@ -245,7 +245,7 @@ const RegisterDress = ({
           Authorization: 'token ' + token,
         },
       });
-      let responseJson = await res.json();
+      // let responseJson = await res.json();
       console.log(res.status, 'responseJson');
       if (res.status === 201) {
         Alert.alert("Ko'ylak qo'shildi");
@@ -281,7 +281,6 @@ const RegisterDress = ({
           style={tw`w-8 h-8`}
           source={require('../../../../assets/down.png')}
         />
-        {/* </View> */}
         <Modal
           animationType="fade"
           transparent={true}

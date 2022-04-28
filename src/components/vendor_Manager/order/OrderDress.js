@@ -19,7 +19,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {mainUrl} from '../../../config/apiUrl';
 
-const SimpleSale = () => {
+const OrderDress = () => {
   const {token, userId, magazineId} = useSelector(state => state.userReducer);
 
   const [dressId, setDressId] = useState();
@@ -46,47 +46,46 @@ const SimpleSale = () => {
     color: selectedColorId,
     detail: selectedShleftId,
     main_price: mainPrice,
-    leftPrice: leftPrice,
+    left_price: leftPrice,
     date_left_price: moneyGiveDate,
     mortgage: givenPrice,
     note: note,
     salon: salonId,
     delivery_date: deliveryDate,
     user: userId,
+    magazine: magazineId,
   };
 
-  // const sendSimpleSale = () => {
-  //   console.log('dataForSimpleSale', dataForSimpleSale);
-  //   if (dressId && givenPrice && salonId) {
-  //     axios({
-  //       url: `${mainUrl}lastoria/simple-sales/`,
-  //       method: 'POST',
-  //       data: dataForSimpleSale,
-  //       headers: {
-  //         Authorization: 'token ' + token,
-  //       },
-  //     })
-  //       .then(res => {
-  //         Alert.alert('Продажа успешно добавлена');
-  //         // clear all fields
-  //         setDressId('');
-  //         setColorId('');
-  //         setSelectedShleftId('');
-  //         setMainPrice('');
-  //         setGivenPrice('');
-  //         setLeftPrice('');
-  //         setMoneyGiveDate('');
-  //         setSalonId('');
-  //         setNote('');
-  //       })
-  //       .catch(err => {
-  //         console.error(err);
-  //         Alert.alert('Error');
-  //       });
-  //   } else {
-  //     Alert.alert('Заполните все поля');
-  //   }
-  // };
+  const sendOrder = () => {
+    if (dressId && leftPrice && moneyGiveDate && givenPrice && deliveryDate) {
+      axios
+        .post(`${mainUrl}lastoria/orders/`, dataForOrder, {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        })
+        .then(res => {
+          Alert.alert("Jo'natildi");
+          console.warn(res.data);
+          setDressId('');
+          setSelectedColorId('');
+          setSelectedShleftId('');
+          setMainPrice('');
+          setGivenPrice('');
+          setLeftPrice('');
+          setMoneyGiveDate('');
+          setSalonId('');
+          setNote('');
+          setSelectedShleftName('');
+        })
+        .catch(err => {
+          console.log(err);
+          Alert.alert('Xatolik');
+        });
+    } else {
+      Alert.alert("To'liq kiriting");
+    }
+  };
 
   const showColor = id => {
     if (Number(id) === 1) {
@@ -331,7 +330,7 @@ const SimpleSale = () => {
 
       <TouchableOpacity
         activeOpacity={0.7}
-        // onPress={sendSimpleSale}
+        onPress={sendOrder}
         style={tw`w-5/12 h-15 bg-[#242424] mx-auto my-2 rounded-full`}>
         <Text style={tw`text-white text-xl m-auto`}>Saqlash</Text>
       </TouchableOpacity>
@@ -339,4 +338,4 @@ const SimpleSale = () => {
   );
 };
 
-export default SimpleSale;
+export default OrderDress;

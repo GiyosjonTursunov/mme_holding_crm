@@ -26,7 +26,8 @@ const DoubleBtn = ({
             firstBtnFunction ? firstBtnFunction() : null;
           }}
           style={tw`flex-1 rounded-xl ${isAll ? 'bg-white' : null}`}>
-          <Text style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'}`}>
+          <Text
+            style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-lg`}>
             {firstBtnName}
           </Text>
         </TouchableOpacity>
@@ -37,7 +38,8 @@ const DoubleBtn = ({
             secondBtnFunction ? secondBtnFunction() : null;
           }}
           style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
-          <Text style={tw`m-auto ${isSale ? 'text-black' : 'text-white'}`}>
+          <Text
+            style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-lg`}>
             {secondBtnName}
           </Text>
         </TouchableOpacity>

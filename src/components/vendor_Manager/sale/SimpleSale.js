@@ -28,6 +28,8 @@ const SimpleSale = () => {
   // delievery_date
   const {userId, token, magazineId} = useSelector(state => state.userReducer);
 
+  const [selectedShleftName, setSelectedShleftName] = useState();
+
   const dataForSimpleSale = {
     dress: dressId,
     color: colorId,
@@ -54,7 +56,6 @@ const SimpleSale = () => {
       })
         .then(res => {
           Alert.alert('Продажа успешно добавлена');
-          // clear all fields
           setDressId('');
           setColorId('');
           setSelectedShleftId('');
@@ -82,6 +83,7 @@ const SimpleSale = () => {
           setMainPriceSale={setMainPrice}
           setColorId={setColorId}
           setSelectedShleftId={setSelectedShleftId}
+          setSelectedShleftName={setSelectedShleftName}
         />
       </View>
       <TextInput

@@ -6,12 +6,15 @@ import VendorManagerStack from './stacks/VendorManagerStack';
 
 import {useDispatch} from 'react-redux';
 import {setRole} from './redux/actions';
+import VendorStack from './stacks/VendorStack';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
     return <NotLoggedIn />;
   } else if (role_user === 'VENDOR_MANAGER') {
     return <VendorManagerStack />;
+  } else if (role_user === 'VENDOR') {
+    return <VendorStack />;
   } else {
     return <NotLoggedIn />;
   }

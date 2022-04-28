@@ -15,46 +15,48 @@ import {mainUrl} from '../../config/apiUrl';
 import {useSelector} from 'react-redux';
 
 const ReportSales = () => {
-  const {userId, token, magazineId} = useSelector(state => state.userReducer);
+  const {token} = useSelector(state => state.userReducer);
   const [mainPrice, setMainPrice] = useState();
   const [givenPrice, setGivenPrice] = useState();
   const [leftPrice, setLeftPrice] = useState();
   const [salonGivenPrice, setSalonGivenPrice] = useState();
+  const [mortgage, setMortgage] = useState();
 
   const [sum, setSum] = useState();
   const [dollar, setDollar] = useState();
   const [note, setNote] = useState();
 
   const [refreshing, setRefreshing] = useState(false);
-
-  const getTodaysSales = () => {
-    setRefreshing(true);
-    axios({
-      url: `${mainUrl}lastoria/all-sales-daily-reports/`,
-      method: 'GET',
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    })
-      .then(res => {
-        console.warn(res.data);
-        setMainPrice(res.data.main_price);
-        setGivenPrice(res.data.given_price);
-        setLeftPrice(res.data.left_price);
-        setSalonGivenPrice(res.data.salon_given_price);
-        setRefreshing(false);
-      })
-      .catch(err => {
-        setMainPrice(0);
-        Alert.alert('Ошибка', 'Не удалось получить данные');
-        setRefreshing(false);
-        console.error(err);
-      });
-  };
+  const [red, setRed] = useState(true);
 
   useEffect(() => {
-    getTodaysSales();
-  }, []);
+    if (red) {
+      setRefreshing(true);
+      axios({
+        url: `${mainUrl}lastoria/all-sales-daily-reports/`,
+        method: 'GET',
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      })
+        .then(res => {
+          setMainPrice(res.data.main_price);
+          setGivenPrice(res.data.given_price);
+          setLeftPrice(res.data.left_price);
+          setSalonGivenPrice(res.data.salon_given_price);
+          setMortgage(res.data.mortgage);
+          setRefreshing(false);
+          setRed(false);
+        })
+        .catch(err => {
+          setMainPrice(0);
+          Alert.alert('Ошибка', 'Не удалось получить данные');
+          setRefreshing(false);
+          setRed(false);
+          console.error(err);
+        });
+    }
+  }, [red, token]);
 
   const sendReport = () => {
     const reporData = {
@@ -65,6 +67,7 @@ const ReportSales = () => {
       sum: sum,
       dollar: dollar,
       note: note,
+      mortgage: mortgage,
     };
 
     axios({
@@ -79,7 +82,8 @@ const ReportSales = () => {
         setSum(0);
         setDollar(0);
         setNote('');
-        getTodaysSales();
+        setMortgage(0);
+        setRed(true);
         Alert.alert('Отчет отправлен');
       })
       .catch(() => {
@@ -91,13 +95,37 @@ const ReportSales = () => {
     <ScrollView
       style={tw`flex-1 bg-white`}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={getTodaysSales} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => setRed(true)}
+        />
       }>
       <View style={tw`w-5/12 h-10 mx-auto my-5 border-b`}>
         <Text style={tw`m-auto text-3xl font-semibold`}>
           💰 {mainPrice || 0}
         </Text>
       </View>
+
+      <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
+        <Text style={tw`text-xl`}>Berilgan pullar</Text>
+        <Text style={tw`text-xl`}>{givenPrice}</Text>
+      </View>
+
+      <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
+        <Text style={tw`text-xl`}>Qarzlar</Text>
+        <Text style={tw`text-xl`}>{leftPrice}</Text>
+      </View>
+
+      <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
+        <Text style={tw`text-xl`}>50/50 sotuv salon bergan pul</Text>
+        <Text style={tw`text-xl`}>{salonGivenPrice}</Text>
+      </View>
+
+      <View style={tw`flex-row w-11/12 mx-auto justify-between`}>
+        <Text style={tw`text-xl`}>Zaklad</Text>
+        <Text style={tw`text-xl`}>{mortgage}</Text>
+      </View>
+
       <Text style={tw`mx-auto text-xl`}>Sum 💴</Text>
       <TextInput
         keyboardType="numeric"
