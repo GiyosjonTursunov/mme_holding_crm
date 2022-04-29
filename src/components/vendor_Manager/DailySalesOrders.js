@@ -44,7 +44,7 @@ const DailySalesOrders = () => {
           })
             .then(res => {
               setSaleFifty(res.data);
-
+              console.warn('50/50 =>', res.data);
               axios({
                 url: `${mainUrl}lastoria/orders/`,
                 method: 'get',

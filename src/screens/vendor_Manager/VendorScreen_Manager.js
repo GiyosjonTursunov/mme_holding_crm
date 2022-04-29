@@ -37,18 +37,18 @@ function VendorScreen_Manager() {
         />
       </Stack.Navigator>
 
+      <TouchableOpacity
+        onPress={() => navigation.navigate('DebtorsScreen')}
+        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
+        <Text style={tw`text-6xl m-auto`}>💰</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate('ReportSales')}>
         <Image
           source={require('../../../assets/reportIcon.png')}
           style={tw`w-15 h-15 absolute bottom-10 right-5`}
           resizeMode="contain"
         />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('DebtorsScreen')}
-        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
-        <Text style={tw`text-6xl m-auto`}>💰</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

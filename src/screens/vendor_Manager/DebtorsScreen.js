@@ -64,7 +64,7 @@ import DebtorsFifty from '../../components/vendor_Manager/DebtorsFifty';
 import DebtorsOrders from '../../components/vendor_Manager/DebtorsOrders';
 const Stack = createNativeStackNavigator();
 
-function VendorScreen_Manager() {
+function DebtorsScreen() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -96,22 +96,8 @@ function VendorScreen_Manager() {
           options={{headerShown: false}}
         />
       </Stack.Navigator>
-
-      {/* <TouchableOpacity onPress={() => navigation.navigate('ReportSales')}>
-        <Image
-          source={require('../../../assets/reportIcon.png')}
-          style={tw`w-15 h-15 absolute bottom-10 right-5`}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('DebtorsScreen')}
-        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
-        <Text style={tw`text-6xl m-auto`}>💰</Text>
-      </TouchableOpacity> */}
     </SafeAreaView>
   );
 }
 
-export default VendorScreen_Manager;
+export default DebtorsScreen;

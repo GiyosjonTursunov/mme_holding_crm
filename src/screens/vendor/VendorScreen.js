@@ -14,7 +14,7 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 
 const VendorScreen = () => {
-  const {token, userId, magazineId} = useSelector(state => state.userReducer);
+  const {token} = useSelector(state => state.userReducer);
 
   const [orders, setOrders] = useState([]);
   const [saleFifty, setSaleFifty] = useState([]);
