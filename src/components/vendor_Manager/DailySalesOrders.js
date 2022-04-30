@@ -126,12 +126,6 @@ const DailySalesOrders = () => {
           onRefresh={() => setRed(true)}
         />
       }>
-      {simpleSales.length && saleFifty.length && orders.length ? null : (
-        <>
-          <Text style={tw`text-2xl text-black ml-3 mt-3`}>Ma'lumot yo'q</Text>
-          <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
-        </>
-      )}
       {simpleSales.length ? (
         <>
           <Text style={tw`text-2xl text-black ml-3 mt-3`}>Oddiy sotuvlar</Text>

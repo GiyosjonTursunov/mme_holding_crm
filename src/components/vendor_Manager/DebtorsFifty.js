@@ -18,38 +18,52 @@ import {useSelector} from 'react-redux';
 import tw from 'twrnc';
 
 const DebtorsFifty = () => {
-  const {token, userId} = useSelector(state => state.userReducer);
+  const {token, userId, role} = useSelector(state => state.userReducer);
   const [debtorsNotSalonFifty, setDebtorsNotSalonFifty] = useState([]);
-
   const [debtorsSalon, setDebtorsSalon] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
-  const [salonId, setSalonId] = useState();
+  const [salon_Id, setSalon_Id] = useState();
   const [saleId, setSaleId] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [modalWithoutSalon, setModalWithoutSalon] = useState(false);
+
+  const [gulkaram, setGulkaram] = useState([]);
 
   const dataSenDebt = {
     given_price: 0,
     user: userId,
     sale5050: saleId,
-    salon: salonId,
+    salon: salon_Id,
+  };
+
+  const dataWithoutSalon = {
+    sale_5050_id: saleId,
+    salon_id: '',
   };
 
   const getData = () => {
     setRefreshing(true);
     axios({
       method: 'get',
-      url: `${mainUrl}lastoria/user-sales-5050-not-salon/`,
-      // user-sales-5050-not-null/
+      url:
+        role === 'VENDOR'
+          ? `${mainUrl}lastoria/debt-user-5050-salon-null/`
+          : `${mainUrl}lastoria/debt-5050-not-salon/`,
       headers: {
         Authorization: `token ${token}`,
       },
     })
       .then(res => {
         setDebtorsNotSalonFifty(res.data);
+        console.warn(res.data);
         axios({
-          url: `${mainUrl}lastoria/user-sales-5050-not-null/`,
+          url:
+            role === 'VENDOR'
+              ? `${mainUrl}lastoria/debt-user-5050-not-null/`
+              : `${mainUrl}lastoria/debt-5050-salon/`,
           method: 'get',
           headers: {
             Authorization: `token ${token}`,
@@ -57,8 +71,22 @@ const DebtorsFifty = () => {
         })
           .then(resSalon => {
             setDebtorsSalon(resSalon.data);
-            setRefreshing(false);
-            console.warn(resSalon.data);
+            axios({
+              url: `${mainUrl}lastoria/salon/`,
+              method: 'get',
+              headers: {
+                Authorization: `token ${token}`,
+              },
+            })
+              .then(resSalonList => {
+                setGulkaram(resSalonList.data);
+                console.warn(resSalonList.data);
+                setRefreshing(false);
+              })
+              .catch(err => {
+                console.error(err);
+                setRefreshing(false);
+              });
           })
           .catch(err => {
             console.warn(err);
@@ -73,10 +101,9 @@ const DebtorsFifty = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [token]);
 
   const sendDebt = () => {
-    console.warn(dataSenDebt);
     axios({
       url: `${mainUrl}lastoria/sales-5050-history/`,
       data: dataSenDebt,
@@ -89,7 +116,7 @@ const DebtorsFifty = () => {
         Alert.alert('Успешно', 'Долг успешно отправлен');
         setModalVisible(false);
         getData();
-        setSalonId('');
+        setSalon_Id('');
         setSaleId('');
         dataSenDebt.given_price = 0;
       })
@@ -98,6 +125,50 @@ const DebtorsFifty = () => {
         Alert.alert('Ошибка', 'Долг не отправлен');
       });
   };
+
+  const sendAttachment = () => {
+    axios({
+      url: `${mainUrl}lastoria/debt-5050-salon-attachment/`,
+      data: dataWithoutSalon,
+      method: 'post',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        Alert.alert('Успешно', 'Attachment успешно отправлен');
+        setModalWithoutSalon(false);
+        getData();
+        setSalon_Id('');
+        setSaleId('');
+        dataWithoutSalon.salon_id = '';
+      })
+      .catch(err => {
+        console.error(err);
+        Alert.alert('Ошибка', 'Attachment не отправлен');
+      });
+  };
+
+  const SalonItem = ({id, name}) => {
+    const [selectedId, setSelectedId] = useState();
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          dataWithoutSalon.salon_id = id;
+          setSelectedId(id);
+        }}
+        style={tw`w-11/12 h-11.5 border-b pl-3 flex-row items-center border-[rgba(0,0,0,0.1)] mx-auto ${
+          Number(id) === Number(selectedId) ? 'bg-red-200' : null
+        }`}>
+        <Text style={tw`w-1.5/12 text-base font-bold`}>{id}</Text>
+        <Text style={tw`my-auto text-lg`}>{name}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSalon = ({item}) => (
+    <SalonItem name={item.salon_name} id={item.id} />
+  );
 
   const Item = ({
     img,
@@ -114,12 +185,55 @@ const DebtorsFifty = () => {
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={() => {
-        console.warn(salonId);
-        setSalonId(salon_id);
         setSaleId(item.id);
-        setModalVisible(true);
+        if (!modalVisible && salon_id) {
+          if (modalVisible) {
+            console.warn('tureee');
+          } else if (!modalVisible) {
+            setSalon_Id(salon_id);
+            setModalVisible(true);
+          }
+        } else {
+          if (modalWithoutSalon) {
+            console.warn('tre');
+          } else {
+            setModalWithoutSalon(true);
+          }
+        }
       }}
       style={tw`mx-3 my-2 border rounded-tl-xl rounded-br-xl px-2`}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalWithoutSalon}>
+        <View style={tw`flex-1 bg-[rgba(0,0,0,0.5)]`}>
+          <View style={tw`w-10/12 h-80 m-auto bg-white rounded-xl`}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalWithoutSalon(false);
+                console.error('modal close');
+              }}>
+              <Image
+                source={require('../../../assets/x-button.png')}
+                style={tw`w-8 h-8 absolute right-[-2%] top-[-15px]`}
+              />
+            </TouchableOpacity>
+
+            <FlatList
+              data={gulkaram}
+              renderItem={renderSalon}
+              keyExtractor={item => item.id}
+            />
+
+            <TouchableOpacity
+              onPress={sendAttachment}
+              style={tw`m-auto w-6/12 h-15 rounded-2xl bg-black my-5`}>
+              <Text style={tw`text-white m-auto text-xl`}>Saqlash</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={tw`flex-1 bg-[rgba(0,0,0,0.5)]`}>
           <View style={tw`w-10/12 h-50 m-auto bg-white rounded-xl`}>
@@ -217,8 +331,22 @@ const DebtorsFifty = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={getData} />
       }>
+      {debtorsNotSalonFifty.length > 0 ? (
+        <Text style={tw`text-xl ml-3 mt-5`}>Saloni yoq</Text>
+      ) : null}
       <FlatList
         data={debtorsNotSalonFifty}
+        horizontal
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+      />
+
+      {debtorsSalon.length > 0 ? (
+        <Text style={tw`text-xl ml-3 mt-5`}>Saloni bor</Text>
+      ) : null}
+      <FlatList
+        data={debtorsSalon}
         horizontal
         renderItem={renderItem}
         keyExtractor={item => item.id}

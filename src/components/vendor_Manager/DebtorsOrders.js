@@ -18,7 +18,7 @@ import {mainUrl} from '../../config/apiUrl';
 import tw from 'twrnc';
 
 const DebtorsOrders = () => {
-  const {token, userId} = useSelector(state => state.userReducer);
+  const {token, userId, role} = useSelector(state => state.userReducer);
   const [debtorsOrders, setDebtorsOrders] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -39,7 +39,10 @@ const DebtorsOrders = () => {
     setRefreshing(true);
     axios({
       method: 'get',
-      url: `${mainUrl}lastoria/debt-orders-all/`,
+      url:
+        role === 'VENDOR'
+          ? `${mainUrl}lastoria/debt-user-orders/`
+          : `${mainUrl}lastoria/debt-orders-all/`,
       headers: {
         Authorization: `token ${token}`,
       },
