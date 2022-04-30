@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -9,13 +10,13 @@ import {
   Image,
   RefreshControl,
   Pressable,
-  AsyncStorage,
   Alert,
 } from 'react-native';
 import axios from 'axios';
 import tw from 'twrnc';
 
 import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
 
 const UseProduct = () => {
   const [product_id, setProduct_id] = useState('');
@@ -27,6 +28,8 @@ const UseProduct = () => {
   const [selected_product_count, setSelected_product_count] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
+  const {token} = useSelector(state => state.userReducer);
+
   const use_product = () => {
     if (Number(product_id) && Number(product_count) && note) {
       if (selected_product_count - Number(product_count) >= 0) {
@@ -36,28 +39,24 @@ const UseProduct = () => {
           product: product_id,
           isused: true,
         };
-        AsyncStorage.getItem('@user')
-          .then(stringJson => {
-            axios({
-              url: `${mainUrl}lastoria/warehouse/`,
-              method: 'POST',
-              data: dataUseProduct,
-              headers: {
-                Authorization: `token ${JSON.parse(stringJson).token}`,
-              },
-            })
-              .then(res => {
-                console.warn(res.data);
-                setProduct_count('');
-                setNote('');
-                setProduct_id('');
-              })
-              .catch(err => {
-                console.warn(err);
-              });
+
+        axios({
+          url: `${mainUrl}lastoria/warehouse/`,
+          method: 'POST',
+          data: dataUseProduct,
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        })
+          .then(res => {
+            console.warn(res.data);
+            setProduct_count('');
+            setNote('');
+            setProduct_id('');
+            Alert.alert('Успешно', 'Продукт использован');
           })
           .catch(err => {
-            console.warn('err use_product => ', err);
+            console.warn(err);
           });
       } else {
         Alert.alert('Maxsulot yetmidi');
@@ -116,28 +115,22 @@ const UseProduct = () => {
   );
 
   const getAllProducts = () => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        setRefreshing(true);
-        axios({
-          url: `${mainUrl}lastoria/product/`,
-          method: 'GET',
-          headers: {
-            Authorization: `token ${JSON.parse(stringJson).token}`,
-          },
-        })
-          .then(res => {
-            console.warn(res.data);
-            setAllProducts(res.data);
-            setRefreshing(false);
-          })
-          .catch(err => {
-            console.warn(err);
-            setRefreshing(false);
-          });
+    setRefreshing(true);
+    axios({
+      url: `${mainUrl}lastoria/warehouse-product/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        console.warn(res.data);
+        setAllProducts(res.data);
+        setRefreshing(false);
       })
       .catch(err => {
-        console.warn('err getAllProducts => ', err);
+        console.warn(err);
+        setRefreshing(false);
       });
   };
 
@@ -152,10 +145,7 @@ const UseProduct = () => {
         style={tw`w-11/12 h-11 border border-[rgba(0,0,0,0.5)] rounded-2xl mx-auto my-[1%] pl-2`}>
         <Text style={tw`my-auto text-[rgba(0,0,0,0.5)]`}>
           Maxsulot nomi:
-          <Text style={tw`text-black text-base font-bold`}>
-            {'  '}
-            {product_name}
-          </Text>
+          <Text style={tw`text-black text-base font-bold`}>{product_name}</Text>
         </Text>
         <Modal
           animationType="fade"

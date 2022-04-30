@@ -11,11 +11,11 @@ import {
   Alert,
 } from 'react-native';
 import tw from 'twrnc';
-import Input from '../../../src copy/components/global/Input';
+import Input from '../../components/global/Input';
 import axios from 'axios';
 
-import {mainUrl} from '../../../src copy/config/apiUrl';
 import {useNavigation} from '@react-navigation/native';
+import {mainUrl} from '../../config/apiUrl';
 
 const RegisterScreen = ({route}) => {
   const navigation = useNavigation();

@@ -92,7 +92,8 @@ function DebtorsScreen({route}) {
         />
       )}
 
-      <Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName={role === 'VENDOR' ? 'DebtorsFifty' : 'DebtorsSales'}>
         <Stack.Screen
           name="DebtorsSales"
           component={DebtorsSales}

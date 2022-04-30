@@ -69,7 +69,7 @@ const AddProduct = () => {
         name: nameImage,
       });
 
-      let url = `${mainUrl}lastoria/product/`;
+      let url = `${mainUrl}lastoria/warehouse-product/`;
       let res = await fetch(url, {
         method: 'POST',
         body: formDataWareHouseProduct,
@@ -146,7 +146,7 @@ const AddProduct = () => {
     AsyncStorage.getItem('@user')
       .then(stringJson => {
         axios({
-          url: `${mainUrl}lastoria/product/`,
+          url: `${mainUrl}lastoria/warehouse-product/`,
           method: 'GET',
           headers: {
             Authorization: `token ${JSON.parse(stringJson).token}`,

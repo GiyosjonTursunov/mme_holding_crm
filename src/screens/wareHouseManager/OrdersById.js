@@ -7,103 +7,83 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
-  AsyncStorage,
   FlatList,
   Modal,
   Dimensions,
 } from 'react-native';
 import tw from 'twrnc';
-import Header from '../global/Header';
+
 import axios from 'axios';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 import {mainUrl} from '../../config/apiUrl';
+import Header from '../../components/global/Header';
+import {useSelector} from 'react-redux';
 
 const OrdersById = ({route}) => {
   const [sale, setSale] = useState([]);
   const [dressImg, setDressImg] = useState([]);
 
   const [selectedDressImg, setSelectedDressImg] = useState([]);
+  const {token} = useSelector(state => state.userReducer);
 
   const started = () => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        axios({
-          url: `${mainUrl}lastoria/warehouse-order-views/${Number(
-            route.params.saleId,
-          )}/`,
-          method: 'PUT',
-          headers: {
-            Authorization: `token ${JSON.parse(stringJson).token}`,
-          },
-        })
-          .then(res => {
-            Alert.alert('Yangilandi');
-          })
-          .catch(_error => {
-            console.log(_error);
-          });
+    axios({
+      url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        Alert.alert('Yangilandi');
+        setSale(res.data);
       })
-      .catch(_err => {
-        console.log(_err);
-        Alert.alert('Xatolik');
+      .catch(_error => {
+        console.log(_error);
       });
   };
+
   const sended = () => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        axios({
-          url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
-          method: 'POST',
-          headers: {
-            Authorization: `token ${JSON.parse(stringJson).token}`,
-          },
-        })
-          .then(res => {
-            Alert.alert('Yangilandi');
-          })
-          .catch(_error => {
-            console.log(_error);
-          });
-      })
-      .catch(_err => {
-        console.log(_err);
-        Alert.alert('Xatolik');
-      });
+    // axios({
+    //   url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `token ${token}`,
+    //   },
+    // })
+    //   .then(res => {
+    //     Alert.alert('Yangilandi');
+    //   })
+    //   .catch(_error => {
+    //     console.log(_error);
+    //   });
   };
 
   useEffect(() => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        axios({
-          url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
-          method: 'GET',
-          headers: {
-            Authorization: `token ${JSON.parse(stringJson).token}`,
-          },
-        })
-          .then(res => {
-            console.warn(res.data);
-            setSale(res.data);
-            setDressImg([
-              res.data.dress.img1,
-              res.data.dress.img2,
-              res.data.dress.img3,
-              res.data.dress.img4,
-            ]);
-          })
-          .catch(_err => {
-            const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
-            Alert.alert(newLocal);
-            console.log(_err);
-          });
+    axios({
+      url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        console.warn(res.data);
+        setSale(res.data);
+        setDressImg([
+          res.data.dress.img1,
+          res.data.dress.img2,
+          res.data.dress.img3,
+          res.data.dress.img4,
+        ]);
       })
       .catch(_err => {
-        const newLocal = 'Akkaunt yoq.';
+        const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
         Alert.alert(newLocal);
         console.log(_err);
       });
-  }, [route.params.saleId]);
+  }, [route.params.saleId, token]);
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -183,7 +163,7 @@ const OrdersById = ({route}) => {
           style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
           <Text style={tw`text-base font-semibold text-black`}>Shleft</Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.dress_detail?.name}
+            {sale?.detail?.name}
           </Text>
         </View>
 
@@ -201,7 +181,7 @@ const OrdersById = ({route}) => {
           style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
           <Text style={tw`text-base font-semibold text-black`}>Salon nomi</Text>
           <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.salon?.salon_name}
+            {sale?.salon?.name}
           </Text>
         </View>
         <View
@@ -232,26 +212,24 @@ const OrdersById = ({route}) => {
           </Text>
         </View>
 
-        <Text style={tw`text-xl mx-auto`}>
-          Komentariya : {sale?.dress_note}
-        </Text>
+        <Text style={tw`text-xl mx-auto`}>Komentariya : {sale?.note}</Text>
 
-        {sale?.status === 1 ? (
-          <TouchableOpacity
-            onPress={sended}
-            activeOpacity={0.8}
-            style={tw`bg-blue-500 mx-10 rounded-xl h-15 mt-3 mb-5`}>
-            <Text style={tw`text-white font-semibold m-auto text-xl`}>
-              Jo'natish
-            </Text>
-          </TouchableOpacity>
-        ) : (
+        {Number(sale?.status) === 1 ? (
           <TouchableOpacity
             onPress={started}
             activeOpacity={0.8}
             style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3 mb-5`}>
             <Text style={tw`text-white font-semibold m-auto text-xl`}>
               Qabul qilindi
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={sended}
+            activeOpacity={0.8}
+            style={tw`bg-blue-500 mx-10 rounded-xl h-15 mt-3 mb-5`}>
+            <Text style={tw`text-white font-semibold m-auto text-xl`}>
+              Jo'natish
             </Text>
           </TouchableOpacity>
         )}

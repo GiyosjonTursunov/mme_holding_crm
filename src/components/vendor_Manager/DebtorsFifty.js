@@ -80,7 +80,6 @@ const DebtorsFifty = () => {
             })
               .then(resSalonList => {
                 setGulkaram(resSalonList.data);
-                console.warn(resSalonList.data);
                 setRefreshing(false);
               })
               .catch(err => {

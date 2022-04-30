@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -6,40 +7,35 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  AsyncStorage,
 } from 'react-native';
 import {mainUrl} from '../../config/apiUrl';
 import axios from 'axios';
 import tw from 'twrnc';
+import {useSelector} from 'react-redux';
 
 const Product = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const {token} = useSelector(state => state.userReducer);
 
   const getAllProducts = () => {
-    AsyncStorage.getItem('@user')
-      .then(stringJson => {
-        axios({
-          url: `${mainUrl}lastoria/product/`,
-          method: 'GET',
-          headers: {
-            Authorization: `token ${JSON.parse(stringJson).token}`,
-          },
-        })
-          .then(res => {
-            console.warn(res.data);
-            setAllProducts(res.data);
-            setRefreshing(false);
-          })
-          .catch(err => {
-            console.warn(err);
-            setRefreshing(false);
-          });
+    setRefreshing(true);
+    axios({
+      url: `${mainUrl}lastoria/warehouse-product/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        console.warn(res.data);
+        setAllProducts(res.data);
+        setRefreshing(false);
       })
       .catch(err => {
-        console.warn('err getAllProducts => ', err);
+        console.warn(err);
+        setRefreshing(false);
       });
-    setRefreshing(true);
   };
 
   useEffect(() => {
