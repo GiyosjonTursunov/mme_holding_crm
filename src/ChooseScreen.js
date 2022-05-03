@@ -9,6 +9,7 @@ import {setRole} from './redux/actions';
 import VendorStack from './stacks/VendorStack';
 import WareHouseManagerStack from './stacks/WareHouseManagerStack';
 import DecoratorManagerStack from './stacks/DecoratorManagerStack';
+import DirectorStack from './stacks/DirectorStack';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
@@ -21,20 +22,15 @@ export const ChooseNavigation = role_user => {
     return <WareHouseManagerStack />;
   } else if (role_user === 'DECORATOR_MANAGER') {
     return <DecoratorManagerStack />;
+  } else if (role_user === 'DIRECTOR') {
+    return <DirectorStack />;
   } else {
     console.warn(role_user);
     return <NotLoggedIn />;
   }
-  // else if (role_user === 'WAREHOUSE_MANAGER') {
-  //   console.warn('WareHouseMainScreen');
-  //   return <WareHouseManagerStack />;
-  // }
-
-  // if (role_user == 'DIRECTOR') return <DirectorStack />;
   // if (role_user == 'MANAGER') return <ManagerStack />;
   // if (role_user == 'SUPPLIER') return <SupplierStack />;
   // if (role_user == 'SALON') return <SalonStack />;
-  // if (role_user == 'WAREHOUSE') return <WareHouseStack />;
   // if (role_user == 'ADMIN') return <AdminStack />;
 };
 

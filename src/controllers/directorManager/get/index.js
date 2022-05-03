@@ -1,6 +1,8 @@
 import {mainUrl} from '../../../config/apiUrl';
 import axios from 'axios';
 import {AsyncStorage} from 'react-native';
+import {useSelector} from 'react-redux';
+// const {token, role} = useSelector(state => state.userReducer);
 
 class directorGController {
   static getMagazineList = setMagazineList => {

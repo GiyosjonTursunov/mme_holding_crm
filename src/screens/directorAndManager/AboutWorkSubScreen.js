@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/self-closing-comp */
 import {
   View,
@@ -12,23 +13,30 @@ import tw from 'twrnc';
 import {PieChart} from 'react-native-svg-charts';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
 
-const AboutWorkSubScreen = ({route}) => {
+const AboutWorkSubScreen = () => {
   const [companiesProfit, setCompaniesProfit] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  const {token} = useSelector(state => state.userReducer);
 
   const getCompaniesProfit = async () => {
     setRefreshing(true);
     axios({
       url: `${mainUrl}dashboard/companies/statistics/money/`,
       method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
     })
       .then(res => {
         setCompaniesProfit(res.data);
         setRefreshing(false);
+        console.warn(res.data, 'mana sanga usha res.data');
       })
       .catch(_err => {
-        console.warn(_err);
+        console.error(_err, 'mana sanga usha kayf');
         setRefreshing(false);
       });
   };

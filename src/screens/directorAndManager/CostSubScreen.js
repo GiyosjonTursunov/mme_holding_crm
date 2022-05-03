@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   View,
   Text,
@@ -11,6 +12,7 @@ import tw from 'twrnc';
 import {PieChart} from 'react-native-svg-charts';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
 
 const {useState, useEffect} = React;
 
@@ -18,18 +20,23 @@ const CostSubScreen = () => {
   const [companiesCosts, setCompaniesCosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const {token, role} = useSelector(state => state.userReducer);
+
   const getCompaniesCosts = async () => {
     setRefreshing(true);
     axios({
       url: `${mainUrl}dashboard/companies/statistics/costs/`,
       method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
     })
       .then(res => {
         setCompaniesCosts(res.data);
         setRefreshing(false);
       })
       .catch(_err => {
-        console.warn(_err);
+        console.error(_err);
         setRefreshing(false);
       });
   };

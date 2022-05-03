@@ -2,7 +2,6 @@ import React from 'react';
 import {SafeAreaView} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import tw from 'twrnc';
-import WareHouseMainScreen from '../screens/wareHouseManager/WareHouseMainScreen';
 import ListOrderedDresses from '../components/warehouse/ListOrderedDresses';
 import OrdersById from '../screens/wareHouseManager/OrdersById';
 import WareHouseScreen from '../screens/wareHouseManager/WareHouseScreen';

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {
@@ -9,14 +10,16 @@ import {
   Text,
   View,
   Dimensions,
+  AsyncStorage,
 } from 'react-native';
 import tw from 'twrnc';
-
 import Header from '../../components/global/Header';
-import directorGController from '../../controllers/directorManager/get';
 import RegisterMagazineModal from './modals/RegisterMagazineModal';
 import ListMagazines from '../../components/director/ListMagazines';
 import ListSalons from '../../components/director/ListSalons';
+import axios from 'axios';
+import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
 
 const AboutWorkScreen = () => {
   const navigation = useNavigation();
@@ -26,15 +29,83 @@ const AboutWorkScreen = () => {
   const [productCount, setProductCount] = useState('0');
 
   const [refreshing, setRefreshing] = useState(false);
+  const {token} = useSelector(state => state.userReducer);
 
   const getAllDataForThisPage = () => {
     setRefreshing(true);
-    directorGController.getCountDressNeedSend(setDostavkaCount);
-    directorGController.getCountProduct(setProductCount);
+    axios({
+      url: `${mainUrl}dashboard/lastoria-orders-count/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        setDostavkaCount(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    axios({
+      url: `${mainUrl}dashboard/warehouse-product-count/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        setProductCount(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
 
     setTimeout(async () => {
-      directorGController.getSalonList(setSalonList);
-      directorGController.getMagazineList(setMagazineList);
+      axios({
+        url: `${mainUrl}lastoria/salon/`,
+        method: 'GET',
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      })
+        .then(res => {
+          setSalonList(res.data);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+
+      AsyncStorage.getItem('@magazineList')
+        .then(data => {
+          setMagazineList(JSON.parse(data));
+
+          axios({
+            url: `${mainUrl}lastoria/magazines/`,
+            method: 'GET',
+            headers: {
+              Authorization: `token ${token}`,
+            },
+          })
+            .then(res => {
+              if (JSON.parse(data)?.length === res.data?.length) {
+                console.log('asyncstorage magazinelst bilan set qilinmadi');
+              } else {
+                AsyncStorage.setItem(
+                  '@magazineList',
+                  JSON.stringify(res.data),
+                ).then(() => {
+                  console.log('magazineList asyncstorageda yangilandi');
+                  setMagazineList(res.data);
+                });
+              }
+            })
+            .catch(err => {
+              console.error(err);
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }, 100);
 
     setRefreshing(false);
