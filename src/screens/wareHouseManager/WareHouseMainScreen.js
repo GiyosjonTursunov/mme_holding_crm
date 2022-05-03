@@ -11,13 +11,14 @@ const WareHouseMainScreen = () => {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <Stack.Navigator>
         <Stack.Screen
-          name="WareHouseScreen"
-          component={WareHouseScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           name="ListOrderedDresses"
           component={ListOrderedDresses}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="WareHouseScreen"
+          component={WareHouseScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

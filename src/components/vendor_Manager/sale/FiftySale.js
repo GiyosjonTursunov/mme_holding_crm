@@ -26,10 +26,8 @@ const FiftySale = () => {
   const [salonId, setSalonId] = useState();
   const [note, setNote] = useState();
 
-  // 50/50
   const [girlName, setGirlName] = useState();
   const [deliveryDate, setDeliveryDate] = useState();
-  // delievery_date
   const {userId, token, magazineId} = useSelector(state => state.userReducer);
 
   const [selectedShleftName, setSelectedShleftName] = useState();

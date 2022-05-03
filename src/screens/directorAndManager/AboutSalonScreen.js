@@ -63,14 +63,6 @@ const AboutSalonScreen = ({route}) => {
         <Text style={tw`text-3xl font-bold`}>{salon.total_price} sum</Text>
       </View>
 
-      {/* <View style={tw`my-[4%]`}>
-        <ThreeBtn
-          firstBtnName={'Haftalik'}
-          secondBtnName={'Oylik'}
-          thirdBtnName={'Yillik'}
-        />
-      </View> */}
-
       <AboutShopSalonStatistics
         name={"Olingan ko'ylaklar"}
         number={salon.dress_count}

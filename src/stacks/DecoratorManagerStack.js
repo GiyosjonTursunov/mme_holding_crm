@@ -14,6 +14,7 @@ const DecoratorManagerStack = () => {
         <Stack.Screen
           name="ListOrderedDresses"
           component={ListOrderedDresses}
+          options={{headerShown: false}}
         />
         <Stack.Screen name="OrdersById" component={OrdersById} />
       </Stack.Navigator>

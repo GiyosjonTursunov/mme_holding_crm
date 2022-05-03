@@ -37,7 +37,28 @@ const OrdersById = ({route}) => {
     })
       .then(res => {
         Alert.alert('Yangilandi');
-        setSale(res.data);
+        axios({
+          url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+          method: 'GET',
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        })
+          .then(resSale => {
+            console.warn(resSale.data);
+            setSale(resSale.data);
+            setDressImg([
+              resSale.data?.dress?.img1,
+              resSale.data?.dress?.img2,
+              resSale.data?.dress?.img3,
+              resSale.data?.dress?.img4,
+            ]);
+          })
+          .catch(_err => {
+            const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
+            Alert.alert(newLocal);
+            console.log(_err);
+          });
       })
       .catch(_error => {
         console.log(_error);

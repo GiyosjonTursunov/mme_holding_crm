@@ -35,7 +35,7 @@ const ListOrderedDresses = () => {
   const navigation = useNavigation();
   const [salonList, setSalonList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const {token} = useSelector(state => state.userReducer);
+  const {token, role} = useSelector(state => state.userReducer);
 
   const getOrder = () => {
     setRefreshing(true);
@@ -72,7 +72,7 @@ const ListOrderedDresses = () => {
     drManager,
   }) => (
     <View style={tw`flex-row justify-around items-center`}>
-      <View style={tw`flex-row`}>
+      <View style={tw`flex-row ml-2`}>
         <View
           style={[
             tw`w-6 h-12 rounded-tl-full rounded-bl-full m-auto`,
@@ -147,12 +147,14 @@ const ListOrderedDresses = () => {
       }>
       <Header headerName={'Buyurtmalar'} />
 
-      <DoubleBtn
-        firstBtnName={'Buyurtmalar'}
-        firstBtnFunction={() => navigation.navigate('ListOrderedDresses')}
-        secondBtnName={'Ombor'}
-        secondBtnFunction={() => navigation.navigate('WareHouseMainScreen')}
-      />
+      {role === 'DECORATOR_MANAGER' ? null : (
+        <DoubleBtn
+          firstBtnName={'Buyurtmalar'}
+          firstBtnFunction={() => navigation.navigate('ListOrderedDresses')}
+          secondBtnName={'Ombor'}
+          secondBtnFunction={() => navigation.navigate('WareHouseScreen')}
+        />
+      )}
 
       <View style={tw`w-full h-${Dimensions.get('screen').height / 5.6}`}>
         <FlatList
