@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   View,
   Text,
@@ -20,7 +19,7 @@ const CostSubScreen = () => {
   const [companiesCosts, setCompaniesCosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const {token, role} = useSelector(state => state.userReducer);
+  const {token} = useSelector(state => state.userReducer);
 
   const getCompaniesCosts = async () => {
     setRefreshing(true);
@@ -43,7 +42,7 @@ const CostSubScreen = () => {
 
   useEffect(() => {
     getCompaniesCosts();
-  }, []);
+  }, [token]);
 
   return (
     <ScrollView

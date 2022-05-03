@@ -79,10 +79,10 @@ const ReportSales = () => {
       },
     })
       .then(() => {
-        setSum(0);
-        setDollar(0);
+        setSum('0');
+        setDollar('0');
         setNote('');
-        setMortgage(0);
+        setMortgage('0');
         setRed(true);
         Alert.alert('Отчет отправлен');
       })

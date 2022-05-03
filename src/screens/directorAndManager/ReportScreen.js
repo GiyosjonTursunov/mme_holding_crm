@@ -1,19 +1,38 @@
-import {View, Text, ScrollView, Alert, FlatList} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+  View,
+  Text,
+  ScrollView,
+  Alert,
+  FlatList,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import tw from 'twrnc';
 import Header from '../../components/global/Header';
 import DoubleBtn from '../../components/global/DoubleBtn';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 const ReportScreen = () => {
   const [reportList, setReportList] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const {token} = useSelector(state => state.userReducer);
+
+  const navigation = useNavigation();
 
   const getDailyReports = async () => {
+    setRefreshing(true);
+    console.warn(token);
     axios({
       url: `${mainUrl}lastoria/orders-report-all/`,
       method: 'get',
+      headers: {
+        Authorization: `token ${token}`,
+      },
     })
       .then(res => {
         setRefreshing(false);
@@ -28,20 +47,28 @@ const ReportScreen = () => {
 
   useEffect(() => {
     getDailyReports();
-  }, []);
+  }, [token]);
 
   return (
-    <ScrollView style={tw`flex-1 bg-white`}>
+    <ScrollView
+      style={tw`flex-1 bg-white`}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={getDailyReports} />
+      }>
       <Header headerName={'Otchet'} />
 
       <DoubleBtn firstBtnName={'Buyurtmalar'} secondBtnName={'Xarajatlar'} />
 
-      {/* map reportList with FlatList */}
       <FlatList
         data={reportList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('DailySalesStatisticsScreen', {
+                report_id: item.id,
+              })
+            }
             style={tw`flex-row justify-between items-center p-3 border w-11.5/12 border-gray-500 mx-auto my-2`}>
             <View>
               <Text>Umumiy</Text>
@@ -62,7 +89,7 @@ const ReportScreen = () => {
               <Text>Sana</Text>
               <Text style={tw`text-xl`}>{item.date_created}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         refreshing={refreshing}
         onRefresh={() => {

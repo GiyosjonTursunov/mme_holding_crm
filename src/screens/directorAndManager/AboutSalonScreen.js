@@ -14,29 +14,27 @@ import axios from 'axios';
 import {PieChart} from 'react-native-svg-charts';
 
 import {mainUrl} from '../../config/apiUrl';
+import {useSelector} from 'react-redux';
 
 const AboutSalonScreen = ({route}) => {
   const [salon, setSalon] = useState({});
+  const {token} = useSelector(state => state.userReducer);
 
   useEffect(() => {
-    AsyncStorage.getItem('@user').then(stringJson => {
-      const user = JSON.parse(stringJson);
-
-      axios({
-        url: `${mainUrl}lastoria/salon/${route.params?.id}/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${user?.token}`,
-        },
+    axios({
+      url: `${mainUrl}lastoria/salon/${route.params?.id}/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        setSalon(res.data);
       })
-        .then(res => {
-          setSalon(res.data);
-        })
-        .catch(_err => {
-          console.log(_err);
-        });
-    });
-  }, [route.params?.id]);
+      .catch(_err => {
+        console.log(_err);
+      });
+  }, [route.params?.id, token]);
 
   const data = [salon?.dress_count, salon?.given_price, salon?.left_price];
 

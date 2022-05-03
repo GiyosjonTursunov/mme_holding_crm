@@ -138,7 +138,7 @@ const FiftySale = () => {
           onChangeText={text => {
             if (mainPrice && mainPrice - text >= 0) {
               setGivenPrice(text);
-              setLeftPrice(mainPrice - text);
+              setLeftPrice(mainPrice / 2 - text);
             }
           }}
           style={tw`w-6/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-3`}

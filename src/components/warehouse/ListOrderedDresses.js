@@ -147,7 +147,7 @@ const ListOrderedDresses = () => {
       }>
       <Header headerName={'Buyurtmalar'} />
 
-      {role === 'DECORATOR_MANAGER' ? null : (
+      {role === 'DECORATOR_MANAGER' || role === 'DIRECTOR' ? null : (
         <DoubleBtn
           firstBtnName={'Buyurtmalar'}
           firstBtnFunction={() => navigation.navigate('ListOrderedDresses')}

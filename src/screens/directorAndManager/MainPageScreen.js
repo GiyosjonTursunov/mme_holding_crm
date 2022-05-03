@@ -22,23 +22,20 @@ const MainPageScreen = () => {
   const {token} = useSelector(state => state.userReducer);
 
   useEffect(() => {
-    console.log(token);
-    if (token) {
-      axios({
-        url: `${mainUrl}dashboard/companies/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${token}`,
-        },
+    axios({
+      url: `${mainUrl}dashboard/companies/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        setCompanies(res.data);
+        console.warn(res.data, 'error ham shu res ham');
       })
-        .then(res => {
-          setCompanies(res.data);
-          console.warn(res.data, 'error ham shu res ham');
-        })
-        .catch(_err => {
-          console.error(_err, 'error ham shu res ham');
-        });
-    }
+      .catch(_err => {
+        console.error(_err, 'error ham shu res ham');
+      });
   }, [token]);
 
   const Item = ({img}) => (

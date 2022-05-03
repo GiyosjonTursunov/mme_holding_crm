@@ -6,6 +6,7 @@ import Header from '../../components/global/Header';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import {PieChart} from 'react-native-svg-charts';
+import {useSelector} from 'react-redux';
 
 const AboutShopsScreen = ({route}) => {
   const [magazine, setMagazine] = useState([]);
@@ -16,6 +17,7 @@ const AboutShopsScreen = ({route}) => {
   ];
 
   const randomColor = ['#0D2535', '#5388D8', '#F4BE37'];
+  const {token} = useSelector(state => state.userReducer);
 
   const pieData = data
     .filter(value => value > 0)
@@ -28,14 +30,20 @@ const AboutShopsScreen = ({route}) => {
     }));
 
   useEffect(() => {
-    axios(`${mainUrl}lastoria/magazines/${route.params?.id}/`)
+    axios({
+      url: `${mainUrl}lastoria/magazines/${route.params?.id}/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
       .then(res => {
         setMagazine(res.data);
       })
       .catch(err => {
         console.log(err);
       });
-  }, [route.params.id]);
+  }, [route.params.id, token]);
 
   return (
     <ScrollView style={tw`flex-1 bg-white`}>

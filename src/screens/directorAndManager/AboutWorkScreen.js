@@ -155,7 +155,7 @@ const AboutWorkScreen = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('SupplierStatisticsScreen')}
+            onPress={() => navigation.navigate('ListOrderedDresses')}
             style={[
               tw`w-26 h-22.5 bg-[#E3F3FF] rounded-3xl m-auto items-center justify-center`,
               // eslint-disable-next-line react-native/no-inline-styles
@@ -174,7 +174,7 @@ const AboutWorkScreen = () => {
             <Text style={tw`text-base font-semibold text-black`}>Dostavka</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('OrdersListScreen')}
+            onPress={() => navigation.navigate('Product')}
             style={[
               tw`w-26 h-22.5 bg-[#DDFFDA] rounded-3xl m-auto items-center justify-center`,
               // eslint-disable-next-line react-native/no-inline-styles

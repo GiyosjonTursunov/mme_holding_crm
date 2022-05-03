@@ -57,7 +57,7 @@ const OrderDress = () => {
   };
 
   const sendOrder = () => {
-    if (dressId && leftPrice && moneyGiveDate && givenPrice && deliveryDate) {
+    if (dressId && moneyGiveDate && givenPrice && deliveryDate) {
       axios
         .post(`${mainUrl}lastoria/orders/`, dataForOrder, {
           headers: {
@@ -66,7 +66,6 @@ const OrderDress = () => {
         })
         .then(res => {
           Alert.alert("Jo'natildi");
-          console.warn(res.data);
           setDressId('');
           setSelectedColorId('');
           setSelectedShleftId('');
@@ -264,6 +263,7 @@ const OrderDress = () => {
                       ]}
                       onPress={() => {
                         setSelectedShleftId(item.id);
+                        setSelectedShleftName(item.name);
                         setShleftListModalVisible(false);
                       }}>
                       <Text style={tw`text-lg my-auto`}>{item.name}</Text>

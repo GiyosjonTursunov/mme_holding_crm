@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/self-closing-comp */
 import {
   View,
   Text,
@@ -43,7 +41,7 @@ const AboutWorkSubScreen = () => {
 
   useEffect(() => {
     getCompaniesProfit();
-  }, []);
+  }, [token]);
 
   return (
     <ScrollView

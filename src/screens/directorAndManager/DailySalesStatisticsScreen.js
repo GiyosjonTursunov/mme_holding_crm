@@ -14,7 +14,7 @@ import {useSelector} from 'react-redux';
 import tw from 'twrnc';
 import {mainUrl} from '../../config/apiUrl';
 
-const DailySalesOrders = () => {
+const DailySalesStatisticsScreen = ({route}) => {
   const {token} = useSelector(state => state.userReducer);
   const [simpleSales, setSimpleSales] = useState([]);
   const [saleFifty, setSaleFifty] = useState([]);
@@ -23,51 +23,21 @@ const DailySalesOrders = () => {
   const [red, setRed] = useState(true);
 
   useEffect(() => {
-    console.warn(token);
+    console.warn(route.params?.date);
     if (red) {
       setRefreshing(true);
       axios({
         method: 'get',
-        url: `${mainUrl}lastoria/simple-sales/`,
+        url: `${mainUrl}dashboard/sale-and-orders-view/${route.params.report_id}/`,
         headers: {
           Authorization: `token ${token}`,
         },
       })
-        .then(resSimple => {
-          setSimpleSales(resSimple.data);
-          axios({
-            method: 'get',
-            url: `${mainUrl}lastoria/sales-5050/`,
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          })
-            .then(res => {
-              setSaleFifty(res.data);
-              console.warn('50/50 =>', res.data);
-              axios({
-                url: `${mainUrl}lastoria/orders/`,
-                method: 'get',
-                headers: {
-                  Authorization: `token ${token}`,
-                },
-              })
-                .then(resOrder => {
-                  setOrders(resOrder.data);
-                  setRefreshing(false);
-                  setRed(false);
-                })
-                .catch(err => {
-                  console.log(err);
-                  setRefreshing(false);
-                  setRed(false);
-                });
-            })
-            .catch(err => {
-              console.error(err);
-              setRefreshing(false);
-              setRed(false);
-            });
+        .then(res => {
+          console.warn(res.data);
+          setSimpleSales(res.data?.simple_sale);
+          setSaleFifty(res.data?.sale5050);
+          setOrders(res.data?.orders);
         })
         .catch(err => {
           console.log(err);
@@ -128,11 +98,11 @@ const DailySalesOrders = () => {
       }>
       {simpleSales.length ? (
         <>
-          <Text style={tw`text-2xl text-black ml-3 mt-3`}>Sotuvlar</Text>
+          <Text style={tw`text-2xl text-black ml-3 mt-3`}>Oddiy sotuvlar</Text>
           <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
         </>
       ) : null}
-      <View style={tw`w-10/12 h-60 border mx-auto my-2`}></View>
+
       <FlatList
         data={simpleSales}
         horizontal
@@ -173,4 +143,4 @@ const DailySalesOrders = () => {
   );
 };
 
-export default DailySalesOrders;
+export default DailySalesStatisticsScreen;
