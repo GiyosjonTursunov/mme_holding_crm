@@ -17,6 +17,8 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import tw from 'twrnc';
 
+import LottieView from 'lottie-react-native';
+
 const DebtorsFifty = () => {
   const {token, userId, role} = useSelector(state => state.userReducer);
   const [debtorsNotSalonFifty, setDebtorsNotSalonFifty] = useState([]);
@@ -64,7 +66,7 @@ const DebtorsFifty = () => {
             role === 'VENDOR'
               ? `${mainUrl}lastoria/debt-user-5050-not-null/`
               : `${mainUrl}lastoria/debt-5050-salon/`,
-          method: 'get',
+          method: 'GET',
           headers: {
             Authorization: `token ${token}`,
           },
@@ -73,7 +75,7 @@ const DebtorsFifty = () => {
             setDebtorsSalon(resSalon.data);
             axios({
               url: `${mainUrl}lastoria/salon/`,
-              method: 'get',
+              method: 'GET',
               headers: {
                 Authorization: `token ${token}`,
               },
@@ -324,33 +326,49 @@ const DebtorsFifty = () => {
     />
   );
 
+  const mapDatas = () => {
+    return (
+      <>
+        {debtorsNotSalonFifty.length > 0 ? (
+          <Text style={tw`text-xl ml-3 mt-5`}>Saloni yoq</Text>
+        ) : null}
+        <FlatList
+          data={debtorsNotSalonFifty}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+        {debtorsSalon.length > 0 ? (
+          <Text style={tw`text-xl ml-3 mt-5`}>Saloni bor</Text>
+        ) : null}
+        <FlatList
+          data={debtorsSalon}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </>
+    );
+  };
+
   return (
     <ScrollView
       style={tw`flex-1 bg-white`}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={getData} />
       }>
-      {debtorsNotSalonFifty.length > 0 ? (
-        <Text style={tw`text-xl ml-3 mt-5`}>Saloni yoq</Text>
-      ) : null}
-      <FlatList
-        data={debtorsNotSalonFifty}
-        horizontal
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
-
-      {debtorsSalon.length > 0 ? (
-        <Text style={tw`text-xl ml-3 mt-5`}>Saloni bor</Text>
-      ) : null}
-      <FlatList
-        data={debtorsSalon}
-        horizontal
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
+      {!debtorsSalon.length && !debtorsNotSalonFifty.length ? (
+        <LottieView
+          source={require('../../../assets/lottie/71454-waving-girls.json')}
+          style={[tw`w-full mx-auto`, {aspectRatio: 1}]}
+          autoPlay
+          loop
+        />
+      ) : (
+        mapDatas()
+      )}
     </ScrollView>
   );
 };

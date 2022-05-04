@@ -132,7 +132,6 @@ const DailySalesOrders = () => {
           <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
         </>
       ) : null}
-      <View style={tw`w-10/12 h-60 border mx-auto my-2`}></View>
       <FlatList
         data={simpleSales}
         horizontal

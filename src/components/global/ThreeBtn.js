@@ -21,8 +21,8 @@ const ThreeBtn = ({
       style={[
         tw`w-${
           Dimensions.get('screen').width / 4.9
-        } h-14 mx-auto flex-row rounded-2xl p-1`,
-        {backgroundColor: '#242424'},
+        } h-14 mx-auto flex-row rounded-xl p-1`,
+        {backgroundColor: '#323054'},
       ]}>
       <TouchableOpacity
         onPress={() => {
@@ -31,10 +31,9 @@ const ThreeBtn = ({
           setIsSale(false);
           setIsFifty(false);
         }}
-        style={tw`flex-1 rounded-2xl ${isAll ? 'bg-white' : null}`}>
+        style={tw`flex-1 rounded-xl ${isAll ? 'bg-white' : null}`}>
         <Text
           style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-lg`}>
-          {/* Ish haqida */}
           {firstBtnName}
         </Text>
       </TouchableOpacity>
@@ -45,10 +44,9 @@ const ThreeBtn = ({
           setIsSale(true);
           setIsFifty(false);
         }}
-        style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
+        style={tw`flex-1 rounded-xl ${isSale ? 'bg-white' : null}`}>
         <Text
           style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-lg`}>
-          {/* Xarajatlar */}
           {secondBtnName}
         </Text>
       </TouchableOpacity>
@@ -60,7 +58,7 @@ const ThreeBtn = ({
           setIsSale(false);
           setIsFifty(true);
         }}
-        style={tw`flex-1 rounded-2xl ${isFifty ? 'bg-white' : null}`}>
+        style={tw`flex-1 rounded-cx   l ${isFifty ? 'bg-white' : null}`}>
         {fourth ? (
           thirdBtnName
         ) : (

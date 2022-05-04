@@ -46,7 +46,7 @@ const VendorMainScreen = () => {
 
       <TouchableOpacity
         onPress={() => navigation.navigate('DebtorsScreen')}
-        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
+        style={tw`w-15 h-15 absolute bottom-[3%] right-5`}>
         <Text style={tw`text-6xl m-auto`}>💰</Text>
       </TouchableOpacity>
     </SafeAreaView>

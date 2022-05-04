@@ -6,12 +6,15 @@ import {
   RefreshControl,
   FlatList,
   Image,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import {mainUrl} from '../../config/apiUrl';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+
+import LottieView from 'lottie-react-native';
 
 const VendorScreen = () => {
   const {token} = useSelector(state => state.userReducer);
@@ -24,9 +27,10 @@ const VendorScreen = () => {
   useEffect(() => {
     if (red) {
       setRefreshing(true);
+      console.warn(token);
       axios({
-        method: 'get',
         url: `${mainUrl}lastoria/user-orders-daily/`,
+        method: 'GET',
         headers: {
           Authorization: `token ${token}`,
         },
@@ -34,8 +38,8 @@ const VendorScreen = () => {
         .then(res => {
           setOrders(res.data);
           axios({
-            method: 'get',
             url: `${mainUrl}lastoria/user-sales-5050/`,
+            method: 'GET',
             headers: {
               Authorization: `token ${token}`,
             },
@@ -59,31 +63,53 @@ const VendorScreen = () => {
   }, [red, token]);
 
   const Item = ({img, dress_name, salon_name, user_name, salonchi_name}) => (
-    <View style={tw`mx-3 my-2 border rounded-tl-xl rounded-br-xl px-2`}>
+    <View
+      style={tw`w-[${Dimensions.get('screen').width / 1.35}px] h-45 ml-[${
+        Dimensions.get('screen').width / 6.5
+      }px] mt-[${
+        Dimensions.get('screen').width / 8
+      }px] bg-[#468CE4] rounded-3xl`}>
       <Image
         source={{uri: mainUrl + 'media/' + img}}
-        style={tw`w-45 h-40 m-auto`}
+        style={tw`w-[${
+          Dimensions.get('screen').width / 3.3
+        }px] h-45 absolute top-[-${
+          Dimensions.get('screen').height / 40
+        }px] left-[-${Dimensions.get('screen').width / 9}px] rounded-3xl`}
         resizeMode="contain"
       />
-
-      <View style={tw`flex-row my-1 items-center`}>
-        <Text>Ko'ylak : </Text>
-        <Text style={tw`text-lg`}>{dress_name}</Text>
+      <View
+        style={tw`flex-row my-1 items-center justify-end pr-[${
+          Dimensions.get('screen').width / 15
+        }px] w-9/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
+        <Text style={tw`text-white text-lg`}>Ko'ylak : </Text>
+        <Text style={tw`text-lg text-white`}>{dress_name}</Text>
       </View>
 
-      <View style={tw`flex-row my-1 items-center`}>
-        <Text>Salon : </Text>
-        <Text style={tw`text-lg`}>{salon_name}</Text>
+      <View
+        style={tw`flex-row my-1 items-center justify-end pr-[${
+          Dimensions.get('screen').width / 20
+        }px] w-6/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
+        <Text style={tw`text-white text-lg`}>Salon : </Text>
+        <Text style={tw`text-lg text-white truncate text-ellipsis`}>
+          {salon_name}
+        </Text>
       </View>
 
-      <View style={tw`flex-row my-1 items-center`}>
-        <Text>Salonchi : </Text>
-        <Text style={tw`text-lg`}>{salonchi_name}</Text>
+      <View
+        style={tw`flex-row my-1 items-center justify-end pr-[${
+          Dimensions.get('screen').width / 15
+        }px]`}>
+        <Text style={tw`text-white text-lg`}>Salonchi : </Text>
+        <Text style={tw`text-lg text-white`}>{salonchi_name}</Text>
       </View>
 
-      <View style={tw`flex-row my-1 items-center`}>
-        <Text>Sotuvchi : </Text>
-        <Text style={tw`text-lg`}>{user_name}</Text>
+      <View
+        style={tw`flex-row my-1 items-center justify-end pr-[${
+          Dimensions.get('screen').width / 15
+        }px]`}>
+        <Text style={tw`text-white text-lg`}>Sotuvchi : </Text>
+        <Text style={tw`text-lg text-white`}>{user_name}</Text>
       </View>
     </View>
   );
@@ -98,6 +124,37 @@ const VendorScreen = () => {
     />
   );
 
+  const mapData = () => {
+    return (
+      <>
+        {saleFifty.length ? (
+          <Text style={tw`text-2xl text-black ml-3 mt-5`}>50/50 sotuvlar</Text>
+        ) : null}
+        <FlatList
+          data={saleFifty}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+
+        {orders.length ? (
+          <>
+            <Text style={tw`text-2xl text-black ml-3 mt-5`}>Buyurtmalar</Text>
+            <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
+          </>
+        ) : null}
+        <FlatList
+          data={orders}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </>
+    );
+  };
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView
@@ -108,7 +165,17 @@ const VendorScreen = () => {
             onRefresh={() => setRed(true)}
           />
         }>
-        {saleFifty.length ? (
+        {!saleFifty.length && !orders.length ? (
+          <LottieView
+            source={require('../../../assets/lottie/search.json')}
+            style={tw`w-full m-auto`}
+            autoPlay
+            loop
+          />
+        ) : (
+          mapData()
+        )}
+        {/* {saleFifty.length ? (
           <Text style={tw`text-2xl text-black ml-3 mt-5`}>50/50 sotuvlar</Text>
         ) : null}
 
@@ -133,7 +200,7 @@ const VendorScreen = () => {
           renderItem={renderItem}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
-        />
+        /> */}
       </ScrollView>
     </SafeAreaView>
   );

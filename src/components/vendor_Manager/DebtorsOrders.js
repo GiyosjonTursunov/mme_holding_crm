@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   ScrollView,
@@ -16,6 +17,8 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import tw from 'twrnc';
+
+import LottieView from 'lottie-react-native';
 
 const DebtorsOrders = () => {
   const {token, userId, role} = useSelector(state => state.userReducer);
@@ -207,13 +210,22 @@ const DebtorsOrders = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={getData} />
       }>
-      <FlatList
-        data={debtorsOrders}
-        horizontal
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
+      {debtorsOrders.length == 0 ? (
+        <LottieView
+          source={require('../../../assets/lottie/71454-waving-girls.json')}
+          style={[tw`w-full mx-auto`, {aspectRatio: 1}]}
+          autoPlay
+          loop
+        />
+      ) : (
+        <FlatList
+          data={debtorsOrders}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     </ScrollView>
   );
 };
