@@ -13,6 +13,7 @@ const VendorManagerStack = () => {
       <Stack.Screen
         name="VendorScreen_Manager"
         component={VendorScreen_Manager}
+        options={{headerShown: false}}
       />
       <Stack.Screen name="SaleDress" component={SaleDress} />
       <Stack.Screen name="ReportSales" component={ReportSales} />

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
   ScrollView,
@@ -23,7 +24,6 @@ const DailySalesStatisticsScreen = ({route}) => {
   const [red, setRed] = useState(true);
 
   useEffect(() => {
-    console.warn(route.params?.date);
     if (red) {
       setRefreshing(true);
       axios({
@@ -34,10 +34,12 @@ const DailySalesStatisticsScreen = ({route}) => {
         },
       })
         .then(res => {
-          console.warn(res.data);
+          console.warn(res.data.simple_sale);
           setSimpleSales(res.data?.simple_sale);
           setSaleFifty(res.data?.sale5050);
           setOrders(res.data?.orders);
+          setRefreshing(false);
+          setRed(false);
         })
         .catch(err => {
           console.log(err);
@@ -47,7 +49,14 @@ const DailySalesStatisticsScreen = ({route}) => {
     }
   }, [token, red]);
 
-  const Item = ({img, dress_name, salon_name, user_name, salonchi_name}) => (
+  const Item = ({
+    img,
+    dress_name,
+    salon_name,
+    user_name,
+    salonchi_name,
+    item,
+  }) => (
     <View style={tw`mx-3 my-2 border rounded-tl-xl rounded-br-xl px-2`}>
       <Image
         source={{uri: mainUrl + 'media/' + img}}
@@ -56,7 +65,7 @@ const DailySalesStatisticsScreen = ({route}) => {
       />
 
       <View style={tw`flex-row my-1 items-center`}>
-        <Text>Ko'ylak : </Text>
+        <Text onPress={() => console.warn(item)}>Ko'ylak : </Text>
         <Text style={tw`text-lg`}>{dress_name}</Text>
       </View>
 
@@ -81,8 +90,8 @@ const DailySalesStatisticsScreen = ({route}) => {
     <Item
       img={item?.dress?.img1}
       dress_name={item?.dress?.name}
-      salon_name={item?.salon?.name}
-      salonchi_name={item?.salon?.user}
+      salon_name={item?.salon?.salon_name}
+      salonchi_name={item?.salon?.name}
       user_name={item?.user?.name}
     />
   );

@@ -39,14 +39,14 @@ function VendorScreen_Manager() {
 
       <TouchableOpacity
         onPress={() => navigation.navigate('DebtorsScreen')}
-        style={tw`w-15 h-15 absolute bottom-[20%] right-5`}>
+        style={tw`w-15 h-15 absolute bottom-[13%] right-2`}>
         <Text style={tw`text-6xl m-auto`}>💰</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('ReportSales')}>
         <Image
           source={require('../../../assets/reportIcon.png')}
-          style={tw`w-15 h-15 absolute bottom-10 right-5`}
+          style={tw`w-15 h-15 absolute bottom-0 right-2`}
           resizeMode="contain"
         />
       </TouchableOpacity>

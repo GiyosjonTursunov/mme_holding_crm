@@ -15,7 +15,7 @@ const DoubleBtn = ({
   return (
     <View style={tw`flex-col justify-around`}>
       <View
-        style={tw`w-5/6 h-12 mx-auto flex-row border rounded-xl p-1 bg-[#323054]`}>
+        style={tw`w-5/6 h-14 mx-auto flex-row border rounded-xl p-1 bg-[#323054]`}>
         <TouchableOpacity
           onPress={() => {
             setIsAll(true);
@@ -24,7 +24,7 @@ const DoubleBtn = ({
           }}
           style={tw`flex-1 rounded-xl ${isAll ? 'bg-white' : null}`}>
           <Text
-            style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-lg`}>
+            style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-xl`}>
             {firstBtnName}
           </Text>
         </TouchableOpacity>
@@ -36,7 +36,7 @@ const DoubleBtn = ({
           }}
           style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
           <Text
-            style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-lg`}>
+            style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-xl`}>
             {secondBtnName}
           </Text>
         </TouchableOpacity>

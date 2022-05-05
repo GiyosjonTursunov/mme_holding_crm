@@ -18,9 +18,7 @@ const ThreeBtn = ({
 
   return (
     <View
-      style={tw`w-${
-        Dimensions.get('screen').width / 4.9
-      } h-14 mx-auto flex-row rounded-xl p-1 bg-[#323054]`}>
+      style={tw`w-10.5/12 h-14 mx-auto flex-row rounded-xl p-1 bg-[#323054]`}>
       <TouchableOpacity
         onPress={() => {
           firstBtnNavigation ? firstBtnNavigation() : null;

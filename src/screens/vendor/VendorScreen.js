@@ -36,6 +36,7 @@ const VendorScreen = () => {
         },
       })
         .then(res => {
+          console.error('kunlik zakaz sotuvchi => ', res.data);
           setOrders(res.data);
           axios({
             url: `${mainUrl}lastoria/user-sales-5050/`,
@@ -67,7 +68,7 @@ const VendorScreen = () => {
       style={tw`w-[${Dimensions.get('screen').width / 1.35}px] h-45 ml-[${
         Dimensions.get('screen').width / 6.5
       }px] mt-[${
-        Dimensions.get('screen').width / 8
+        Dimensions.get('screen').width / 14
       }px] bg-[#468CE4] rounded-3xl`}>
       <Image
         source={{uri: mainUrl + 'media/' + img}}
@@ -76,7 +77,7 @@ const VendorScreen = () => {
         }px] h-45 absolute top-[-${
           Dimensions.get('screen').height / 40
         }px] left-[-${Dimensions.get('screen').width / 9}px] rounded-3xl`}
-        resizeMode="contain"
+        resizeMode="cover"
       />
       <View
         style={tw`flex-row my-1 items-center justify-end pr-[${
@@ -91,15 +92,13 @@ const VendorScreen = () => {
           Dimensions.get('screen').width / 20
         }px] w-6/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
         <Text style={tw`text-white text-lg`}>Salon : </Text>
-        <Text style={tw`text-lg text-white truncate text-ellipsis`}>
-          {salon_name}
-        </Text>
+        <Text style={tw`text-lg text-white`}>{salon_name}</Text>
       </View>
 
       <View
         style={tw`flex-row my-1 items-center justify-end pr-[${
           Dimensions.get('screen').width / 15
-        }px]`}>
+        }px] w-/12 self-end`}>
         <Text style={tw`text-white text-lg`}>Salonchi : </Text>
         <Text style={tw`text-lg text-white`}>{salonchi_name}</Text>
       </View>
@@ -128,7 +127,12 @@ const VendorScreen = () => {
     return (
       <>
         {saleFifty.length ? (
-          <Text style={tw`text-2xl text-black ml-3 mt-5`}>50/50 sotuvlar</Text>
+          <>
+            <Text style={tw`text-2xl text-black ml-3 mt-5`}>
+              50/50 sotuvlar
+            </Text>
+            <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
+          </>
         ) : null}
         <FlatList
           data={saleFifty}
@@ -175,32 +179,6 @@ const VendorScreen = () => {
         ) : (
           mapData()
         )}
-        {/* {saleFifty.length ? (
-          <Text style={tw`text-2xl text-black ml-3 mt-5`}>50/50 sotuvlar</Text>
-        ) : null}
-
-        <FlatList
-          data={saleFifty}
-          horizontal
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          showsHorizontalScrollIndicator={false}
-        />
-
-        {orders.length ? (
-          <>
-            <Text style={tw`text-2xl text-black ml-3 mt-5`}>Buyurtmalar</Text>
-            <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
-          </>
-        ) : null}
-
-        <FlatList
-          data={orders}
-          horizontal
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          showsHorizontalScrollIndicator={false}
-        /> */}
       </ScrollView>
     </SafeAreaView>
   );

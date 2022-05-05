@@ -1,12 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  AsyncStorage,
-} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
 import {mainUrl} from '../../../config/apiUrl';
@@ -77,8 +70,6 @@ const RegisterSalonModal = () => {
         address: salonAddress,
       };
 
-      // AsyncStorage.getItem('@user')
-      //   .then(stringJson => {
       axios({
         url: `${mainUrl}lastoria/salon/`,
         method: 'POST',
@@ -99,11 +90,6 @@ const RegisterSalonModal = () => {
           Alert.alert('Baza bilan qandaydir hatolik.');
           console.warn('err createSalon => ', err);
         });
-      // })
-      // .catch(_err => {
-      //   console.log(_err);
-      //   Alert.alert('Xatolik');
-      // });
     } else {
       Alert.alert('To`liq yozilmagan');
     }
