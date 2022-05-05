@@ -20,7 +20,7 @@ const RegisterSalon = ({setSalonId}) => {
       url: `${mainUrl}lastoria/salon/`,
       method: 'GET',
       headers: {
-        Authorization: 'token ' + token,
+        Authorization: `token ${token}`,
       },
     })
       .then(res => {

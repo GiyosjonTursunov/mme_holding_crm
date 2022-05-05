@@ -15,10 +15,7 @@ const DoubleBtn = ({
   return (
     <View style={tw`flex-col justify-around`}>
       <View
-        style={[
-          tw`w-5/6 h-12 mx-auto flex-row border rounded-xl p-1`,
-          {backgroundColor: '#242424'},
-        ]}>
+        style={tw`w-5/6 h-12 mx-auto flex-row border rounded-xl p-1 bg-[#323054]`}>
         <TouchableOpacity
           onPress={() => {
             setIsAll(true);

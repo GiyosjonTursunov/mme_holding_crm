@@ -331,7 +331,7 @@ const OrderDress = () => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={sendOrder}
-        style={tw`w-5/12 h-15 bg-[#242424] mx-auto my-2 rounded-full`}>
+        style={tw`w-5/12 h-15 bg-[#323054] mx-auto my-2 rounded-xl`}>
         <Text style={tw`text-white text-xl m-auto`}>Saqlash</Text>
       </TouchableOpacity>
     </ScrollView>

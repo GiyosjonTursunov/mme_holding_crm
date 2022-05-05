@@ -15,7 +15,7 @@ const DatePickerCustom = ({setNeedDate, func, text}) => {
         {text || '15/04/2022'}
       </Text>
       <View
-        style={tw`bg-black h-full w-5/12 rounded-tr-2xl rounded-br-2xl items-center justify-center`}>
+        style={tw`bg-[#323054] h-full w-5/12 rounded-tr-2xl rounded-br-2xl items-center justify-center`}>
         <Image
           source={require('../../../assets/calendar.png')}
           resizeMode="contain"

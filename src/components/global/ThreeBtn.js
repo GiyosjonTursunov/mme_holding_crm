@@ -18,12 +18,9 @@ const ThreeBtn = ({
 
   return (
     <View
-      style={[
-        tw`w-${
-          Dimensions.get('screen').width / 4.9
-        } h-14 mx-auto flex-row rounded-xl p-1`,
-        {backgroundColor: '#323054'},
-      ]}>
+      style={tw`w-${
+        Dimensions.get('screen').width / 4.9
+      } h-14 mx-auto flex-row rounded-xl p-1 bg-[#323054]`}>
       <TouchableOpacity
         onPress={() => {
           firstBtnNavigation ? firstBtnNavigation() : null;
@@ -32,8 +29,7 @@ const ThreeBtn = ({
           setIsFifty(false);
         }}
         style={tw`flex-1 rounded-xl ${isAll ? 'bg-white' : null}`}>
-        <Text
-          style={tw`m-auto  ${isAll ? 'text-black' : 'text-white'} text-lg`}>
+        <Text style={tw`m-auto ${isAll ? 'text-black' : 'text-white'} text-lg`}>
           {firstBtnName}
         </Text>
       </TouchableOpacity>
@@ -58,7 +54,7 @@ const ThreeBtn = ({
           setIsSale(false);
           setIsFifty(true);
         }}
-        style={tw`flex-1 rounded-cx   l ${isFifty ? 'bg-white' : null}`}>
+        style={tw`flex-1 rounded-xl ${isFifty ? 'bg-white' : null}`}>
         {fourth ? (
           thirdBtnName
         ) : (
