@@ -11,6 +11,7 @@ import WareHouseManagerStack from './stacks/WareHouseManagerStack';
 import DecoratorManagerStack from './stacks/DecoratorManagerStack';
 import DirectorStack from './stacks/DirectorStack';
 import SalonStack from './stacks/SalonStack';
+import SMMStack from './stacks/SMMStack';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
@@ -27,6 +28,8 @@ export const ChooseNavigation = role_user => {
     return <DirectorStack />;
   } else if (role_user === 'SALON') {
     return <SalonStack />;
+  } else if (role_user === 'SMM') {
+    return <SMMStack />;
   } else {
     console.warn(role_user);
     return <NotLoggedIn />;

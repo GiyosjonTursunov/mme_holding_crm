@@ -34,6 +34,7 @@ const ShleftList = ({setShleftId, setSelectedShleftId}) => {
           .then(res => {
             setShleftList(res.data);
             setShleftListModalVisible(true);
+            console.error('shleftList.data =>', res.data);
           })
           .catch(err => {
             console.error(err.response.status);

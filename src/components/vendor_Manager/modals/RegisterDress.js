@@ -60,15 +60,15 @@ const RegisterDress = ({
     all,
     shleftName,
   ) => {
-    setDressId(id);
+    setDressId ? setDressId(id) : null;
     setDressForSelect(name);
-    setMainPriceSale(mainPriceSale);
+    setMainPriceSale ? setMainPriceSale(mainPriceSale) : null;
     setDressModalVisible(false);
-    setColorId(color);
+    setColorId ? setColorId(color) : null;
     console.warn('color', color);
     console.warn('all ', all);
-    setSelectedShleftId(shleft);
-    setSelectedShleftName(shleftName);
+    setSelectedShleftId ? setSelectedShleftId(shleft) : null;
+    setSelectedShleftName ? setSelectedShleftName(shleftName) : null;
   };
 
   const getDress = () => {
