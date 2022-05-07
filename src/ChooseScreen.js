@@ -12,6 +12,7 @@ import DecoratorManagerStack from './stacks/DecoratorManagerStack';
 import DirectorStack from './stacks/DirectorStack';
 import SalonStack from './stacks/SalonStack';
 import SMMStack from './stacks/SMMStack';
+import TexnoStyleManagerStack from './stacks/TexnoStyle/TexnoStyleManagerStack';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
@@ -30,6 +31,8 @@ export const ChooseNavigation = role_user => {
     return <SalonStack />;
   } else if (role_user === 'SMM') {
     return <SMMStack />;
+  } else if (role_user === 'TEXNOSTYLE_MANAGER') {
+    return <TexnoStyleManagerStack />;
   } else {
     console.warn(role_user);
     return <NotLoggedIn />;

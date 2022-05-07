@@ -14,7 +14,6 @@ import RegisterDress from '../../components/vendor_Manager/modals/RegisterDress'
 import {ImagePickerModal} from '../../modals/image-picker-modal';
 
 import * as ImagePicker from 'react-native-image-picker';
-import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import {useSelector} from 'react-redux';
 

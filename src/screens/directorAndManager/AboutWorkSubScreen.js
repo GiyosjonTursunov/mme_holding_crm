@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   View,
   Text,
@@ -19,7 +20,7 @@ const AboutWorkSubScreen = () => {
 
   const {token} = useSelector(state => state.userReducer);
 
-  const getCompaniesProfit = async () => {
+  const getCompaniesProfit = () => {
     setRefreshing(true);
     axios({
       url: `${mainUrl}dashboard/companies/statistics/money/`,
@@ -31,10 +32,8 @@ const AboutWorkSubScreen = () => {
       .then(res => {
         setCompaniesProfit(res.data);
         setRefreshing(false);
-        console.warn(res.data, 'mana sanga usha res.data');
       })
       .catch(_err => {
-        console.error(_err, 'mana sanga usha kayf');
         setRefreshing(false);
       });
   };
