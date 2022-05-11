@@ -26,7 +26,7 @@ const DailySalesOrders = () => {
   const [red, setRed] = useState(true);
 
   useEffect(() => {
-    console.warn(token);
+    // console.warn(token);
     if (red) {
       setRefreshing(true);
       axios({
@@ -47,7 +47,7 @@ const DailySalesOrders = () => {
           })
             .then(res => {
               setSaleFifty(res.data);
-              console.warn('50/50 =>', res.data);
+              // console.warn('50/50 =>', res.data);
               axios({
                 url: `${mainUrl}lastoria/orders/`,
                 method: 'GET',
@@ -60,8 +60,8 @@ const DailySalesOrders = () => {
                   setRefreshing(false);
                   setRed(false);
                 })
-                .catch(err => {
-                  console.log(err);
+                .catch(_err => {
+                  console.log(_err);
                   setRefreshing(false);
                   setRed(false);
                 });
