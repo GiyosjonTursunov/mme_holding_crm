@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
@@ -8,6 +9,10 @@ import {
   Pressable,
   Dimensions,
   TouchableOpacity,
+  RefreshControl,
+  Modal,
+  Alert,
+  TextInput,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import tw from 'twrnc';
@@ -25,10 +30,19 @@ const TexnoStyleMainScreen = () => {
   const Item_width = width * 0.8;
   const Item_height = Item_width * 1.2;
 
-  useEffect(() => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [texno_money, setTexno_money] = useState([]);
+
+  const [modalDepozit, setModalDepozit] = useState(false);
+
+  const [modalDepositValue, setModalDepositValue] = useState('');
+
+  const getDoors = () => {
     if (token) {
+      setRefreshing(true);
       axios({
-        url: `${mainUrl}texno-style/doors/`,
+        url: `${mainUrl}texno-style/doors-append-history/`,
         method: 'GET',
         headers: {
           Authorization: `token ${token}`,
@@ -36,35 +50,133 @@ const TexnoStyleMainScreen = () => {
       })
         .then(res => {
           setDoors(res.data);
+          setRefreshing(false);
+        })
+        .catch(err => {
+          console.error('error =>', err);
+          setRefreshing(false);
+        });
+
+      axios({
+        url: `${mainUrl}texno-style/add-texno-style-money/`,
+        method: 'GET',
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      })
+        .then(res => {
+          console.warn('add-texno-style-money =>', res.data);
+          setTexno_money(res.data);
         })
         .catch(err => {
           console.error('error =>', err);
         });
     }
+  };
+
+  useEffect(() => {
+    getDoors();
   }, [token]);
 
+  const sendDeposit = () => {
+    axios({
+      url: `${mainUrl}texno-style/add-texno-style-money/`,
+      method: 'POST',
+      data: {
+        deposit: Number(modalDepositValue),
+        total_price: Number(modalDepositValue),
+      },
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        console.warn('add-texno-style-money =>', res.data);
+        Alert.alert('Успешно', 'Добавлено');
+        getDoors();
+        setModalDepositValue(false);
+      })
+      .catch(err => {
+        console.error('error =>', err);
+        Alert.alert('Ошибка', 'Internet yoki serverda xatolik yuz berdi');
+        setModalDepositValue(false);
+      });
+  };
+
   return (
-    <ScrollView style={tw`bg-white pt-3`} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={tw`bg-white pt-3`}
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={getDoors} />
+      }>
+      <View style={tw`flex-row justify-between w-full px-4 items-center`}>
+        <Text style={tw`text-xl`}>Depozit</Text>
+        {texno_money?.deposit !== 0 && texno_money.deposit ? (
+          <Text style={tw`text-xl`}>{texno_money?.deposit}</Text>
+        ) : (
+          <TouchableOpacity onPress={() => setModalDepozit(true)}>
+            <Image
+              source={require('../../../../assets/plus.png')}
+              style={tw`w-8 h-8 mb-1`}
+            />
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalDepozit}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalDepozit(!modalDepozit);
+              }}>
+              <View style={tw`flex-1 bg-[rgba(0,0,0,0.3)]`}>
+                <View style={tw`w-11/12 h-50 bg-white m-auto`}>
+                  <TextInput
+                    placeholder="Depozit"
+                    style={tw`border w-11/12 h-13 mx-auto my-2 rounded-xl pl-5 border-gray-500`}
+                    onChangeText={setModalDepositValue}
+                    keyboardType="numeric"
+                    value={modalDepositValue}
+                  />
+
+                  <TouchableOpacity
+                    onPress={sendDeposit}
+                    style={tw`w-7/12 h-15 bg-[#323054] rounded-xl m-auto`}>
+                    <Text style={tw`text-white text-xl m-auto`}>Saqlash</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </TouchableOpacity>
+        )}
+      </View>
+      <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
       <View style={tw`flex-row justify-between w-full px-4 items-center`}>
         <Text style={tw`text-xl`}>Umumiy summa</Text>
-        <Text style={tw`text-xl`}>1000</Text>
+        <Text style={tw`text-xl`}>{texno_money?.total_price}</Text>
       </View>
       <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
       <View style={tw`flex-row justify-between w-full px-4 items-center`}>
         <Text style={tw`text-xl`}>Foyda</Text>
-        <Text style={tw`text-xl`}>200</Text>
+        <Text style={tw`text-xl`}>{texno_money?.benefit}</Text>
       </View>
       <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
       <View style={tw`flex-row justify-between w-full px-4 items-center`}>
         <Text style={tw`text-xl`}>Eshik ko'rinishida pullar</Text>
-        <Text style={tw`text-xl`}>800</Text>
+        <Text style={tw`text-xl`}>{texno_money?.doorsOfMoney}</Text>
       </View>
       <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
       <View style={tw`flex-row justify-between w-full px-4 items-center`}>
         <Text style={tw`text-xl`}>Eshiklar</Text>
-        <Text style={tw`text-xl`}>100</Text>
+        <Text style={tw`text-xl`}>{texno_money?.count}</Text>
       </View>
-
+      <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
+      <View style={tw`flex-row justify-between w-full px-4 items-center`}>
+        <Text style={tw`text-xl`}>Sana: {texno_money?.date_updated}</Text>
+        <Text style={tw`text-xl`}>
+          Vaqt:
+          {texno_money?.time_updated?.slice(0, 5)}
+        </Text>
+      </View>
       <View style={tw`w-11/12 border border-[rgba(0,0,0,0.4)] mx-auto mb-5`} />
 
       <TouchableOpacity
@@ -123,7 +235,7 @@ const TexnoStyleMainScreen = () => {
                     borderRadius: 14,
                   }}>
                   <Animated.Image
-                    source={{uri: baseUrl + item.img}}
+                    source={{uri: baseUrl + '/media/' + item?.doors?.img}}
                     style={{
                       width: Item_width * 1.1,
                       height: Item_height,
@@ -138,7 +250,7 @@ const TexnoStyleMainScreen = () => {
                       {transform: [{translateX}]},
                     ]}>
                     <Text style={tw`text-xl text-black`}>
-                      Eshik: {item?.name}
+                      Eshik: {item?.doors?.name}
                     </Text>
                     <Text
                       style={tw`text-lg font-semibold text-[rgba(0,0,0,0.7)]`}>

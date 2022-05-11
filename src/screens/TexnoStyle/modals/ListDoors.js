@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   View,
   Text,
@@ -14,30 +15,18 @@ import {useSelector} from 'react-redux';
 import {mainUrl} from '../../../config/apiUrl';
 import tw from 'twrnc';
 
-const ListDoors = ({setDoorId, setDoorPrice, setDoorImg, setName}) => {
+const ListDoors = ({
+  setDoorId,
+  setDoorPrice,
+  setDoorImg,
+  setName,
+  is_sale,
+  doors,
+}) => {
   const {token} = useSelector(state => state.userReducer);
   const [doorName, setDoorName] = useState('');
 
   const [listDoorVisible, setListDoorVisible] = useState(false);
-  const [doors, setDoors] = useState([]);
-
-  useEffect(() => {
-    if (token) {
-      axios({
-        url: `${mainUrl}texno-style/doors/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-        .then(res => {
-          setDoors(res.data);
-        })
-        .catch(err => {
-          console.error('error =>', err);
-        });
-    }
-  }, [token]);
 
   const getDoorData = (id, name, price, img) => {
     setDoorId(id);
@@ -48,23 +37,26 @@ const ListDoors = ({setDoorId, setDoorPrice, setDoorImg, setName}) => {
     setListDoorVisible(false);
   };
 
-  const DoorsItem = ({id, name, price, img}) => {
+  const DoorsItem = ({id, name, price, img, count}) => {
     return (
       <TouchableOpacity
         onPress={() => getDoorData(id, name, price, img)}
         style={tw`w-11.7/12 h-11.5 border-b pl-3 flex-row items-center border-[rgba(0,0,0,0.1)] mx-auto`}>
         <Text style={tw`w-1.5/12 text-base font-bold`}>{id}</Text>
-        <Text style={tw`my-auto text-lg`}>{name}</Text>
+        <Text style={tw`my-auto text-lg`}>
+          {name} {is_sale && `- soni ${count}`}
+        </Text>
       </TouchableOpacity>
     );
   };
 
   const renderDoors = ({item}) => (
     <DoorsItem
-      name={item.name}
-      id={item.id}
-      price={item.price}
-      img={item.img}
+      name={is_sale ? item?.doors?.name : item?.name}
+      id={item?.id}
+      price={item?.price}
+      img={is_sale ? item?.doors?.img : item?.img}
+      count={item?.count}
     />
   );
 

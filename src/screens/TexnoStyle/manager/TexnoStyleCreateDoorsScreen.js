@@ -61,7 +61,7 @@ const TexnoStyleCreateDoorsScreen = () => {
       formData.append('price', price);
       formData.append('count', count);
 
-      let url = `${mainUrl}texno-style/doors/`;
+      let url = `${mainUrl}texno-style/doors-append-history-custom/`;
       let res = await fetch(url, {
         method: 'POST',
         body: formData,
@@ -71,13 +71,15 @@ const TexnoStyleCreateDoorsScreen = () => {
         },
       });
       if (res.status === 201) {
-        Alert.alert("Ko'ylak qo'shildi");
+        Alert.alert("Eshik qo'shildi");
         setNameImage('');
         setUriImage('');
         setTypeImage('');
+        return;
       }
     } else {
       Alert.alert("Iltimos, majburiy ma'lumotlarni to'g'ri to'ldiring");
+      return;
     }
   };
 
@@ -93,6 +95,7 @@ const TexnoStyleCreateDoorsScreen = () => {
         placeholder="Eshik narxi"
         style={tw`border w-11/12 h-13 mx-auto my-2 rounded-xl pl-5 border-gray-500`}
         onChangeText={setPrice}
+        keyboardType="numeric"
       />
 
       <View style={tw`w-11/12 flex-row mx-auto justify-between`}>
@@ -100,6 +103,7 @@ const TexnoStyleCreateDoorsScreen = () => {
           placeholder="Eshik soni"
           style={tw`border w-5/12 h-13 my-2 rounded-xl pl-5 border-gray-500`}
           onChangeText={setCount}
+          keyboardType="numeric"
         />
 
         <TouchableOpacity
