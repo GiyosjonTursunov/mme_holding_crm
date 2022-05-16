@@ -39,43 +39,44 @@ const TexnoStyleMainScreen = () => {
   const [modalDepositValue, setModalDepositValue] = useState('');
 
   const getDoors = () => {
-    if (token) {
-      setRefreshing(true);
-      axios({
-        url: `${mainUrl}texno-style/doors-append-history/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${token}`,
-        },
+    console.log('token', token);
+    setRefreshing(true);
+    axios({
+      url: `${mainUrl}texno-style/doors-append-history/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        setDoors(res.data);
+        setRefreshing(false);
       })
-        .then(res => {
-          setDoors(res.data);
-          setRefreshing(false);
-        })
-        .catch(err => {
-          console.error('error =>', err);
-          setRefreshing(false);
-        });
+      .catch(err => {
+        console.error('errorku texno-style/doors-append-history =>', err);
+        setRefreshing(false);
+      });
 
-      axios({
-        url: `${mainUrl}texno-style/add-texno-style-money/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${token}`,
-        },
+    axios({
+      url: `${mainUrl}texno-style/add-texno-style-money/`,
+      method: 'GET',
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    })
+      .then(res => {
+        // console.warn('add-texno-style-money =>', res.data);
+        setTexno_money(res.data);
       })
-        .then(res => {
-          console.warn('add-texno-style-money =>', res.data);
-          setTexno_money(res.data);
-        })
-        .catch(err => {
-          console.error('error =>', err);
-        });
-    }
+      .catch(err => {
+        console.error('error texno-style/add-texno-style-money =>', err);
+      });
   };
 
   useEffect(() => {
-    getDoors();
+    if (token) {
+      getDoors();
+    }
   }, [token]);
 
   const sendDeposit = () => {
@@ -130,6 +131,12 @@ const TexnoStyleMainScreen = () => {
               }}>
               <View style={tw`flex-1 bg-[rgba(0,0,0,0.3)]`}>
                 <View style={tw`w-11/12 h-50 bg-white m-auto`}>
+                  <TouchableOpacity onPress={() => setModalDepozit(false)}>
+                    <Image
+                      source={require('../../../../assets/x-button.png')}
+                      style={tw`w-8 h-8 absolute right-[-10px] top-[-15px]`}
+                    />
+                  </TouchableOpacity>
                   <TextInput
                     placeholder="Depozit"
                     style={tw`border w-11/12 h-13 mx-auto my-2 rounded-xl pl-5 border-gray-500`}
