@@ -51,6 +51,7 @@ const ChooseScreen = () => {
   React.useEffect(() => {
     AsyncStorage.getItem('@user').then(value => {
       if (value) {
+        console.log('value', value);
         dispatch(setRole(JSON.parse(value).role));
       }
     });

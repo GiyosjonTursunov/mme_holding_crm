@@ -10,7 +10,6 @@ import {
 import tw from 'twrnc';
 import {useNavigation} from '@react-navigation/native';
 import {mainUrl} from '../../config/apiUrl';
-
 import {useDispatch} from 'react-redux';
 import {
   setIsLogIn,

@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
@@ -38,6 +39,10 @@ const TexnoStyleMainScreen = () => {
 
   const [modalDepositValue, setModalDepositValue] = useState('');
 
+  const [givenCountValue, setGivenCountValue] = useState('');
+
+  const [modalGivenCount, setModalGivenCount] = useState(false);
+
   const getDoors = () => {
     console.log('token', token);
     setRefreshing(true);
@@ -50,6 +55,7 @@ const TexnoStyleMainScreen = () => {
     })
       .then(res => {
         setDoors(res.data);
+        console.log('res', res.data);
         setRefreshing(false);
       })
       .catch(err => {
@@ -65,7 +71,6 @@ const TexnoStyleMainScreen = () => {
       },
     })
       .then(res => {
-        // console.warn('add-texno-style-money =>', res.data);
         setTexno_money(res.data);
       })
       .catch(err => {
@@ -217,7 +222,11 @@ const TexnoStyleMainScreen = () => {
               key={item.id}
               style={{width, justifyContent: 'center', alignItems: 'center'}}>
               <Pressable
-                onPress={() => console.log('dress_clicked')}
+                onPress={() => {
+                  setModalGivenCount(true);
+
+                  console.log(item.id);
+                }}
                 style={{
                   borderRadius: 18,
                   shadowColor: '#000',
@@ -233,6 +242,72 @@ const TexnoStyleMainScreen = () => {
                   backgroundColor: '#fff',
                   marginVertical: 10,
                 }}>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalGivenCount}
+                  onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalGivenCount(!modalGivenCount);
+                  }}>
+                  <View
+                    style={[
+                      tw`flex-1`,
+                      {
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                      },
+                    ]}>
+                    <View style={tw`w-11/12 h-60 bg-white m-auto rounded-xl`}>
+                      <TouchableOpacity
+                        onPress={() => setModalGivenCount(false)}
+                        style={tw`absolute right-[-10px] top-[-10px]`}>
+                        <Image
+                          source={require('../../../../assets/x-button.png')}
+                          style={tw`w-10 h-10`}
+                        />
+                      </TouchableOpacity>
+                      <TextInput
+                        style={tw`w-11/12 h-15 rounded-xl border m-auto border-[#323054] text-xl`}
+                        keyboardType="numeric"
+                        onChangeText={setGivenCountValue}
+                        value={givenCountValue}
+                        placeholder="Eshik soni"
+                      />
+                      <TouchableOpacity
+                        onPress={() => {
+                          axios({
+                            url: `${mainUrl}texno-style/doors-append-history-custom/${item.id}/`,
+                            method: 'PUT',
+                            headers: {
+                              Authorization: `token ${token}`,
+                            },
+                            data: {
+                              count: Number(givenCountValue),
+                            },
+                          })
+                            .then(res => {
+                              setModalGivenCount(false);
+                              getDoors();
+                              if (givenCountValue > 0) {
+                                Alert.alert('Eshik qo‘shildi');
+                                setGivenCountValue('');
+                              } else {
+                                Alert.alert('Eshik ayrildi');
+                                setGivenCountValue('');
+                              }
+                            })
+                            .catch(err => {
+                              console.log(err);
+                            });
+                        }}
+                        style={tw`w-8/12 h-14 rounded-xl m-auto bg-[#323054]`}>
+                        <Text style={tw`text-xl m-auto text-white`}>
+                          Saqlash
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
                 <View
                   style={{
                     width: Item_width,
