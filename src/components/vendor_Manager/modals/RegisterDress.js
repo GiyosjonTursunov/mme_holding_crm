@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -8,6 +9,7 @@ import {
   FlatList,
   TextInput,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useCallback} from 'react';
 import tw from 'twrnc';
@@ -252,6 +254,18 @@ const RegisterDress = ({
         setDressName('');
         setMainPrice('');
         setDressNote('');
+        setUriImage1('');
+        setUriImage2('');
+        setUriImage3('');
+        setUriImage4('');
+        setNameImage1('');
+        setNameImage2('');
+        setNameImage3('');
+        setNameImage4('');
+        setTypeImage1('');
+        setTypeImage2('');
+        setTypeImage3('');
+        setTypeImage4('');
         setIsEnabled(false);
       }
     } else {
@@ -261,7 +275,7 @@ const RegisterDress = ({
 
   return (
     <View
-      style={tw`w-11/12 h-11 flex-row justify-between items-center mx-auto my-[1%]`}>
+      style={tw`w-11/12 h-11 mx-auto my-[2%] flex-row justify-between items-center`}>
       <TouchableOpacity
         onPress={() => {
           setDressModalVisible(true);
@@ -329,7 +343,7 @@ const RegisterDress = ({
           <View
             style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
             <View
-              style={tw`w-11/12 h-120 bg-white rounded-3xl justify-around items-center`}>
+              style={tw`w-11/12 h-160 bg-white rounded-3xl justify-around items-center`}>
               <Text style={tw`text-base mx-auto font-semibold`}>
                 Ko'ylak kiritish oynasi
               </Text>
@@ -343,139 +357,162 @@ const RegisterDress = ({
                 />
               </Pressable>
 
-              <TextInput
-                onChangeText={setDressName}
-                value={dressName}
-                placeholder="Ko'ylak nomi"
-                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
-              />
-
-              <TextInput
-                onChangeText={setMainPrice}
-                value={mainPrice}
-                placeholder="Ko'ylak narxi"
-                style={tw`w-10/12 h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3`}
-                keyboardType="numeric"
-              />
-
-              <View style={tw`flex-row items-center justify-between my-1`}>
-                <TouchableOpacity
-                  onPress={() => setDressImg1ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                  <View style={tw`w-8/12 h-full pl-2`}>
-                    <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                      Rasmi: {nameImage1}
-                    </Text>
-                  </View>
-                  <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                    <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                  </View>
-
-                  <ImagePickerModal
-                    isVisible={dressImg1ChooseModalVisible}
-                    onClose={() => setDressImg1ChooseModalVisible(false)}
-                    onImageLibraryPress={onImage1LibraryPress}
-                    onCameraPress={() => console.log('camera pressed')}
-                  />
-                </TouchableOpacity>
-
-                <Text style={tw`ml-[2%]`}>Old tomoni</Text>
-              </View>
-
-              <View style={tw`flex-row items-center justify-between my-1`}>
-                <TouchableOpacity
-                  onPress={() => setDressImg2ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                  <View style={tw`w-8/12 h-full pl-2`}>
-                    <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                      Rasmi: {nameImage2}
-                    </Text>
-                  </View>
-                  <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                    <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                  </View>
-
-                  <ImagePickerModal
-                    isVisible={dressImg2ChooseModalVisible}
-                    onClose={() => setDressImg2ChooseModalVisible(false)}
-                    onImageLibraryPress={onImage2LibraryPress}
-                    onCameraPress={() => console.log('camera pressed')}
-                  />
-                </TouchableOpacity>
-
-                <Text>Chap tomon</Text>
-              </View>
-
-              <View style={tw`flex-row items-center justify-between my-1`}>
-                <TouchableOpacity
-                  onPress={() => setDressImg3ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                  <View style={tw`w-8/12 h-full pl-2`}>
-                    <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                      Rasmi: {nameImage3}
-                    </Text>
-                  </View>
-                  <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                    <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                  </View>
-
-                  <ImagePickerModal
-                    isVisible={dressImg3ChooseModalVisible}
-                    onClose={() => setDressImg3ChooseModalVisible(false)}
-                    onImageLibraryPress={onImage3LibraryPress}
-                    onCameraPress={() => console.log('camera pressed')}
-                  />
-                </TouchableOpacity>
-
-                <Text>O'ng tomon</Text>
-              </View>
-
-              <View style={tw`flex-row items-center justify-between my-1`}>
-                <TouchableOpacity
-                  onPress={() => setDressImg4ChooseModalVisible(true)}
-                  style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                  <View style={tw`w-8/12 h-full pl-2`}>
-                    <Text style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                      Rasmi: {nameImage4}
-                    </Text>
-                  </View>
-                  <View
-                    style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                    <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                  </View>
-
-                  <ImagePickerModal
-                    isVisible={dressImg4ChooseModalVisible}
-                    onClose={() => setDressImg4ChooseModalVisible(false)}
-                    onImageLibraryPress={onImage4LibraryPress}
-                    onCameraPress={() => console.log('camera pressed')}
-                  />
-                </TouchableOpacity>
-
-                <Text>Orqa tomon</Text>
-              </View>
-              <View
-                style={tw`flex-row justify-between items-center w-10/12 mx-auto`}>
-                <ShleftList
-                  setShleftId={setShleftId}
-                  setSelectedShleftId={setSelectedShleftId}
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <TextInput
+                  onChangeText={setDressName}
+                  value={dressName}
+                  placeholder="Ko'ylak nomi"
+                  style={tw`w-full h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3 my-[1%]`}
                 />
-                <ColorList
-                  setSelectedColorId={setSelectedColorId}
-                  setColorId={setColorId}
-                />
-              </View>
 
-              <TouchableOpacity
-                onPress={createDress}
-                style={tw`w-5.5/12 h-12 bg-[#242424] mx-auto rounded-full`}>
-                <Text style={tw`text-white text-base font-bold m-auto`}>
-                  Saqlash
-                </Text>
-              </TouchableOpacity>
+                <TextInput
+                  onChangeText={setMainPrice}
+                  value={mainPrice}
+                  placeholder="Ko'ylak narxi"
+                  style={tw`w-full h-10 border border-[rgba(0,0,0,0.5)] rounded-xl text-base font-semibold pl-3 my-[1%]`}
+                  keyboardType="numeric"
+                />
+
+                <View style={tw`flex-row items-center justify-between my-[1%]`}>
+                  <TouchableOpacity
+                    onPress={() => setDressImg1ChooseModalVisible(true)}
+                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
+                    <View style={tw`w-8/12 h-full pl-2`}>
+                      <Text
+                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
+                        Rasmi: {nameImage1}
+                      </Text>
+                    </View>
+                    <View
+                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
+                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
+                    </View>
+
+                    <ImagePickerModal
+                      isVisible={dressImg1ChooseModalVisible}
+                      onClose={() => setDressImg1ChooseModalVisible(false)}
+                      onImageLibraryPress={onImage1LibraryPress}
+                      onCameraPress={() => console.log('camera pressed')}
+                    />
+                  </TouchableOpacity>
+
+                  <Text style={tw`ml-[2%]`}>Old tomoni</Text>
+                </View>
+
+                {uriImage1 ? (
+                  <Image source={{uri: uriImage1}} style={tw`w-full h-50`} />
+                ) : null}
+
+                <View style={tw`flex-row items-center justify-between my-[1%]`}>
+                  <TouchableOpacity
+                    onPress={() => setDressImg2ChooseModalVisible(true)}
+                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
+                    <View style={tw`w-8/12 h-full pl-2`}>
+                      <Text
+                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
+                        Rasmi: {nameImage2}
+                      </Text>
+                    </View>
+                    <View
+                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
+                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
+                    </View>
+
+                    <ImagePickerModal
+                      isVisible={dressImg2ChooseModalVisible}
+                      onClose={() => setDressImg2ChooseModalVisible(false)}
+                      onImageLibraryPress={onImage2LibraryPress}
+                      onCameraPress={() => console.log('camera pressed')}
+                    />
+                  </TouchableOpacity>
+
+                  <Text>Chap tomon</Text>
+                </View>
+
+                {uriImage2 ? (
+                  <Image source={{uri: uriImage2}} style={tw`w-full h-50`} />
+                ) : null}
+
+                <View style={tw`flex-row items-center justify-between my-[1%]`}>
+                  <TouchableOpacity
+                    onPress={() => setDressImg3ChooseModalVisible(true)}
+                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
+                    <View style={tw`w-8/12 h-full pl-2`}>
+                      <Text
+                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
+                        Rasmi: {nameImage3}
+                      </Text>
+                    </View>
+                    <View
+                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
+                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
+                    </View>
+
+                    <ImagePickerModal
+                      isVisible={dressImg3ChooseModalVisible}
+                      onClose={() => setDressImg3ChooseModalVisible(false)}
+                      onImageLibraryPress={onImage3LibraryPress}
+                      onCameraPress={() => console.log('camera pressed')}
+                    />
+                  </TouchableOpacity>
+
+                  <Text>O'ng tomon</Text>
+                </View>
+
+                {uriImage3 ? (
+                  <Image source={{uri: uriImage3}} style={tw`w-full h-50`} />
+                ) : null}
+
+                <View style={tw`flex-row items-center justify-between my-[1%]`}>
+                  <TouchableOpacity
+                    onPress={() => setDressImg4ChooseModalVisible(true)}
+                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
+                    <View style={tw`w-8/12 h-full pl-2`}>
+                      <Text
+                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
+                        Rasmi: {nameImage4}
+                      </Text>
+                    </View>
+                    <View
+                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
+                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
+                    </View>
+
+                    <ImagePickerModal
+                      isVisible={dressImg4ChooseModalVisible}
+                      onClose={() => setDressImg4ChooseModalVisible(false)}
+                      onImageLibraryPress={onImage4LibraryPress}
+                      onCameraPress={() => console.log('camera pressed')}
+                    />
+                  </TouchableOpacity>
+
+                  <Text>Orqa tomon</Text>
+                </View>
+
+                {uriImage4 ? (
+                  <Image source={{uri: uriImage4}} style={tw`w-full h-50`} />
+                ) : null}
+
+                <View
+                  style={tw`flex-row justify-between items-center w-10/12 mx-auto`}>
+                  <ShleftList
+                    setShleftId={setShleftId}
+                    setSelectedShleftId={setSelectedShleftId}
+                  />
+                  <ColorList
+                    setSelectedColorId={setSelectedColorId}
+                    setColorId={setColorId}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={createDress}
+                  style={tw`w-5.5/12 h-12 bg-[#242424] mx-auto rounded-full`}>
+                  <Text style={tw`text-white text-base font-bold m-auto`}>
+                    Saqlash
+                  </Text>
+                </TouchableOpacity>
+              </ScrollView>
             </View>
           </View>
         </Modal>
