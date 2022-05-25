@@ -27,6 +27,7 @@ const Header = ({headerName, isRegister}) => {
   useEffect(() => {
     const getData = async () => {
       const jsonValue = await AsyncStorage.getItem('@user');
+      // console.error('jsonValue =>', jsonValue);
       if (jsonValue) {
         let parsedJson = jsonValue != null ? JSON.parse(jsonValue) : null;
         if (!parsedJson.token) {
@@ -98,7 +99,7 @@ const Header = ({headerName, isRegister}) => {
                 dispatch(setIsLogIn(false));
                 dispatch(setRole(''));
               })
-              .catch(err => {
+              .catch(_err => {
                 dispatch(setIsLogIn(false));
                 dispatch(setRole(''));
               });

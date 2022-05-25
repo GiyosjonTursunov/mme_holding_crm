@@ -14,7 +14,7 @@ const ChooseCompanyScreen = ({navigation}) => {
         style={tw`w-full h-full rounded-tr-3xl rounded-tl-3xl pt-10 flex-row flex-wrap justify-around items-center bg-[#E4F3FB]`}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('RegisterScreen')}
+          onPress={() => navigation.navigate('LoginScreen', {key: '1Sonia'})}
           style={[
             tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#00B6E4]`,
             {
@@ -36,9 +36,7 @@ const ChooseCompanyScreen = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() =>
-            navigation.navigate('RegisterScreen', {key: 'lastoria'})
-          }
+          onPress={() => navigation.navigate('LoginScreen', {key: 'LaStoria'})}
           style={[
             tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#821F81]`,
             {
@@ -60,7 +58,9 @@ const ChooseCompanyScreen = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('RegisterScreen')}
+          onPress={() =>
+            navigation.navigate('LoginScreen', {key: 'TexnoStyle'})
+          }
           style={[
             tw`w-4.7/12 h-30 my-2 rounded-3xl bg-white border-b-2 border-[#D70000]`,
             {

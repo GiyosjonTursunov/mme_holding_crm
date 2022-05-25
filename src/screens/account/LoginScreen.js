@@ -18,6 +18,15 @@ import {mainUrl} from '../../config/apiUrl';
 import {useDispatch} from 'react-redux';
 import {setIsLogIn, setRole} from '../../redux/actions';
 
+const storeData = async value => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('@user', jsonValue);
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
 const LoginScreen = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -26,44 +35,74 @@ const LoginScreen = ({route}) => {
   const [password, setPassword] = useState('');
 
   const sendLogin = () => {
-    if (route.params?.key !== 'lastoria') {
-      Alert.alert('Bu akkauntga faqat LaStoria hamkorligi ruxsat berilgan!');
-    } else {
-      const loginData = {
-        username: phone,
-        password: password,
-      };
-      let urlLogin = `${mainUrl}auth/login/`;
-      axios({
-        url: urlLogin,
-        method: 'POST',
-        data: loginData,
-      })
-        .then(({data}) => {
+    // if (route.params?.key === 'LaStoria') {
+    const loginData = {
+      username: phone,
+      password: password,
+    };
+    let urlLogin = `${mainUrl}auth/login/`;
+    axios({
+      url: urlLogin,
+      method: 'POST',
+      data: loginData,
+    })
+      .then(({data}) => {
+        if (data.role === 'DIRECTOR') {
           storeData(data);
           dispatch(setIsLogIn(true));
           dispatch(setRole(data.role));
-        })
-        .catch(_err => {
-          console.warn('err =>', _err);
-          Alert.alert("You don't have permission");
-        });
-    }
-  };
-
-  const storeData = async value => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('@user', jsonValue);
-    } catch (e) {
-      console.warn(e);
-    }
+        } else if (
+          data.role === 'TEXNOSTYLE_MANAGER' &&
+          route.params?.key === 'TexnoStyle'
+        ) {
+          storeData(data);
+          dispatch(setIsLogIn(true));
+          dispatch(setRole(data.role));
+        } else if (
+          (data.role === 'VENDOR_MANAGER' ||
+            data.role === 'VENDOR' ||
+            data.role === 'WAREHOUSE_MANAGER' ||
+            data.role === 'DECORATOR_MANAGER' ||
+            data.role === 'SALON' ||
+            data.role === 'SMM') &&
+          route.params?.key === 'LaStoria'
+        ) {
+          storeData(data);
+          dispatch(setIsLogIn(true));
+          dispatch(setRole(data.role));
+        } else {
+          const checkRole = roleUser => {
+            if (
+              roleUser === 'VENDOR_MANAGER' ||
+              roleUser === 'VENDOR' ||
+              roleUser === 'WAREHOUSE_MANAGER' ||
+              roleUser === 'DECORATOR_MANAGER' ||
+              roleUser === 'SALON' ||
+              roleUser === 'SMM'
+            ) {
+              return 'LaStoria';
+            } else if (roleUser === 'TEXNOSTYLE_MANAGER') {
+              return 'TexnoStyle';
+            }
+          };
+          console.warn(route.params.key);
+          Alert.alert(
+            `Bu akkauntga faqat ${checkRole(
+              data.role,
+            )} hamkorligi ruxsat berilgan!`,
+          );
+        }
+      })
+      .catch(_err => {
+        console.warn('err =>', _err);
+        Alert.alert("Email yoki parol noto'g'ri");
+      });
   };
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`flex-1 bg-white`}>
-        <View style={tw`flex-1 justify-center relative mt-15`}>
+        <View style={tw`flex-1 justify-center relative mt-4`}>
           <Text style={[tw`mx-auto mt-5 text-7xl`]}>MME</Text>
           <Text style={tw`mx-auto text-xs text-[rgba(0,0,0,0.5)] mt-[-3%]`}>
             Holding company

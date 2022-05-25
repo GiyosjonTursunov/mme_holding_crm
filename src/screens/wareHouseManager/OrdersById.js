@@ -25,7 +25,7 @@ const OrdersById = ({route}) => {
   const [dressImg, setDressImg] = useState([]);
 
   const [selectedDressImg, setSelectedDressImg] = useState([]);
-  const {token} = useSelector(state => state.userReducer);
+  const {token, role} = useSelector(state => state.userReducer);
 
   const started = () => {
     axios({
@@ -51,7 +51,6 @@ const OrdersById = ({route}) => {
               resSale.data?.dress?.img1,
               resSale.data?.dress?.img2,
               resSale.data?.dress?.img3,
-              resSale.data?.dress?.img4,
             ]);
           })
           .catch(_err => {
@@ -96,7 +95,6 @@ const OrdersById = ({route}) => {
           res.data.dress.img1,
           res.data.dress.img2,
           res.data.dress.img3,
-          res.data.dress.img4,
         ]);
       })
       .catch(_err => {
@@ -198,40 +196,39 @@ const OrdersById = ({route}) => {
           </Text>
         </View>
 
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>Salon nomi</Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.salon?.name}
-          </Text>
-        </View>
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Telefon raqam
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.salon?.phone}
-          </Text>
-        </View>
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Salon manzili
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale?.salon?.address}
-          </Text>
-        </View>
-        <View
-          style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
-          <Text style={tw`text-base font-semibold text-black`}>
-            Yetkazib berish
-          </Text>
-          <Text style={tw`text-base font-semibold text-black`}>
-            {sale.need_send ? 'SHART' : 'SHART EMAS'}
-          </Text>
-        </View>
+        {role === 'DECORATOR_MANAGER' ? null : (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>
+              Telefon raqam
+            </Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale?.salon?.phone}
+            </Text>
+          </View>
+        )}
+        {role === 'DECORATOR_MANAGER' ? null : (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>
+              Salon manzili
+            </Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale?.salon?.address}
+            </Text>
+          </View>
+        )}
+        {role === 'DECORATOR_MANAGER' ? null : (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>
+              Yetkazib berish
+            </Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale.need_send ? 'SHART' : 'SHART EMAS'}
+            </Text>
+          </View>
+        )}
 
         <Text style={tw`text-xl mx-auto`}>Komentariya : {sale?.note}</Text>
 

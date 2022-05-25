@@ -18,6 +18,8 @@ import {mainUrl} from '../../config/apiUrl';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 
+import LottieView from 'lottie-react-native';
+
 const DebtorsSales = () => {
   const {token, userId} = useSelector(state => state.userReducer);
   const [simpleSales, setSimpleSales] = useState([]);
@@ -194,13 +196,22 @@ const DebtorsSales = () => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={getData} />
       }>
-      <FlatList
-        data={simpleSales}
-        horizontal
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
+      {!simpleSales.length ? (
+        <LottieView
+          source={require('../../../assets/lottie/71454-waving-girls.json')}
+          style={tw`w-full mx-auto`}
+          autoPlay
+          loop
+        />
+      ) : (
+        <FlatList
+          data={simpleSales}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     </ScrollView>
   );
 };

@@ -45,7 +45,7 @@ const SimpleSale = () => {
 
   const sendSimpleSale = () => {
     console.warn('dataForSimpleSale =>', dataForSimpleSale);
-    if (dressId && givenPrice && salonId && magazineId) {
+    if (dressId && givenPrice >= 0 && salonId && magazineId) {
       axios({
         url: `${mainUrl}lastoria/simple-sales/`,
         method: 'POST',
@@ -71,6 +71,7 @@ const SimpleSale = () => {
           Alert.alert('Error');
         });
     } else {
+      console.warn(dressId, givenPrice, salonId, magazineId);
       Alert.alert('Заполните все поля');
     }
   };

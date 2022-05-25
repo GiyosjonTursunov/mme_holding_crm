@@ -102,15 +102,12 @@ const RegisterDress = ({
   const [nameImage1, setNameImage1] = useState('');
   const [nameImage2, setNameImage2] = useState('');
   const [nameImage3, setNameImage3] = useState('');
-  const [nameImage4, setNameImage4] = useState('');
   const [uriImage1, setUriImage1] = useState('');
   const [uriImage2, setUriImage2] = useState('');
   const [uriImage3, setUriImage3] = useState('');
-  const [uriImage4, setUriImage4] = useState('');
   const [typeImage1, setTypeImage1] = useState('');
   const [typeImage2, setTypeImage2] = useState('');
   const [typeImage3, setTypeImage3] = useState('');
-  const [typeImage4, setTypeImage4] = useState('');
 
   const DressItem = ({id, name, price, color, shleft, all, shleftName}) => {
     return (
@@ -185,26 +182,10 @@ const RegisterDress = ({
     );
   }, []);
 
-  const onImage4LibraryPress = useCallback(() => {
-    const options = {
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
-    };
-
-    ImagePicker.launchImageLibrary(options, setDressImgPickerResponse).then(
-      async image => {
-        setNameImage4(image.assets[0].fileName);
-        setUriImage4(image.assets[0].uri);
-        setTypeImage4(image.assets[0].type);
-        setDressImg4ChooseModalVisible(false);
-      },
-    );
-  }, []);
-
   const formDataImg = new FormData();
 
   const createDress = async () => {
+    console.warn(token);
     if (dressName && Number(mainPrice)) {
       console.log(dressName, mainPrice);
       formDataImg.append('name', dressName);
@@ -232,12 +213,6 @@ const RegisterDress = ({
         name: nameImage3,
       });
 
-      formDataImg.append('img4', {
-        uri: uriImage4,
-        type: typeImage4,
-        name: nameImage4,
-      });
-
       let url = `${mainUrl}lastoria/dress/`;
       let res = await fetch(url, {
         method: 'POST',
@@ -247,8 +222,6 @@ const RegisterDress = ({
           Authorization: 'token ' + token,
         },
       });
-      // let responseJson = await res.json();
-      console.log(res.status, 'responseJson');
       if (res.status === 201) {
         Alert.alert("Ko'ylak qo'shildi");
         setDressName('');
@@ -257,16 +230,15 @@ const RegisterDress = ({
         setUriImage1('');
         setUriImage2('');
         setUriImage3('');
-        setUriImage4('');
         setNameImage1('');
         setNameImage2('');
         setNameImage3('');
-        setNameImage4('');
         setTypeImage1('');
         setTypeImage2('');
         setTypeImage3('');
-        setTypeImage4('');
         setIsEnabled(false);
+      } else {
+        Alert.alert('Bazada xatolik');
       }
     } else {
       Alert.alert("Iltimos, majburiy ma'lumotlarni to'g'ri to'ldiring");
@@ -343,7 +315,7 @@ const RegisterDress = ({
           <View
             style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
             <View
-              style={tw`w-11/12 h-160 bg-white rounded-3xl justify-around items-center`}>
+              style={tw`w-11/12 h-145 bg-white rounded-3xl justify-around items-center`}>
               <Text style={tw`text-base mx-auto font-semibold`}>
                 Ko'ylak kiritish oynasi
               </Text>
@@ -375,36 +347,6 @@ const RegisterDress = ({
 
                 <View style={tw`flex-row items-center justify-between my-[1%]`}>
                   <TouchableOpacity
-                    onPress={() => setDressImg1ChooseModalVisible(true)}
-                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                    <View style={tw`w-8/12 h-full pl-2`}>
-                      <Text
-                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                        Rasmi: {nameImage1}
-                      </Text>
-                    </View>
-                    <View
-                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                    </View>
-
-                    <ImagePickerModal
-                      isVisible={dressImg1ChooseModalVisible}
-                      onClose={() => setDressImg1ChooseModalVisible(false)}
-                      onImageLibraryPress={onImage1LibraryPress}
-                      onCameraPress={() => console.log('camera pressed')}
-                    />
-                  </TouchableOpacity>
-
-                  <Text style={tw`ml-[2%]`}>Old tomoni</Text>
-                </View>
-
-                {uriImage1 ? (
-                  <Image source={{uri: uriImage1}} style={tw`w-full h-50`} />
-                ) : null}
-
-                <View style={tw`flex-row items-center justify-between my-[1%]`}>
-                  <TouchableOpacity
                     onPress={() => setDressImg2ChooseModalVisible(true)}
                     style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                     <View style={tw`w-8/12 h-full pl-2`}>
@@ -426,11 +368,41 @@ const RegisterDress = ({
                     />
                   </TouchableOpacity>
 
-                  <Text>Chap tomon</Text>
+                  <Text>Old yaqin</Text>
                 </View>
 
                 {uriImage2 ? (
                   <Image source={{uri: uriImage2}} style={tw`w-full h-50`} />
+                ) : null}
+
+                <View style={tw`flex-row items-center justify-between my-[1%]`}>
+                  <TouchableOpacity
+                    onPress={() => setDressImg1ChooseModalVisible(true)}
+                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
+                    <View style={tw`w-8/12 h-full pl-2`}>
+                      <Text
+                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
+                        Rasmi: {nameImage1}
+                      </Text>
+                    </View>
+                    <View
+                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
+                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
+                    </View>
+
+                    <ImagePickerModal
+                      isVisible={dressImg1ChooseModalVisible}
+                      onClose={() => setDressImg1ChooseModalVisible(false)}
+                      onImageLibraryPress={onImage1LibraryPress}
+                      onCameraPress={() => console.log('camera pressed')}
+                    />
+                  </TouchableOpacity>
+
+                  <Text style={tw`ml-[2%]`}>Old to'liq</Text>
+                </View>
+
+                {uriImage1 ? (
+                  <Image source={{uri: uriImage1}} style={tw`w-full h-50`} />
                 ) : null}
 
                 <View style={tw`flex-row items-center justify-between my-[1%]`}>
@@ -456,41 +428,11 @@ const RegisterDress = ({
                     />
                   </TouchableOpacity>
 
-                  <Text>O'ng tomon</Text>
+                  <Text>Orqa tomon</Text>
                 </View>
 
                 {uriImage3 ? (
                   <Image source={{uri: uriImage3}} style={tw`w-full h-50`} />
-                ) : null}
-
-                <View style={tw`flex-row items-center justify-between my-[1%]`}>
-                  <TouchableOpacity
-                    onPress={() => setDressImg4ChooseModalVisible(true)}
-                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                    <View style={tw`w-8/12 h-full pl-2`}>
-                      <Text
-                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                        Rasmi: {nameImage4}
-                      </Text>
-                    </View>
-                    <View
-                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                    </View>
-
-                    <ImagePickerModal
-                      isVisible={dressImg4ChooseModalVisible}
-                      onClose={() => setDressImg4ChooseModalVisible(false)}
-                      onImageLibraryPress={onImage4LibraryPress}
-                      onCameraPress={() => console.log('camera pressed')}
-                    />
-                  </TouchableOpacity>
-
-                  <Text>Orqa tomon</Text>
-                </View>
-
-                {uriImage4 ? (
-                  <Image source={{uri: uriImage4}} style={tw`w-full h-50`} />
                 ) : null}
 
                 <View
