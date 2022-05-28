@@ -8,23 +8,22 @@ import {
   SafeAreaView,
   Alert,
   FlatList,
-  Modal,
   Dimensions,
 } from 'react-native';
 import tw from 'twrnc';
 
 import axios from 'axios';
-import ImageZoom from 'react-native-image-pan-zoom';
 
 import {mainUrl} from '../../config/apiUrl';
 import Header from '../../components/global/Header';
 import {useSelector} from 'react-redux';
+import ImageZoomCustom from '../../components/modal/ImageZoomCustom';
 
 const OrdersById = ({route}) => {
   const [sale, setSale] = useState([]);
   const [dressImg, setDressImg] = useState([]);
 
-  const [selectedDressImg, setSelectedDressImg] = useState([]);
+  const [selectedDressImg, setSelectedDressImg] = useState();
   const {token, role} = useSelector(state => state.userReducer);
 
   const started = () => {
@@ -65,6 +64,7 @@ const OrdersById = ({route}) => {
   };
 
   const sended = () => {
+    console.error('sended function need to realize');
     // axios({
     //   url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
     //   method: 'POST',
@@ -104,6 +104,9 @@ const OrdersById = ({route}) => {
       });
   }, [route.params.saleId, token]);
 
+  const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
+    useState(false);
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <Header
@@ -116,48 +119,24 @@ const OrdersById = ({route}) => {
         data={dressImg}
         renderItem={({item}) => (
           <TouchableOpacity
-            style={tw`w-60 h-80 mx-auto mb-[${
+            style={tw`w-60 h-80 mx-1 mb-[${
               Dimensions.get('window').height / 7
             }px]`}
             activeOpacity={0.8}
-            onPress={() => setSelectedDressImg(mainUrl + 'media/' + item)}>
+            onPress={() => {
+              setSelectedDressImg(mainUrl + 'media/' + item);
+              setSelectedDressImgModalVisible(true);
+            }}>
             <Image
               source={{uri: `${mainUrl + 'media/' + item}`}}
               style={tw`w-full h-full rounded-xl`}
               resizeMode="contain"
             />
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={selectedDressImg === mainUrl + 'media/' + item}
-              onRequestClose={() => {
-                setSelectedDressImg(false);
-              }}>
-              <View style={tw`flex-1 bg-white`}>
-                <ImageZoom
-                  cropWidth={Dimensions.get('window').width}
-                  cropHeight={Dimensions.get('window').height}
-                  imageWidth={Dimensions.get('window').width}
-                  imageHeight={Dimensions.get('window').height}>
-                  <Image
-                    source={{uri: `${selectedDressImg}`}}
-                    style={tw`w-full h-full`}
-                    resizeMode="contain"
-                  />
-                </ImageZoom>
-                <TouchableOpacity
-                  style={tw`absolute top-0 left-0 mt-15 ml-5`}
-                  onPress={() => {
-                    setSelectedDressImg(false);
-                  }}>
-                  <Image
-                    source={require('../../../assets/back.png')}
-                    style={tw`w-10 h-10`}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-            </Modal>
+            <ImageZoomCustom
+              selectedDressImgModalVisible={selectedDressImgModalVisible}
+              setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
+              selectedDressImg={selectedDressImg}
+            />
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}

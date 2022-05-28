@@ -18,11 +18,16 @@ import {
   setUserId,
   setMagazineId,
 } from '../../redux/actions';
+import NetInfo from '@react-native-community/netinfo';
+
+import LottieView from 'lottie-react-native';
 
 const Header = ({headerName, isRegister}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [user_data, setUser_data] = useState();
+
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -54,6 +59,13 @@ const Header = ({headerName, isRegister}) => {
     };
     getData();
   }, [dispatch]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return unsubscribe;
+  }, [isConnected]);
 
   const ExitAccount = () => {
     if (isRegister) {
@@ -120,11 +132,21 @@ const Header = ({headerName, isRegister}) => {
       <View style={tw`flex-row`}>
         <TouchableOpacity activeOpacity={0.7} onPress={ExitAccount}>
           {user_data?.img ? (
-            <Image
-              source={{uri: mainUrl + 'media/' + user_data.img}}
-              style={tw`w-10 h-10 rounded-full`}
-              onPress={ExitAccount}
-            />
+            <View style={tw`flex-row`}>
+              {isConnected ? null : (
+                <LottieView
+                  source={require('../../../assets/lottie/no-connection.json')}
+                  autoPlay
+                  loop
+                  style={tw`w-8 h-8 m-auto`}
+                />
+              )}
+              <Image
+                source={{uri: mainUrl + 'media/' + user_data.img}}
+                style={tw`w-10 h-10 rounded-full`}
+                onPress={ExitAccount}
+              />
+            </View>
           ) : (
             <Image
               source={require('../../../assets/profile-user.png')}

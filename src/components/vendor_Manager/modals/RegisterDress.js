@@ -15,11 +15,14 @@ import React, {useState, useCallback} from 'react';
 import tw from 'twrnc';
 import {ImagePickerModal} from '../../../modals/image-picker-modal';
 import axios from 'axios';
-import {mainUrl} from '../../../config/apiUrl';
+import {baseUrl, mainUrl} from '../../../config/apiUrl';
 import * as ImagePicker from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import ShleftList from './ShleftList';
 import ColorList from './ColorList';
+import LoadingLottie from '../../global/LoadingLottie';
+import ImageZoomCustom from '../../modal/ImageZoomCustom';
+import ImageOptimize from '../../global/CustomImage';
 
 const RegisterDress = ({
   setDressId,
@@ -42,8 +45,6 @@ const RegisterDress = ({
     useState(false);
   const [dressImg3ChooseModalVisible, setDressImg3ChooseModalVisible] =
     useState(false);
-  const [dressImg4ChooseModalVisible, setDressImg4ChooseModalVisible] =
-    useState(false);
 
   const [dressList, setDressList] = useState([]);
 
@@ -53,6 +54,11 @@ const RegisterDress = ({
 
   const [isEnabled, setIsEnabled] = useState(false);
 
+  const [showLoading, setShowLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const [dressImg, setDressImg] = useState([]);
+
   const getDressIdForSale = (
     id,
     name,
@@ -61,6 +67,9 @@ const RegisterDress = ({
     shleft,
     all,
     shleftName,
+    img1,
+    img2,
+    img3,
   ) => {
     setDressId ? setDressId(id) : null;
     setDressForSelect(name);
@@ -71,6 +80,7 @@ const RegisterDress = ({
     console.warn('all ', all);
     setSelectedShleftId ? setSelectedShleftId(shleft) : null;
     setSelectedShleftName ? setSelectedShleftName(shleftName) : null;
+    setDressImg([img1, img2, img3]);
   };
 
   const getDress = () => {
@@ -82,15 +92,15 @@ const RegisterDress = ({
       },
     })
       .then(res => {
-        if (res.data.length === dressList.length) {
-          return null;
-        } else {
-          setDressList(res.data);
-          console.warn('dressList', dressList);
-        }
+        // if (res.data.length === dressList.length) {
+        //   return null;
+        // } else {
+        setDressList(res.data);
+        console.error('dressList', res.data);
+        // }
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -109,16 +119,63 @@ const RegisterDress = ({
   const [typeImage2, setTypeImage2] = useState('');
   const [typeImage3, setTypeImage3] = useState('');
 
-  const DressItem = ({id, name, price, color, shleft, all, shleftName}) => {
+  const [selectedDressImg, setSelectedDressImg] = useState();
+
+  const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
+    useState(false);
+
+  const DressItem = ({
+    id,
+    name,
+    price,
+    color,
+    shleft,
+    all,
+    shleftName,
+    img1,
+    img2,
+    img3,
+  }) => {
     return (
-      <TouchableOpacity
-        onPress={() =>
-          getDressIdForSale(id, name, price, color, shleft, all, shleftName)
-        }
-        style={tw`w-11.7/12 h-11.5 border-b pl-3 flex-row items-center border-[rgba(0,0,0,0.1)] mx-auto`}>
-        <Text style={tw`w-1.5/12 text-base font-bold`}>{id}</Text>
-        <Text style={tw`my-auto text-lg`}>{name}</Text>
-      </TouchableOpacity>
+      <View
+        style={tw`w-11.7/12 border-b flex-row border-[rgba(0,0,0,0.1)] mx-auto m-2`}>
+        <TouchableOpacity
+          onPress={() => {
+            console.warn('img1', baseUrl + img1);
+            setSelectedDressImg(baseUrl + img1);
+            setSelectedDressImgModalVisible(true);
+          }}
+          style={tw`w-4/12 h-25`}>
+          <Image
+            source={{uri: baseUrl + img1}}
+            style={tw`w-full h-full`}
+            resizeMode="contain"
+          />
+          <ImageZoomCustom
+            selectedDressImgModalVisible={selectedDressImgModalVisible}
+            setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
+            selectedDressImg={selectedDressImg}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={tw`w-8/12 pl-2 justify-center`}
+          onPress={() => {
+            getDressIdForSale(
+              id,
+              name,
+              price,
+              color,
+              shleft,
+              all,
+              shleftName,
+              img1,
+              img2,
+              img3,
+            );
+          }}>
+          <Text style={tw`text-lg`}>{name}</Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -130,6 +187,10 @@ const RegisterDress = ({
       color={item.color}
       shleft={item.shleft.id}
       shleftName={item.shleft.name}
+      img1={item.img1}
+      img2={item.img2}
+      img3={item.img3}
+      img4={item.img4}
       all={item}
     />
   );
@@ -187,6 +248,7 @@ const RegisterDress = ({
   const createDress = async () => {
     console.warn(token);
     if (dressName && Number(mainPrice)) {
+      setShowLoading(true);
       console.log(dressName, mainPrice);
       formDataImg.append('name', dressName);
       formDataImg.append('price', mainPrice);
@@ -223,7 +285,11 @@ const RegisterDress = ({
         },
       });
       if (res.status === 201) {
-        Alert.alert("Ko'ylak qo'shildi");
+        setShowLoading(false);
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 2000);
         setDressName('');
         setMainPrice('');
         setDressNote('');
@@ -238,7 +304,10 @@ const RegisterDress = ({
         setTypeImage3('');
         setIsEnabled(false);
       } else {
-        Alert.alert('Bazada xatolik');
+        setShowLoading(false);
+        setTimeout(() => {
+          Alert.alert('Bazada xatolik');
+        }, 300);
       }
     } else {
       Alert.alert("Iltimos, majburiy ma'lumotlarni to'g'ri to'ldiring");
@@ -277,8 +346,10 @@ const RegisterDress = ({
           }}>
           <View
             style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
+            {/* <View
+              style={tw`w-10.5/12 h-100 bg-[#F1EFF7] rounded-2xl justify-around relative`}> */}
             <View
-              style={tw`w-10.5/12 h-100 bg-[#F1EFF7] rounded-2xl justify-around relative`}>
+              style={tw`w-10.5/12 mx-auto h-90 bg-[#FBFBFB] rounded-3xl rounded-2xl p-2`}>
               <Pressable
                 style={tw`absolute right-[-2%] top-[-10px]`}
                 onPress={() => setDressModalVisible(false)}>
@@ -287,15 +358,13 @@ const RegisterDress = ({
                   style={tw`w-9 h-9`}
                 />
               </Pressable>
-              <View
-                style={tw`w-10.5/12 mx-auto h-83 bg-[#FBFBFB] rounded-3xl rounded-2xl`}>
-                <FlatList
-                  data={dressList}
-                  renderItem={renderDress}
-                  keyExtractor={item => item.id}
-                />
-              </View>
+              <FlatList
+                data={dressList}
+                renderItem={renderDress}
+                keyExtractor={item => item.id}
+              />
             </View>
+            {/* </View> */}
           </View>
         </Modal>
       </TouchableOpacity>
@@ -453,6 +522,17 @@ const RegisterDress = ({
                   <Text style={tw`text-white text-base font-bold m-auto`}>
                     Saqlash
                   </Text>
+                  <LoadingLottie
+                    animation={require('../../../../assets/lottie/loading-bubbles.json')}
+                    setShowLoading={setShowLoading}
+                    showLoading={showLoading}
+                  />
+
+                  <LoadingLottie
+                    animation={require('../../../../assets/lottie/success.json')}
+                    setShowLoading={setShowSuccess}
+                    showLoading={showSuccess}
+                  />
                 </TouchableOpacity>
               </ScrollView>
             </View>

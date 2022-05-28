@@ -14,6 +14,7 @@ import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {mainUrl} from '../../../config/apiUrl';
+import LoadingLottie from '../../global/LoadingLottie';
 
 const SimpleSale = () => {
   const [dressId, setDressId] = useState();
@@ -30,6 +31,8 @@ const SimpleSale = () => {
 
   const [selectedShleftName, setSelectedShleftName] = useState();
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const dataForSimpleSale = {
     dress: dressId,
     color: colorId,
@@ -44,8 +47,9 @@ const SimpleSale = () => {
   };
 
   const sendSimpleSale = () => {
-    console.warn('dataForSimpleSale =>', dataForSimpleSale);
+    // console.warn('dataForSimpleSale =>', dataForSimpleSale);
     if (dressId && givenPrice >= 0 && salonId && magazineId) {
+      setShowSuccess(true);
       axios({
         url: `${mainUrl}lastoria/simple-sales/`,
         method: 'POST',
@@ -55,7 +59,11 @@ const SimpleSale = () => {
         },
       })
         .then(res => {
-          Alert.alert('Продажа успешно добавлена');
+          setShowSuccess(true);
+          setTimeout(() => {
+            setShowSuccess(false);
+          }, 2000);
+
           setDressId('');
           setColorId('');
           setSelectedShleftId('');
@@ -67,8 +75,14 @@ const SimpleSale = () => {
           setNote('');
         })
         .catch(err => {
-          console.error(err);
-          Alert.alert('Error');
+          setShowSuccess(false);
+          if (
+            err.response.status === 401 ||
+            err.response.status === 400 ||
+            err.response.status === 403
+          ) {
+            Alert.alert('Вы не авторизованы');
+          }
         });
     } else {
       console.warn(dressId, givenPrice, salonId, magazineId);
@@ -78,6 +92,11 @@ const SimpleSale = () => {
 
   return (
     <ScrollView style={tw`flex-1 bg-white`}>
+      <LoadingLottie
+        showLoading={showSuccess}
+        setShowLoading={setShowSuccess}
+        animation={require('../../../../assets/lottie/success.json')}
+      />
       <View style={tw`mt-[3%]`}>
         <RegisterDress
           setDressId={setDressId}

@@ -34,11 +34,14 @@ const ShleftList = ({setShleftId, setSelectedShleftId}) => {
           .then(res => {
             setShleftList(res.data);
             setShleftListModalVisible(true);
-            console.error('shleftList.data =>', res.data);
           })
           .catch(err => {
             console.error(err.response.status);
-            if (err.response.status === 401) {
+            if (
+              err.response.status === 401 ||
+              err.response.status === 400 ||
+              err.response.status === 403
+            ) {
               Alert.alert('Siz royhatdan otmagansiz!');
             }
           });
