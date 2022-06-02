@@ -97,6 +97,7 @@ const DailySalesOrders = () => {
     user_name,
     salonchi_name,
     item,
+    price,
   }) => (
     <View
       style={[
@@ -151,9 +152,9 @@ const DailySalesOrders = () => {
         style={tw`flex-row my-1 items-center justify-end pr-[${
           Dimensions.get('screen').width / 20
         }px] w-6/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
-        <Text style={tw`text-white text-lg`}>Salon : </Text>
+        <Text style={tw`text-white text-lg`}>Narxi : </Text>
         <Text style={tw`text-lg text-white truncate text-ellipsis`}>
-          {salon_name}
+          {price}
         </Text>
       </View>
 
@@ -175,16 +176,20 @@ const DailySalesOrders = () => {
     </View>
   );
 
-  const renderItem = ({item}) => (
-    <Item
-      img={item?.dress?.img1}
-      dress_name={item?.dress?.name}
-      salon_name={item?.salon?.name}
-      salonchi_name={item?.salon?.user}
-      user_name={item?.user?.name}
-      item={item}
-    />
-  );
+  const renderItem = ({item}) => {
+    console.warn(item);
+    return (
+      <Item
+        img={item?.dress?.img1}
+        dress_name={item?.dress?.name}
+        salon_name={item?.salon?.name}
+        salonchi_name={item?.salon?.user}
+        user_name={item?.user?.name}
+        price={item?.main_price}
+        item={item}
+      />
+    );
+  };
 
   function mapData() {
     return (

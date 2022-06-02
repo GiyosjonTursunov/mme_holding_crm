@@ -22,7 +22,6 @@ import ShleftList from './ShleftList';
 import ColorList from './ColorList';
 import LoadingLottie from '../../global/LoadingLottie';
 import ImageZoomCustom from '../../modal/ImageZoomCustom';
-import ImageOptimize from '../../global/CustomImage';
 
 const RegisterDress = ({
   setDressId,
@@ -41,10 +40,6 @@ const RegisterDress = ({
     useState(false);
   const [dressImg1ChooseModalVisible, setDressImg1ChooseModalVisible] =
     useState(false);
-  const [dressImg2ChooseModalVisible, setDressImg2ChooseModalVisible] =
-    useState(false);
-  const [dressImg3ChooseModalVisible, setDressImg3ChooseModalVisible] =
-    useState(false);
 
   const [dressList, setDressList] = useState([]);
 
@@ -52,12 +47,8 @@ const RegisterDress = ({
 
   const [dressImgPickerResponse, setDressImgPickerResponse] = useState(null);
 
-  const [isEnabled, setIsEnabled] = useState(false);
-
   const [showLoading, setShowLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
-  const [dressImg, setDressImg] = useState([]);
 
   const getDressIdForSale = (
     id,
@@ -67,9 +58,6 @@ const RegisterDress = ({
     shleft,
     all,
     shleftName,
-    img1,
-    img2,
-    img3,
   ) => {
     setDressId ? setDressId(id) : null;
     setDressForSelect(name);
@@ -80,7 +68,6 @@ const RegisterDress = ({
     console.warn('all ', all);
     setSelectedShleftId ? setSelectedShleftId(shleft) : null;
     setSelectedShleftName ? setSelectedShleftName(shleftName) : null;
-    setDressImg([img1, img2, img3]);
   };
 
   const getDress = () => {
@@ -92,12 +79,12 @@ const RegisterDress = ({
       },
     })
       .then(res => {
-        // if (res.data.length === dressList.length) {
-        //   return null;
-        // } else {
-        setDressList(res.data);
-        console.error('dressList', res.data);
-        // }
+        if (res.data.length === dressList.length) {
+          return null;
+        } else {
+          setDressList(res.data);
+          console.error('dressList', res.data);
+        }
       })
       .catch(err => {
         console.error(err);
@@ -110,14 +97,8 @@ const RegisterDress = ({
   const [dressNote, setDressNote] = useState('');
 
   const [nameImage1, setNameImage1] = useState('');
-  const [nameImage2, setNameImage2] = useState('');
-  const [nameImage3, setNameImage3] = useState('');
   const [uriImage1, setUriImage1] = useState('');
-  const [uriImage2, setUriImage2] = useState('');
-  const [uriImage3, setUriImage3] = useState('');
   const [typeImage1, setTypeImage1] = useState('');
-  const [typeImage2, setTypeImage2] = useState('');
-  const [typeImage3, setTypeImage3] = useState('');
 
   const [selectedDressImg, setSelectedDressImg] = useState();
 
@@ -133,8 +114,6 @@ const RegisterDress = ({
     all,
     shleftName,
     img1,
-    img2,
-    img3,
   }) => {
     return (
       <View
@@ -160,18 +139,7 @@ const RegisterDress = ({
         <TouchableOpacity
           style={tw`w-8/12 pl-2 justify-center`}
           onPress={() => {
-            getDressIdForSale(
-              id,
-              name,
-              price,
-              color,
-              shleft,
-              all,
-              shleftName,
-              img1,
-              img2,
-              img3,
-            );
+            getDressIdForSale(id, name, price, color, shleft, all, shleftName);
           }}>
           <Text style={tw`text-lg`}>{name}</Text>
         </TouchableOpacity>
@@ -187,10 +155,7 @@ const RegisterDress = ({
       color={item.color}
       shleft={item.shleft.id}
       shleftName={item.shleft.name}
-      img1={item.img1}
-      img2={item.img2}
-      img3={item.img3}
-      img4={item.img4}
+      img1={item.img}
       all={item}
     />
   );
@@ -211,38 +176,6 @@ const RegisterDress = ({
     );
   }, []);
 
-  const onImage2LibraryPress = useCallback(() => {
-    const options = {
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
-    };
-    ImagePicker.launchImageLibrary(options, setDressImgPickerResponse).then(
-      async image => {
-        setNameImage2(image.assets[0].fileName);
-        setUriImage2(image.assets[0].uri);
-        setTypeImage2(image.assets[0].type);
-        setDressImg2ChooseModalVisible(false);
-      },
-    );
-  }, []);
-
-  const onImage3LibraryPress = useCallback(() => {
-    const options = {
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
-    };
-    ImagePicker.launchImageLibrary(options, setDressImgPickerResponse).then(
-      async image => {
-        setNameImage3(image.assets[0].fileName);
-        setUriImage3(image.assets[0].uri);
-        setTypeImage3(image.assets[0].type);
-        setDressImg3ChooseModalVisible(false);
-      },
-    );
-  }, []);
-
   const formDataImg = new FormData();
 
   const createDress = async () => {
@@ -257,22 +190,10 @@ const RegisterDress = ({
       formDataImg.append('shleft', shleftId);
       formDataImg.append('color', selectedColorId);
 
-      formDataImg.append('img1', {
+      formDataImg.append('img', {
         uri: uriImage1,
         type: typeImage1,
         name: nameImage1,
-      });
-
-      formDataImg.append('img2', {
-        uri: uriImage2,
-        type: typeImage2,
-        name: nameImage2,
-      });
-
-      formDataImg.append('img3', {
-        uri: uriImage3,
-        type: typeImage3,
-        name: nameImage3,
       });
 
       let url = `${mainUrl}lastoria/dress/`;
@@ -294,16 +215,11 @@ const RegisterDress = ({
         setMainPrice('');
         setDressNote('');
         setUriImage1('');
-        setUriImage2('');
-        setUriImage3('');
         setNameImage1('');
-        setNameImage2('');
-        setNameImage3('');
         setTypeImage1('');
-        setTypeImage2('');
-        setTypeImage3('');
-        setIsEnabled(false);
       } else {
+        console.warn(token);
+        console.warn('error', res);
         setShowLoading(false);
         setTimeout(() => {
           Alert.alert('Bazada xatolik');
@@ -324,9 +240,7 @@ const RegisterDress = ({
         }}
         style={tw`w-10.5/12 h-11 border border-[rgba(0,0,0,0.5)] rounded-xl pl-3 flex-row justify-between items-center pr-5`}>
         <View style={tw`h-full flex-row items-center `}>
-          <Text style={tw`text-base font-semibold text-gray-500`}>
-            Ko`ylak:
-          </Text>
+          <Text style={tw`text-lg`}>Ko`ylak:</Text>
           <Text style={tw`font-semibold text-black ml-2 text-base`}>
             {dressForSelect}
           </Text>
@@ -337,7 +251,7 @@ const RegisterDress = ({
           source={require('../../../../assets/down.png')}
         />
         <Modal
-          animationType="fade"
+          animationType="slide"
           transparent={true}
           visible={dressModalVisible}
           onRequestClose={() => {
@@ -345,11 +259,9 @@ const RegisterDress = ({
             setDressModalVisible(!dressModalVisible);
           }}>
           <View
-            style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
-            {/* <View
-              style={tw`w-10.5/12 h-100 bg-[#F1EFF7] rounded-2xl justify-around relative`}> */}
+            style={tw`flex-1 justify-end items-center bg-[rgba(0,0,0,0.5)]`}>
             <View
-              style={tw`w-10.5/12 mx-auto h-90 bg-[#FBFBFB] rounded-3xl rounded-2xl p-2`}>
+              style={tw`w-12/12 h-[80%] border bg-[#FBFBFB] rounded-3xl rounded-2xl p-2`}>
               <Pressable
                 style={tw`absolute right-[-2%] top-[-10px]`}
                 onPress={() => setDressModalVisible(false)}>
@@ -364,7 +276,6 @@ const RegisterDress = ({
                 keyExtractor={item => item.id}
               />
             </View>
-            {/* </View> */}
           </View>
         </Modal>
       </TouchableOpacity>
@@ -375,16 +286,16 @@ const RegisterDress = ({
         />
 
         <Modal
-          animationType="fade"
+          animationType="slide"
           transparent={true}
           visible={registerDressModalVisible}
           onRequestClose={() => {
             setRegisterDressModalVisible(!registerDressModalVisible);
           }}>
           <View
-            style={tw`flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]`}>
+            style={tw`flex-1 justify-end items-center bg-[rgba(0,0,0,0.5)]`}>
             <View
-              style={tw`w-11/12 h-145 bg-white rounded-3xl justify-around items-center`}>
+              style={tw`w-12/12 h-[80%] bg-white rounded-3xl justify-around items-center pt-2 pb-5`}>
               <Text style={tw`text-base mx-auto font-semibold`}>
                 Ko'ylak kiritish oynasi
               </Text>
@@ -416,36 +327,6 @@ const RegisterDress = ({
 
                 <View style={tw`flex-row items-center justify-between my-[1%]`}>
                   <TouchableOpacity
-                    onPress={() => setDressImg2ChooseModalVisible(true)}
-                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                    <View style={tw`w-8/12 h-full pl-2`}>
-                      <Text
-                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                        Rasmi: {nameImage2}
-                      </Text>
-                    </View>
-                    <View
-                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                    </View>
-
-                    <ImagePickerModal
-                      isVisible={dressImg2ChooseModalVisible}
-                      onClose={() => setDressImg2ChooseModalVisible(false)}
-                      onImageLibraryPress={onImage2LibraryPress}
-                      onCameraPress={() => console.log('camera pressed')}
-                    />
-                  </TouchableOpacity>
-
-                  <Text>Old yaqin</Text>
-                </View>
-
-                {uriImage2 ? (
-                  <Image source={{uri: uriImage2}} style={tw`w-full h-50`} />
-                ) : null}
-
-                <View style={tw`flex-row items-center justify-between my-[1%]`}>
-                  <TouchableOpacity
                     onPress={() => setDressImg1ChooseModalVisible(true)}
                     style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
                     <View style={tw`w-8/12 h-full pl-2`}>
@@ -467,41 +348,11 @@ const RegisterDress = ({
                     />
                   </TouchableOpacity>
 
-                  <Text style={tw`ml-[2%]`}>Old to'liq</Text>
+                  <Text style={tw`ml-[2%]`}>Old</Text>
                 </View>
 
                 {uriImage1 ? (
                   <Image source={{uri: uriImage1}} style={tw`w-full h-50`} />
-                ) : null}
-
-                <View style={tw`flex-row items-center justify-between my-[1%]`}>
-                  <TouchableOpacity
-                    onPress={() => setDressImg3ChooseModalVisible(true)}
-                    style={tw`w-7.5/12 h-10 flex-row rounded-xl border border-[rgba(0,0,0,0.5)]`}>
-                    <View style={tw`w-8/12 h-full pl-2`}>
-                      <Text
-                        style={tw`my-auto text-base text-[rgba(0,0,0,0.5)]`}>
-                        Rasmi: {nameImage3}
-                      </Text>
-                    </View>
-                    <View
-                      style={tw`w-4/12 h-full border-l bg-[#242424] rounded-br-xl rounded-tr-xl`}>
-                      <Text style={tw`text-base m-auto text-white`}>Files</Text>
-                    </View>
-
-                    <ImagePickerModal
-                      isVisible={dressImg3ChooseModalVisible}
-                      onClose={() => setDressImg3ChooseModalVisible(false)}
-                      onImageLibraryPress={onImage3LibraryPress}
-                      onCameraPress={() => console.log('camera pressed')}
-                    />
-                  </TouchableOpacity>
-
-                  <Text>Orqa tomon</Text>
-                </View>
-
-                {uriImage3 ? (
-                  <Image source={{uri: uriImage3}} style={tw`w-full h-50`} />
                 ) : null}
 
                 <View
