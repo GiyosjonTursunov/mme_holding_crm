@@ -267,7 +267,7 @@ const RegisterDress = ({
                 onPress={() => setDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-9 h-9`}
+                  style={tw`w-12 h-12`}
                 />
               </Pressable>
               <FlatList
@@ -305,7 +305,7 @@ const RegisterDress = ({
                 onPress={() => setRegisterDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-9 h-9`}
+                  style={tw`w-12 h-12`}
                 />
               </Pressable>
 

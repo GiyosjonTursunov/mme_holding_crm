@@ -37,7 +37,7 @@ const RegisterSalon = ({setSalonId}) => {
       <TouchableOpacity
         onPress={getSalonList}
         style={tw`w-10.5/12 h-11 border rounded-xl justify-between border-[rgba(0,0,0,0.5)] flex-row px-5 items-center`}>
-        <Text style={tw`text-base text-[rgba(0,0,0,0.5)]`}>
+        <Text style={tw`text-lg`}>
           Salon:{' '}
           <Text style={tw`font-semibold text-black`}>{selectedSalonName}</Text>
         </Text>
@@ -64,7 +64,7 @@ const RegisterSalon = ({setSalonId}) => {
                   onPress={() => setSalonListModalVisible(false)}>
                   <Image
                     source={require('../../../../assets/x-button.png')}
-                    style={tw`w-8 h-8`}
+                    style={tw`w-12 h-12`}
                   />
                 </TouchableOpacity>
                 <Text style={tw`text-base font-semibold mx-auto`}>
@@ -106,7 +106,7 @@ const RegisterSalon = ({setSalonId}) => {
                 onPress={() => setSalonModalRegisterVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
-                  style={tw`w-8 h-8`}
+                  style={tw`w-12 h-12`}
                 />
               </TouchableOpacity>
               <Text style={tw`text-base font-semibold ml-[18%]`}>
