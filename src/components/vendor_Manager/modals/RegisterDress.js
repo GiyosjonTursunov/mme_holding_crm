@@ -263,7 +263,7 @@ const RegisterDress = ({
             <View
               style={tw`w-12/12 h-[80%] border bg-[#FBFBFB] rounded-3xl rounded-2xl p-2`}>
               <Pressable
-                style={tw`absolute right-[-2%] top-[-10px]`}
+                style={tw`absolute right-2 top-[-10px]`}
                 onPress={() => setDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
@@ -301,7 +301,7 @@ const RegisterDress = ({
               </Text>
 
               <Pressable
-                style={tw`absolute right-[-2%] top-[-10px]`}
+                style={tw`absolute right-2 top-[-10px]`}
                 onPress={() => setRegisterDressModalVisible(false)}>
                 <Image
                   source={require('../../../../assets/x-button.png')}
