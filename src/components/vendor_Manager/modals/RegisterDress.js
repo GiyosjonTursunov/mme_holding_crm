@@ -295,7 +295,7 @@ const RegisterDress = ({
           <View
             style={tw`flex-1 justify-end items-center bg-[rgba(0,0,0,0.5)]`}>
             <View
-              style={tw`w-12/12 h-[80%] bg-white rounded-3xl justify-around items-center pt-2 pb-5`}>
+              style={tw`w-12/12 h-[70%] bg-white rounded-3xl justify-around items-center pt-2 pb-5`}>
               <Text style={tw`text-base mx-auto font-semibold`}>
                 Ko'ylak kiritish oynasi
               </Text>
