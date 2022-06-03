@@ -134,6 +134,7 @@ const AddProduct = () => {
               }
             })
             .catch(_err => {
+              return;
               // console.error(err);
             });
         })

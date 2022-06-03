@@ -33,6 +33,7 @@ const TexnoStyleSaleDoors = () => {
         setDoors(res.data);
       })
       .catch(_err => {
+        return;
         // console.error('error =>', err);
       });
   };

@@ -389,7 +389,7 @@ class directorGController {
         refresh ? setRefreshing(false) : null;
       })
       .catch(_err => {
-        return;
+        // return;
         // console.error('server error   ', err);
         refresh ? setRefreshing(false) : null;
       });

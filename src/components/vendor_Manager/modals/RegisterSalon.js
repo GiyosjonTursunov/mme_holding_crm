@@ -28,6 +28,7 @@ const RegisterSalon = ({setSalonId}) => {
         setSalonList(res.data);
       })
       .catch(_err => {
+        return;
         // console.error(err);
       });
   };

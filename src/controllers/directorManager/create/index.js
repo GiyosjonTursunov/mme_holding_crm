@@ -20,7 +20,7 @@ class directorCController {
           .then(res => {
             Alert.alert('Magazin yaratildi!');
           })
-          .catch(err => {
+          .catch(_err => {
             return;
             // console.error(err);
           });

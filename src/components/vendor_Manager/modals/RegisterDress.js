@@ -87,6 +87,7 @@ const RegisterDress = ({
         }
       })
       .catch(_err => {
+        return;
         // console.error(err);
       });
   };

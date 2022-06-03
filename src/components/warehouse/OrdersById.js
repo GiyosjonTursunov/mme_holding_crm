@@ -95,8 +95,7 @@ const OrdersById = ({route}) => {
             ]);
           })
           .catch(_err => {
-            const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
-            Alert.alert(newLocal);
+            Alert.alert('Bazaga ulanishda xatolik yuz berdi!');
             // console.log(_err);
           });
       })

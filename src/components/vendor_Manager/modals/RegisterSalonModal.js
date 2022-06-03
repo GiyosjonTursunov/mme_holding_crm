@@ -50,46 +50,51 @@ const RegisterSalonModal = () => {
       salonAddress &&
       passwordSalon
     ) {
-      formDataImg.append('img', {
-        uri: uriImage,
-        type: typeImage,
-        name: nameImage,
-      });
-
-      formDataImg.append('salon_name', salonName);
-      formDataImg.append('name', salonchiName);
-      formDataImg.append('username', salonPhone);
-      formDataImg.append('password', passwordSalon);
-      formDataImg.append('address', salonAddress);
-
-      let dataSalon = {
-        password: passwordSalon,
-        name: salonchiName,
-        username: salonPhone,
-        salon_name: salonName,
-        address: salonAddress,
-      };
-
-      axios({
-        url: `${mainUrl}lastoria/salon/`,
-        method: 'POST',
-        data: dataSalon,
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-        .then(res => {
-          Alert.alert('Qo`shildi');
-          setPasswordSalon('');
-          setSalonchiName('');
-          setSalonPhone('');
-          setSalonName('');
-          setSalonAddress('');
-        })
-        .catch(_err => {
-          Alert.alert('Baza bilan qandaydir hatolik.');
-          // console.warn('err createSalon => ', err);
+      if (String(passwordSalon).length < 8) {
+        Alert.alert("Password 8 tadan kam bo'lmasin");
+      } else {
+        formDataImg.append('img', {
+          uri: uriImage,
+          type: typeImage,
+          name: nameImage,
         });
+
+        formDataImg.append('salon_name', salonName);
+        formDataImg.append('name', salonchiName);
+        formDataImg.append('username', salonPhone);
+        formDataImg.append('password', passwordSalon);
+        formDataImg.append('address', salonAddress);
+
+        let dataSalon = {
+          password: passwordSalon,
+          name: salonchiName,
+          username: salonPhone,
+          salon_name: salonName,
+          address: salonAddress,
+        };
+
+        axios({
+          url: `${mainUrl}lastoria/salon/`,
+          method: 'POST',
+          data: dataSalon,
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        })
+          .then(res => {
+            Alert.alert('Qo`shildi');
+            setPasswordSalon('');
+            setSalonchiName('');
+            setSalonPhone('');
+            setSalonName('');
+            setSalonAddress('');
+          })
+          .catch(_err => {
+            // console.warn(_err);
+            Alert.alert('Baza bilan qandaydir hatolik.');
+            // console.warn('err createSalon => ', err);
+          });
+      }
     } else {
       Alert.alert('To`liq yozilmagan');
     }

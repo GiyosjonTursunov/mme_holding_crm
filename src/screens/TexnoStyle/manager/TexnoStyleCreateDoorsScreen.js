@@ -118,7 +118,7 @@ const TexnoStyleCreateDoorsScreen = () => {
             isVisible={dressImgChooseModalVisible}
             onClose={() => setDressImgChooseModalVisible(false)}
             onImageLibraryPress={onImageLibraryPress}
-            onCameraPress={() =>{
+            onCameraPress={() => {
               return;
             }}
           />

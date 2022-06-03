@@ -214,7 +214,7 @@ const DebtorsFifty = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalWithoutSalon(false);
-                console.error('modal close');
+                // console.error('modal close');
               }}>
               <Image
                 source={require('../../../assets/x-button.png')}
