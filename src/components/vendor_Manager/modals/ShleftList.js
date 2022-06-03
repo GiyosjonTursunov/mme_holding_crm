@@ -36,7 +36,7 @@ const ShleftList = ({setShleftId, setSelectedShleftId}) => {
             setShleftListModalVisible(true);
           })
           .catch(err => {
-            console.error(err.response.status);
+            // console.error(err.response.status);
             if (
               err.response.status === 401 ||
               err.response.status === 400 ||

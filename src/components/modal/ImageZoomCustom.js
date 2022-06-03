@@ -11,7 +11,7 @@ const ImageZoomCustom = ({
   setSelectedDressImgModalVisible,
   selectedDressImg,
 }) => {
-  console.error('imgkuu ', selectedDressImg);
+  // console.error('imgkuu ', selectedDressImg);
 
   return (
     <Modal

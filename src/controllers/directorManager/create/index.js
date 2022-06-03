@@ -21,11 +21,13 @@ class directorCController {
             Alert.alert('Magazin yaratildi!');
           })
           .catch(err => {
-            console.error(err);
+            return;
+            // console.error(err);
           });
       })
-      .catch(err => {
-        console.warn('err createMagazine => ', err);
+      .catch(_err => {
+        return;
+        // console.warn('err createMagazine => ', err);
       });
   };
 
@@ -62,20 +64,21 @@ class directorCController {
                 Alert.alert('Ishlatildi');
                 lastFunc ? lastFunc() : null;
               })
-              .catch(err => {
-                console.error(err);
+              .catch(_err => {
+                // console.error(err);
                 Alert.alert('To`liq yozilmagan ');
               });
           })
-          .catch(err => {
-            console.warn('err sendCostCreate => ', err);
+          .catch(_err => {
+            return;
+            // console.warn('err sendCostCreate => ', err);
           });
       } else {
         let kam = Number(left_balance) - Number(dataCostsCreate.price);
         Alert.alert(kam + ' kam');
       }
     } else {
-      console.error('To`liq yozilmagan ', dataCostsCreate);
+      // console.error('To`liq yozilmagan ', dataCostsCreate);
       Alert.alert('To`liq yozilmagan yoki xato');
     }
   };
@@ -89,7 +92,7 @@ class directorCController {
     setQoldiq,
     setModalVisible,
   ) => {
-    console.warn(modalVisible, Number(narxi), note);
+    // console.warn(modalVisible, Number(narxi), note);
     if (modalVisible && Number(narxi) && note) {
       let urlCreateUpdateBalance = `${mainUrl}lastoria/balance-history/`;
       AsyncStorage.getItem('@user')
@@ -114,13 +117,14 @@ class directorCController {
                 String(res.data.left_balance),
               );
             })
-            .catch(err => {
+            .catch(_err => {
               Alert.alert('Server bilan hatolik yuz berdi…');
-              console.error(err);
+              // console.error(err);
             });
         })
-        .catch(err => {
-          console.warn('err createUpdateBalance => ', err);
+        .catch(_err => {
+          return;
+          // console.warn('err createUpdateBalance => ', err);
         });
     } else {
       Alert.alert("To'liq yozilmagan");
@@ -141,18 +145,19 @@ class directorCController {
           },
         })
           .then(res => {
-            console.log('Salon yaratildi!: =>', res.data);
+            // console.log('Salon yaratildi!: =>', res.data);
             Alert.alert('Salon yaratildi');
           })
-          .catch(err => {
+          .catch(_err => {
             Alert.alert(
               'Serverda xatolik yoki bu salon nomi allaqachon mavjud',
             );
-            console.log(err);
+            // console.log(err);
           });
       })
-      .catch(err => {
-        console.warn('err createSalon => ', err);
+      .catch(_err => {
+        return;
+        // console.warn('err createSalon => ', err);
       });
   };
 }

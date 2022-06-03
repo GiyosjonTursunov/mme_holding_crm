@@ -29,11 +29,11 @@ const TexnoStyleSaleDoors = () => {
       },
     })
       .then(res => {
-        console.warn('doors-append-history =>', res.data);
+        // console.warn('doors-append-history =>', res.data);
         setDoors(res.data);
       })
-      .catch(err => {
-        console.error('error =>', err);
+      .catch(_err => {
+        // console.error('error =>', err);
       });
   };
 
@@ -49,7 +49,7 @@ const TexnoStyleSaleDoors = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [count, setCount] = useState('');
-  console.log(token);
+  // console.log(token);
 
   const saleDoor = async () => {
     let url = `${mainUrl}texno-style/doors-sale-history/`;
@@ -60,7 +60,7 @@ const TexnoStyleSaleDoors = () => {
     };
 
     if (name && Number(price) && Number(count) && doorId) {
-      console.warn('dataBuyDoor', dataBuyDoor);
+      // console.warn('dataBuyDoor', dataBuyDoor);
       axios({
         url: url,
         method: 'POST',
@@ -77,8 +77,8 @@ const TexnoStyleSaleDoors = () => {
           setDoorId('');
           getDoors_append_history();
         })
-        .catch(er => {
-          console.error(er);
+        .catch(_err => {
+          // console.error(er);
           Alert.alert('Ошибка', 'Hisob yetmaydi');
         });
     }

@@ -11,7 +11,7 @@ const LoadingLottie = ({showLoading, setShowLoading, animation}) => {
       animationType="fade"
       visible={showLoading}
       onRequestClose={() => {
-        console.log('Modal has been closed.');
+        // console.log('Modal has been closed.');
         setShowLoading(false);
       }}>
       <View style={tw`flex-1 bg-[rgba(0,0,0,0.5)]`}>

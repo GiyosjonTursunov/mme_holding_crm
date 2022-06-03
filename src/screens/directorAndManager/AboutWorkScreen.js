@@ -43,8 +43,9 @@ const AboutWorkScreen = () => {
       .then(res => {
         setDostavkaCount(res.data);
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        return;
+        // console.error(err);
       });
     axios({
       url: `${mainUrl}dashboard/warehouse-product-count/`,
@@ -56,8 +57,9 @@ const AboutWorkScreen = () => {
       .then(res => {
         setProductCount(res.data);
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        return;
+        // console.error(err);
       });
 
     setTimeout(async () => {
@@ -71,8 +73,9 @@ const AboutWorkScreen = () => {
         .then(res => {
           setSalonList(res.data);
         })
-        .catch(err => {
-          console.error(err);
+        .catch(_err => {
+          return;
+          // console.error(err);
         });
 
       AsyncStorage.getItem('@magazineList')
@@ -88,23 +91,26 @@ const AboutWorkScreen = () => {
           })
             .then(res => {
               if (JSON.parse(data)?.length === res.data?.length) {
-                console.log('asyncstorage magazinelst bilan set qilinmadi');
+                return;
+                // console.log('asyncstorage magazinelst bilan set qilinmadi');
               } else {
                 AsyncStorage.setItem(
                   '@magazineList',
                   JSON.stringify(res.data),
                 ).then(() => {
-                  console.log('magazineList asyncstorageda yangilandi');
+                  // console.log('magazineList asyncstorageda yangilandi');
                   setMagazineList(res.data);
                 });
               }
             })
-            .catch(err => {
-              console.error(err);
+            .catch(_err => {
+              return;
+              // console.error(err);
             });
         })
-        .catch(err => {
-          console.log(err);
+        .catch(_err => {
+          return;
+          // console.log(err);
         });
     }, 100);
 
@@ -208,7 +214,9 @@ const AboutWorkScreen = () => {
           style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto`}>
           <Text
             style={tw`font-bold text-base`}
-            onPress={() => console.warn(salonList)}>
+            onPress={() => {
+              return;
+            }}>
             Salonlar ro`yxati
           </Text>
 

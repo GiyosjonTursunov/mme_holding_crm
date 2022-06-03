@@ -34,7 +34,7 @@ export const ChooseNavigation = role_user => {
   } else if (role_user === 'TEXNOSTYLE_MANAGER') {
     return <TexnoStyleManagerStack />;
   } else {
-    console.warn(role_user);
+    // console.warn(role_user);
     return <NotLoggedIn />;
   }
   // if (role_user == 'MANAGER') return <ManagerStack />;
@@ -51,7 +51,7 @@ const ChooseScreen = () => {
   React.useEffect(() => {
     AsyncStorage.getItem('@user').then(value => {
       if (value) {
-        console.log('value', value);
+        // console.log('value', value);
         dispatch(setRole(JSON.parse(value).role));
       }
     });

@@ -61,19 +61,19 @@ const DailySalesOrders = () => {
                   setRed(false);
                 })
                 .catch(_err => {
-                  console.log(_err);
+                  // console.log(_err);
                   setRefreshing(false);
                   setRed(false);
                 });
             })
-            .catch(err => {
-              console.error(err);
+            .catch(_err => {
+              // console.error(err);
               setRefreshing(false);
               setRed(false);
             });
         })
-        .catch(err => {
-          console.log(err);
+        .catch(_err => {
+          // console.log(err);
           setRefreshing(false);
           setRed(false);
         });
@@ -142,7 +142,11 @@ const DailySalesOrders = () => {
         style={tw`flex-row my-1 items-center justify-end pr-[${
           Dimensions.get('screen').width / 15
         }px] w-9/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
-        <Text style={tw`text-white text-lg`} onPress={() => console.warn(item)}>
+        <Text
+          style={tw`text-white text-lg`}
+          onPress={() => {
+            return;
+          }}>
           Ko'ylak :{' '}
         </Text>
         <Text style={tw`text-lg text-white`}>{dress_name}</Text>
@@ -177,7 +181,7 @@ const DailySalesOrders = () => {
   );
 
   const renderItem = ({item}) => {
-    console.warn(item);
+    // console.warn(item);
     return (
       <Item
         img={item?.dress?.img1}

@@ -107,7 +107,7 @@ const CostTypesScreen = ({route}) => {
                 onRefresh={() => {
                   setRefreshing(true);
                   directorGController.getCosts(setSerioList, isSerio);
-                  console.log(isSerio);
+                  // console.log(isSerio);
                   setRefreshing(false);
                 }}
               />

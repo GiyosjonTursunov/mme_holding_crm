@@ -35,7 +35,7 @@ const CostSubScreen = () => {
         setRefreshing(false);
       })
       .catch(_err => {
-        console.error(_err);
+        // console.error(_err);
         setRefreshing(false);
       });
   };

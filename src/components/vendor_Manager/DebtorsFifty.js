@@ -60,7 +60,7 @@ const DebtorsFifty = () => {
     })
       .then(res => {
         setDebtorsNotSalonFifty(res.data);
-        console.warn(res.data);
+        // console.warn(res.data);
         axios({
           url:
             role === 'VENDOR'
@@ -84,18 +84,18 @@ const DebtorsFifty = () => {
                 setGulkaram(resSalonList.data);
                 setRefreshing(false);
               })
-              .catch(err => {
-                console.error(err);
+              .catch(_err => {
+                // console.error(err);
                 setRefreshing(false);
               });
           })
-          .catch(err => {
-            console.warn(err);
+          .catch(_err => {
+            // console.warn(err);
             setRefreshing(false);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        // console.log(err);
         setRefreshing(false);
       });
   };
@@ -121,8 +121,8 @@ const DebtorsFifty = () => {
         setSaleId('');
         dataSenDebt.given_price = 0;
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
         Alert.alert('Ошибка', 'Долг не отправлен');
       });
   };
@@ -144,8 +144,8 @@ const DebtorsFifty = () => {
         setSaleId('');
         dataWithoutSalon.salon_id = '';
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
         Alert.alert('Ошибка', 'Attachment не отправлен');
       });
   };
@@ -189,14 +189,16 @@ const DebtorsFifty = () => {
         setSaleId(item.id);
         if (!modalVisible && salon_id) {
           if (modalVisible) {
-            console.warn('tureee');
+            return;
+            // console.warn('tureee');
           } else if (!modalVisible) {
             setSalon_Id(salon_id);
             setModalVisible(true);
           }
         } else {
           if (modalWithoutSalon) {
-            console.warn('tre');
+            return;
+            // console.warn('tre');
           } else {
             setModalWithoutSalon(true);
           }

@@ -25,10 +25,10 @@ const LaStoriaNewsScreen = () => {
         setNews(res.data);
         setRefreshing(false);
       })
-      .catch(err => {
+      .catch(_err => {
         Alert.alert('Bazaga ulanishda xatolik yuz berdi!');
         setRefreshing(false);
-        console.log(err);
+        // console.log(err);
       });
   };
 

@@ -31,10 +31,11 @@ const MainPageScreen = () => {
     })
       .then(res => {
         setCompanies(res.data);
-        console.warn(res.data, 'error ham shu res ham');
+        // console.warn(res.data, 'error ham shu res ham');
       })
       .catch(_err => {
-        console.error(_err, 'error ham shu res ham');
+        return;
+        // console.error(_err, 'error ham shu res ham');
       });
   }, [token]);
 
@@ -91,7 +92,9 @@ const MainPageScreen = () => {
       <View style={tw`w-full flex-row justify-between px-4 items-center`}>
         <Text style={tw`text-xl`}>Kompaniyalar</Text>
         <TouchableOpacity
-          onPress={() => console.warn('pressed add company button')}>
+          onPress={() => {
+            return;
+          }}>
           <Image
             source={require('../../../assets/plus.png')}
             style={tw`w-10 h-10`}

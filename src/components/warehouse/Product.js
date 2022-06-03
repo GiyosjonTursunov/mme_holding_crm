@@ -28,12 +28,12 @@ const Product = () => {
       },
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         setAllProducts(res.data);
         setRefreshing(false);
       })
-      .catch(err => {
-        console.warn(err);
+      .catch(_err => {
+        // console.warn(err);
         setRefreshing(false);
       });
   };

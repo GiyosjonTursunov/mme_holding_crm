@@ -73,8 +73,8 @@ const FiftySale = () => {
           setGirlName('');
           setDeliveryDate('');
         })
-        .catch(err => {
-          console.error(err);
+        .catch(_err => {
+          // console.error(err);
           Alert.alert('Error');
         });
     } else {

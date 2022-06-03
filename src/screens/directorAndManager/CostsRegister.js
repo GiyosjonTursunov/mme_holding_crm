@@ -67,7 +67,8 @@ const CostsRegister = () => {
         setCompanies(res.data);
       })
       .catch(_err => {
-        console.warn(_err);
+        // console.warn(_err);
+        return;
       });
     directorGController.getBalance(setBalance, setQoldiq);
   }, []);

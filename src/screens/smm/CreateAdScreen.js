@@ -113,7 +113,9 @@ const CreateAdScreen = () => {
               isVisible={dressImgChooseModalVisible}
               onClose={() => setDressImgChooseModalVisible(false)}
               onImageLibraryPress={onImageLibraryPress}
-              onCameraPress={() => console.log('camera pressed')}
+              onCameraPress={() => {
+                return;
+              }}
             />
           </TouchableOpacity>
         </View>

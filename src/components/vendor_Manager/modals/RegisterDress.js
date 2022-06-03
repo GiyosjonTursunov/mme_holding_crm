@@ -64,8 +64,8 @@ const RegisterDress = ({
     setMainPriceSale ? setMainPriceSale(mainPriceSale) : null;
     setDressModalVisible(false);
     setColorId ? setColorId(color) : null;
-    console.warn('color', color);
-    console.warn('all ', all);
+    // console.warn('color', color);
+    // console.warn('all ', all);
     setSelectedShleftId ? setSelectedShleftId(shleft) : null;
     setSelectedShleftName ? setSelectedShleftName(shleftName) : null;
   };
@@ -83,11 +83,11 @@ const RegisterDress = ({
           return null;
         } else {
           setDressList(res.data);
-          console.error('dressList', res.data);
+          // console.error('dressList', res.data);
         }
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
       });
   };
 
@@ -120,7 +120,7 @@ const RegisterDress = ({
         style={tw`w-11.7/12 border-b flex-row border-[rgba(0,0,0,0.1)] mx-auto m-2`}>
         <TouchableOpacity
           onPress={() => {
-            console.warn('img1', baseUrl + img1);
+            // console.warn('img1', baseUrl + img1);
             setSelectedDressImg(baseUrl + img1);
             setSelectedDressImgModalVisible(true);
           }}
@@ -179,10 +179,10 @@ const RegisterDress = ({
   const formDataImg = new FormData();
 
   const createDress = async () => {
-    console.warn(token);
+    // console.warn(token);
     if (dressName && Number(mainPrice)) {
       setShowLoading(true);
-      console.log(dressName, mainPrice);
+      // console.log(dressName, mainPrice);
       formDataImg.append('name', dressName);
       formDataImg.append('price', mainPrice);
       formDataImg.append('user', userId);
@@ -218,8 +218,8 @@ const RegisterDress = ({
         setNameImage1('');
         setTypeImage1('');
       } else {
-        console.warn(token);
-        console.warn('error', res);
+        // console.warn(token);
+        // console.warn('error', res);
         setShowLoading(false);
         setTimeout(() => {
           Alert.alert('Bazada xatolik');
@@ -344,7 +344,9 @@ const RegisterDress = ({
                       isVisible={dressImg1ChooseModalVisible}
                       onClose={() => setDressImg1ChooseModalVisible(false)}
                       onImageLibraryPress={onImage1LibraryPress}
-                      onCameraPress={() => console.log('camera pressed')}
+                      onCameraPress={() => {
+                        return;
+                      }}
                     />
                   </TouchableOpacity>
 

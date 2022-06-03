@@ -52,11 +52,11 @@ const DebtorsOrders = () => {
     })
       .then(res => {
         setDebtorsOrders(res.data);
-        console.warn(res.data);
+        // console.warn(res.data);
         setRefreshing(false);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        // console.log(err);
         setRefreshing(false);
       });
   };
@@ -66,7 +66,7 @@ const DebtorsOrders = () => {
   }, []);
 
   const sendDebt = () => {
-    console.warn(dataSenDebt);
+    // console.warn(dataSenDebt);
     axios({
       url: `${mainUrl}lastoria/orders-history/`,
       data: dataSenDebt,
@@ -83,8 +83,8 @@ const DebtorsOrders = () => {
         setOrderId('');
         dataSenDebt.given_price = 0;
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
         Alert.alert('Ошибка', 'Долг не отправлен');
       });
   };

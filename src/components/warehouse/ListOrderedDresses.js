@@ -49,10 +49,10 @@ const ListOrderedDresses = () => {
       .then(res => {
         setSalonList(res.data);
         setRefreshing(false);
-        console.warn(res.data);
+        // console.warn(res.data);
       })
       .catch(_error => {
-        console.log(_error);
+        // console.log(_error);
         setRefreshing(false);
       });
   };

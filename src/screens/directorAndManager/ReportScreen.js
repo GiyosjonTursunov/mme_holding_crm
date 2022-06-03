@@ -26,7 +26,7 @@ const ReportScreen = () => {
 
   const getDailyReports = async () => {
     setRefreshing(true);
-    console.warn(token);
+    // console.warn(token);
     axios({
       url: `${mainUrl}lastoria/orders-report-all/`,
       method: 'get',
@@ -37,7 +37,7 @@ const ReportScreen = () => {
       .then(res => {
         setRefreshing(false);
         setReportList(res.data);
-        console.warn(res.data);
+        // console.warn(res.data);
       })
       .catch(() => {
         setRefreshing(false);

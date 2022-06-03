@@ -27,8 +27,8 @@ const RegisterSalon = ({setSalonId}) => {
         setSalonListModalVisible(true);
         setSalonList(res.data);
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
       });
   };
   return (

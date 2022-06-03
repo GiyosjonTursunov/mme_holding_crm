@@ -34,15 +34,15 @@ const DailySalesStatisticsScreen = ({route}) => {
         },
       })
         .then(res => {
-          console.warn(res.data.simple_sale);
+          // console.warn(res.data.simple_sale);
           setSimpleSales(res.data?.simple_sale);
           setSaleFifty(res.data?.sale5050);
           setOrders(res.data?.orders);
           setRefreshing(false);
           setRed(false);
         })
-        .catch(err => {
-          console.log(err);
+        .catch(_err => {
+          // console.log(err);
           setRefreshing(false);
           setRed(false);
         });
@@ -65,7 +65,12 @@ const DailySalesStatisticsScreen = ({route}) => {
       />
 
       <View style={tw`flex-row my-1 items-center`}>
-        <Text onPress={() => console.warn(item)}>Ko'ylak : </Text>
+        <Text
+          onPress={() => {
+            return;
+          }}>
+          Ko'ylak :{' '}
+        </Text>
         <Text style={tw`text-lg`}>{dress_name}</Text>
       </View>
 

@@ -44,7 +44,7 @@ const TexnoStyleMainScreen = () => {
   const [modalGivenCount, setModalGivenCount] = useState(false);
 
   const getDoors = () => {
-    console.log('token', token);
+    // console.log('token', token);
     setRefreshing(true);
     axios({
       url: `${mainUrl}texno-style/doors-append-history/`,
@@ -55,11 +55,11 @@ const TexnoStyleMainScreen = () => {
     })
       .then(res => {
         setDoors(res.data);
-        console.log('res', res.data);
+        // console.log('res', res.data);
         setRefreshing(false);
       })
-      .catch(err => {
-        console.error('errorku texno-style/doors-append-history =>', err);
+      .catch(_err => {
+        // console.error('errorku texno-style/doors-append-history =>', err);
         setRefreshing(false);
       });
 
@@ -73,8 +73,9 @@ const TexnoStyleMainScreen = () => {
       .then(res => {
         setTexno_money(res.data);
       })
-      .catch(err => {
-        console.error('error texno-style/add-texno-style-money =>', err);
+      .catch(_err => {
+        return;
+        // console.error('error texno-style/add-texno-style-money =>', err);
       });
   };
 
@@ -97,13 +98,13 @@ const TexnoStyleMainScreen = () => {
       },
     })
       .then(res => {
-        console.warn('add-texno-style-money =>', res.data);
+        // console.warn('add-texno-style-money =>', res.data);
         Alert.alert('Успешно', 'Добавлено');
         getDoors();
         setModalDepositValue(false);
       })
-      .catch(err => {
-        console.error('error =>', err);
+      .catch(_err => {
+        // console.error('error =>', err);
         Alert.alert('Ошибка', 'Internet yoki serverda xatolik yuz berdi');
         setModalDepositValue(false);
       });
@@ -224,8 +225,7 @@ const TexnoStyleMainScreen = () => {
               <Pressable
                 onPress={() => {
                   setModalGivenCount(true);
-
-                  console.log(item.id);
+                  // console.log(item.id);
                 }}
                 style={{
                   borderRadius: 18,
@@ -296,8 +296,9 @@ const TexnoStyleMainScreen = () => {
                                 setGivenCountValue('');
                               }
                             })
-                            .catch(err => {
-                              console.log(err);
+                            .catch(_err => {
+                              return;
+                              // console.log(err);
                             });
                         }}
                         style={tw`w-8/12 h-14 rounded-xl m-auto bg-[#323054]`}>

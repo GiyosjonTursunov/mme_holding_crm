@@ -27,7 +27,7 @@ const VendorScreen = () => {
   useEffect(() => {
     if (red) {
       setRefreshing(true);
-      console.warn(token);
+      // console.warn(token);
       axios({
         url: `${mainUrl}lastoria/user-orders-daily/`,
         method: 'GET',
@@ -36,7 +36,7 @@ const VendorScreen = () => {
         },
       })
         .then(res => {
-          console.error('kunlik zakaz sotuvchi => ', res.data);
+          // console.error('kunlik zakaz sotuvchi => ', res.data);
           setOrders(res.data);
           axios({
             url: `${mainUrl}lastoria/user-sales-5050/`,
@@ -49,16 +49,17 @@ const VendorScreen = () => {
               setSaleFifty(resFifty.data);
               setRefreshing(false);
               setRed(false);
-              console.warn(resFifty.data);
+              // console.warn(resFifty.data);
             })
-            .catch(err => {
-              console.log(err);
+            .catch(_err => {
+              // console.log(err);
               setRefreshing(false);
               setRed(false);
             });
         })
-        .catch(err => {
-          console.log(err);
+        .catch(_err => {
+          return;
+          // console.log(err);
         });
     }
   }, [red, token]);

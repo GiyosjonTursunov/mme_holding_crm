@@ -86,9 +86,9 @@ const RegisterSalonModal = () => {
           setSalonName('');
           setSalonAddress('');
         })
-        .catch(err => {
+        .catch(_err => {
           Alert.alert('Baza bilan qandaydir hatolik.');
-          console.warn('err createSalon => ', err);
+          // console.warn('err createSalon => ', err);
         });
     } else {
       Alert.alert('To`liq yozilmagan');
@@ -150,7 +150,9 @@ const RegisterSalonModal = () => {
           isVisible={salonImageChooseModalVisible}
           onClose={() => setSalonImageChooseModalVisible(false)}
           onImageLibraryPress={onImageLibraryPress}
-          onCameraPress={() => console.log('camera pressed')}
+          onCameraPress={() => {
+            return;
+          }}
         />
       </TouchableOpacity>
 

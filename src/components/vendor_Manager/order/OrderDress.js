@@ -77,8 +77,8 @@ const OrderDress = () => {
           setNote('');
           setSelectedShleftName('');
         })
-        .catch(err => {
-          console.log(err);
+        .catch(_err => {
+          // console.log(err);
           Alert.alert('Xatolik');
         });
     } else {
@@ -216,8 +216,9 @@ const OrderDress = () => {
                 setShleftList(res.data);
                 setShleftListModalVisible(true);
               })
-              .catch(err => {
-                console.error(err);
+              .catch(_err => {
+                Alert.alert('Bazada Xatolik');
+                // console.error(err);
               });
           }}
           style={tw`flex-row w-3.9/12 h-11 border my-[2%] pl-[2%] rounded-xl justify-between items-center border-[rgba(0,0,0,0.5)]`}>

@@ -48,12 +48,12 @@ const ReportSales = () => {
           setRefreshing(false);
           setRed(false);
         })
-        .catch(err => {
+        .catch(_err => {
           setMainPrice(0);
           Alert.alert('Ошибка', 'Не удалось получить данные');
           setRefreshing(false);
           setRed(false);
-          console.error(err);
+          // console.error(err);
         });
     }
   }, [red, token]);

@@ -44,7 +44,7 @@ const OrdersById = ({route}) => {
           },
         })
           .then(resSale => {
-            console.warn(resSale.data);
+            // console.warn(resSale.data);
             setSale(resSale.data);
             setDressImg([
               resSale.data?.dress?.img1,
@@ -55,16 +55,17 @@ const OrdersById = ({route}) => {
           .catch(_err => {
             const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
             Alert.alert(newLocal);
-            console.log(_err);
+            // console.log(_err);
           });
       })
       .catch(_error => {
-        console.log(_error);
+        return;
+        // console.log(_error);
       });
   };
 
   const sended = () => {
-    console.error('sended function need to realize');
+    console.log('sended function need to realize');
     // axios({
     //   url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
     //   method: 'POST',
@@ -89,7 +90,7 @@ const OrdersById = ({route}) => {
       },
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         setSale(res.data);
         setDressImg([
           res.data.dress.img1,
@@ -100,7 +101,7 @@ const OrdersById = ({route}) => {
       .catch(_err => {
         const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
         Alert.alert(newLocal);
-        console.log(_err);
+        // console.log(_err);
       });
   }, [route.params.saleId, token]);
 

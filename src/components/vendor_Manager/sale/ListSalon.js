@@ -3,7 +3,7 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import tw from 'twrnc';
 
 const ListSalon = ({listSalon, onPress, closeModal, selectedSalonName}) => {
-  console.warn('listSalon => ', listSalon);
+  // console.warn('listSalon => ', listSalon);
   const getDressIdForSale = id => {
     onPress(id);
     closeModal(false);

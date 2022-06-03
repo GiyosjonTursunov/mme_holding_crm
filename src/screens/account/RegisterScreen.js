@@ -27,12 +27,12 @@ const RegisterScreen = ({route}) => {
   const storeData = async value => {
     try {
       const jsonValue = JSON.stringify(value);
-      console.warn(jsonValue);
+      // console.warn(jsonValue);
       await AsyncStorage.setItem('@user', jsonValue);
       navigation.navigate('SalonScreen');
     } catch (e) {
       Alert.alert("Xatolik yuz berdi birozdan so'ng qayta urinib ko'ring.");
-      console.warn(e);
+      // console.warn(e);
     }
   };
 
@@ -69,7 +69,8 @@ const RegisterScreen = ({route}) => {
           }
         })
         .catch(_err => {
-          console.log(_err);
+          return;
+          // console.log(_err);
         });
     }
   };

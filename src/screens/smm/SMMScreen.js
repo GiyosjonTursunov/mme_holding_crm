@@ -43,10 +43,11 @@ const SMMScreen = () => {
       })
         .then(res => {
           setDressNews(res.data);
-          console.error('res.data =>', res.data);
+          // console.error('res.data =>', res.data);
         })
-        .catch(err => {
-          console.error('error =>', err);
+        .catch(_err => {
+          return;
+          // console.error('error =>', err);
         });
     }
   };
@@ -100,7 +101,9 @@ const SMMScreen = () => {
                 key={item.id}
                 style={{width, justifyContent: 'center', alignItems: 'center'}}>
                 <Pressable
-                  onPress={() => console.log('dress_clicked')}
+                  onPress={() => {
+                    return;
+                  }}
                   style={{
                     borderRadius: 18,
                     shadowColor: '#000',

@@ -40,8 +40,8 @@ const AboutShopsScreen = ({route}) => {
       .then(res => {
         setMagazine(res.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        // console.log(err);
       });
   }, [route.params.id, token]);
 

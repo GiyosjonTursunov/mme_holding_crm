@@ -32,7 +32,8 @@ const AboutSalonScreen = ({route}) => {
         setSalon(res.data);
       })
       .catch(_err => {
-        console.log(_err);
+        return;
+        // console.log(_err);
       });
   }, [route.params?.id, token]);
 

@@ -26,7 +26,7 @@ const TexnoStyleBuyScreen = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [count, setCount] = useState('');
-  console.log(token);
+  // console.log(token);
 
   const getDoors = () => {
     axios({
@@ -39,8 +39,9 @@ const TexnoStyleBuyScreen = () => {
       .then(res => {
         setDoors(res.data);
       })
-      .catch(err => {
-        console.error('error =>', err);
+      .catch(_err => {
+        return;
+        // console.error('error =>', err);
       });
   };
 
@@ -59,7 +60,7 @@ const TexnoStyleBuyScreen = () => {
     };
 
     if (name && Number(price) && Number(count) && doorId) {
-      console.warn('dataBuyDoor', dataBuyDoor);
+      // console.warn('dataBuyDoor', dataBuyDoor);
       axios({
         url: url,
         method: 'POST',
@@ -76,8 +77,8 @@ const TexnoStyleBuyScreen = () => {
           setDoorId('');
           getDoors();
         })
-        .catch(er => {
-          console.error(er);
+        .catch(_err => {
+          // console.error(er);
           Alert.alert('Ошибка', 'Hisob yetmaydi');
         });
     }

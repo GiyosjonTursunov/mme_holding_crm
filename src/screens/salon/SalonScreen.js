@@ -101,35 +101,35 @@ const SalonScreen = ({navigation}) => {
                           .then(saleOrdersRes => {
                             setSaleOrders(saleOrdersRes.data);
                             setRefreshing(false);
-                            console.warn('orders =>', saleOrdersRes.data);
+                            // console.warn('orders =>', saleOrdersRes.data);
                           })
-                          .catch(err => {
-                            console.log(err);
+                          .catch(_err => {
+                            // console.log(err);
                             setRefreshing(false);
                           });
                       })
                       .catch(_err => {
-                        console.error(_err);
+                        // console.error(_err);
                         setRefreshing(false);
                       });
                   })
-                  .catch(err => {
-                    console.error(err);
+                  .catch(_err => {
+                    // console.error(err);
                     setRefreshing(false);
                   });
               })
-              .catch(err => {
-                console.error(err);
+              .catch(_err => {
+                // console.error(err);
                 setRefreshing(false);
               });
           })
-          .catch(err => {
-            console.error(err);
+          .catch(_err => {
+            // console.error(err);
             setRefreshing(false);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        // console.log(err);
         setRefreshing(false);
       });
   };
@@ -325,7 +325,9 @@ const SalonScreen = ({navigation}) => {
                 key={item.id}
                 style={{width, justifyContent: 'center', alignItems: 'center'}}>
                 <Pressable
-                  onPress={() => console.log('dress_clicked')}
+                  onPress={() => {
+                    return;
+                  }}
                   style={{
                     borderRadius: 18,
                     shadowColor: '#000',

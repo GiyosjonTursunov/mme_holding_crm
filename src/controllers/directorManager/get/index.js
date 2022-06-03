@@ -21,27 +21,31 @@ class directorGController {
             })
               .then(res => {
                 if (JSON.parse(data)?.length === res.data?.length) {
-                  console.log('asyncstorage magazinelst bilan set qilinmadi');
+                  return;
+                  // console.log('asyncstorage magazinelst bilan set qilinmadi');
                 } else {
                   AsyncStorage.setItem(
                     '@magazineList',
                     JSON.stringify(res.data),
                   ).then(() => {
-                    console.log('magazineList asyncstorageda yangilandi');
+                    // console.log('magazineList asyncstorageda yangilandi');
                     setMagazineList(res.data);
                   });
                 }
               })
-              .catch(err => {
-                console.error(err);
+              .catch(_err => {
+                return;
+                // console.error(err);
               });
           })
-          .catch(err => {
-            console.log(err);
+          .catch(_err => {
+            return;
+            // console.log(err);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        return;
+        // console.log(err);
       });
   };
 
@@ -58,12 +62,14 @@ class directorGController {
           .then(res => {
             setSalonList(res.data);
           })
-          .catch(err => {
-            console.error(err);
+          .catch(_err => {
+            return;
+            // console.error(err);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        return;
+        // console.log(err);
       });
   };
 
@@ -80,12 +86,14 @@ class directorGController {
           .then(res => {
             setDostavkaCount(res.data);
           })
-          .catch(err => {
-            console.error(err);
+          .catch(_err => {
+            return;
+            // console.error(err);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        return;
+        // console.log(err);
       });
   };
 
@@ -102,12 +110,14 @@ class directorGController {
           .then(res => {
             setProductCount(res.data);
           })
-          .catch(err => {
-            console.error(err);
+          .catch(_err => {
+            return;
+            // console.error(err);
           });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        return;
+        // console.log(err);
       });
   };
 
@@ -121,7 +131,7 @@ class directorGController {
       data: dataGetDress,
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         // dressList berilmgan ekan. currentValue metodini ishalitb kordim. balki ishlar
         setDressList(currentValue => {
           if (res.data.length === currentValue.length) {
@@ -131,8 +141,9 @@ class directorGController {
           }
         });
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        return;
+        // console.error(err);
       });
   };
 
@@ -151,7 +162,8 @@ class directorGController {
             Number(res.data.balance) === Number(balanceStorage) &&
             Number(res.data.left_balance) === Number(qoldiqStorage)
           ) {
-            console.log('storage bilan bazadagi balans va qoldiq teng ekan');
+            return;
+            // console.log('storage bilan bazadagi balans va qoldiq teng ekan');
           } else {
             setQoldiq(res.data.left_balance);
             setBalance(res.data.balance);
@@ -163,8 +175,9 @@ class directorGController {
             );
           }
         })
-        .catch(err => {
-          console.error(err);
+        .catch(_err => {
+          return;
+          // console.error(err);
         });
     } else {
       axios(urlGetBalance)
@@ -178,8 +191,9 @@ class directorGController {
             String(res.data.left_balance),
           );
         })
-        .catch(err => {
-          console.error(err);
+        .catch(_err => {
+          return;
+          // console.error(err);
         });
     }
   };
@@ -209,8 +223,9 @@ class directorGController {
                     JSON.stringify(res.data),
                   );
                 })
-                .catch(err => {
-                  console.error(err);
+                .catch(_err => {
+                  return;
+                  // console.error(err);
                 });
             } else {
               setSerioList(JSON.parse(data));
@@ -224,20 +239,23 @@ class directorGController {
                       JSON.stringify(res.data),
                     );
                   } else {
-                    console.log('seriolist yoki prochilist length teng');
+                    // console.log('seriolist yoki prochilist length teng');
                   }
                 })
-                .catch(err => {
-                  console.error(err);
+                .catch(_err => {
+                  return;
+                  // console.error(err);
                 });
             }
           })
           .catch(_err => {
-            console.error(_err);
+            return;
+            // console.error(_err);
           });
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        return;
+        // console.error(err);
       });
   };
 
@@ -248,8 +266,8 @@ class directorGController {
         setAllProducts(res.data);
         setRefreshing ? setRefreshing(false) : null;
       })
-      .catch(err => {
-        console.error('server error   ', err);
+      .catch(_err => {
+        // console.error('server error   ', err);
         setRefreshing ? setRefreshing(false) : null;
       });
   };
@@ -333,8 +351,8 @@ class directorGController {
 
         // console.log(isEqual(firstArr, secondArr));
       })
-      .catch(err => {
-        console.error('server error   ', err);
+      .catch(_err => {
+        // console.error('server error   ', err);
         setRefreshing ? setRefreshing(false) : null;
       });
   };
@@ -346,11 +364,12 @@ class directorGController {
       data: dateData,
     })
       .then(res => {
-        console.log('costs-date-filter', res.data);
+        // console.log('costs-date-filter', res.data);
         setResult(res.data);
       })
-      .catch(err => {
-        console.error('server error   ', err);
+      .catch(_err => {
+        return;
+        // console.error('server error   ', err);
       });
   };
 
@@ -369,8 +388,9 @@ class directorGController {
         setAllSalesForVendor(res.data);
         refresh ? setRefreshing(false) : null;
       })
-      .catch(err => {
-        console.error('server error   ', err);
+      .catch(_err => {
+        return;
+        // console.error('server error   ', err);
         refresh ? setRefreshing(false) : null;
       });
   };

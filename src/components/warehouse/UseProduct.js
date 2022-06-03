@@ -49,14 +49,15 @@ const UseProduct = () => {
           },
         })
           .then(res => {
-            console.warn(res.data);
+            // console.warn(res.data);
             setProduct_count('');
             setNote('');
             setProduct_id('');
             Alert.alert('Успешно', 'Продукт использован');
           })
-          .catch(err => {
-            console.warn(err);
+          .catch(_err => {
+            return;
+            // console.warn(err);
           });
       } else {
         Alert.alert('Maxsulot yetmidi');
@@ -124,12 +125,12 @@ const UseProduct = () => {
       },
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         setAllProducts(res.data);
         setRefreshing(false);
       })
-      .catch(err => {
-        console.warn(err);
+      .catch(_err => {
+        // console.warn(err);
         setRefreshing(false);
       });
   };

@@ -23,7 +23,9 @@ const storeData = async value => {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem('@user', jsonValue);
   } catch (e) {
-    console.warn(e);
+    Alert.alert('Error', 'Error');
+
+    // console.warn(e);
   }
 };
 
@@ -85,7 +87,7 @@ const LoginScreen = ({route}) => {
               return 'TexnoStyle';
             }
           };
-          console.warn(route.params.key);
+          // console.warn(route.params.key);
           Alert.alert(
             `Bu akkauntga faqat ${checkRole(
               data.role,
@@ -94,7 +96,7 @@ const LoginScreen = ({route}) => {
         }
       })
       .catch(_err => {
-        console.warn('err =>', _err);
+        // console.warn('err =>', _err);
         Alert.alert("Email yoki parol noto'g'ri");
       });
   };

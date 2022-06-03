@@ -41,11 +41,12 @@ const OrdersById = ({route}) => {
             Alert.alert('Yangilandi');
           })
           .catch(_error => {
-            console.log(_error);
+            return;
+            // console.log(_error);
           });
       })
       .catch(_err => {
-        console.log(_err);
+        // console.log(_err);
         Alert.alert('Xatolik');
       });
   };
@@ -63,11 +64,12 @@ const OrdersById = ({route}) => {
             Alert.alert('Yangilandi');
           })
           .catch(_error => {
-            console.log(_error);
+            return;
+            // console.log(_error);
           });
       })
       .catch(_err => {
-        console.log(_err);
+        // console.log(_err);
         Alert.alert('Xatolik');
       });
   };
@@ -83,7 +85,7 @@ const OrdersById = ({route}) => {
           },
         })
           .then(res => {
-            console.warn(res.data);
+            // console.warn(res.data);
             setSale(res.data);
             setDressImg([
               res.data.dress.img1,
@@ -95,13 +97,13 @@ const OrdersById = ({route}) => {
           .catch(_err => {
             const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
             Alert.alert(newLocal);
-            console.log(_err);
+            // console.log(_err);
           });
       })
       .catch(_err => {
         const newLocal = 'Akkaunt yoq.';
         Alert.alert(newLocal);
-        console.log(_err);
+        // console.log(_err);
       });
   }, [route.params.saleId]);
 

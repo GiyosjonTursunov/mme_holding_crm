@@ -48,10 +48,10 @@ const DebtorsSales = () => {
       .then(res => {
         setSimpleSales(res.data);
         setRefreshing(false);
-        console.warn(res.data);
+        // console.warn(res.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(_err => {
+        // console.log(err);
         setRefreshing(false);
       });
   };
@@ -70,7 +70,7 @@ const DebtorsSales = () => {
       },
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         Alert.alert('Успешно', 'Долг успешно отправлен');
         setModalVisible(false);
         getData();
@@ -78,8 +78,8 @@ const DebtorsSales = () => {
         setSaleId('');
         dataSenDebt.given_price = 0;
       })
-      .catch(err => {
-        console.error(err);
+      .catch(_err => {
+        // console.error(err);
         Alert.alert('Ошибка', 'Долг не отправлен');
       });
   };
@@ -127,9 +127,9 @@ const DebtorsSales = () => {
               onPress={() => {
                 if (Number(leftPrice) - Number(dataSenDebt.given_price) < 0) {
                   Alert.alert('Ошибка', 'Недостаточно средств');
-                  console.log(
-                    Number(leftPrice) - Number(dataSenDebt.given_price),
-                  );
+                  // console.log(
+                  //   Number(leftPrice) - Number(dataSenDebt.given_price),
+                  // );
                 } else {
                   sendDebt();
                 }

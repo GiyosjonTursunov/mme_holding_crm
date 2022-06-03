@@ -62,7 +62,7 @@ const RegisterMagazineModal = ({setMagazineList, magazineList}) => {
       },
     });
     let responseJson = await res.json();
-    console.log(responseJson, 'responseJson');
+    // console.log(responseJson, 'responseJson');
     if (res.status === 201) {
       setMagazineList([...magazineList, responseJson]);
       setMagazineName('');
@@ -126,7 +126,9 @@ const RegisterMagazineModal = ({setMagazineList, magazineList}) => {
               isVisible={magazineModalVisible}
               onClose={() => setMagazineModalVisible(false)}
               onImageLibraryPress={onImageLibraryPress}
-              onCameraPress={() => console.log('camera pressed')}
+              onCameraPress={() => {
+                return;
+              }}
             />
 
             <TouchableOpacity

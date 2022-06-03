@@ -85,7 +85,7 @@ const SimpleSale = () => {
           }
         });
     } else {
-      console.warn(dressId, givenPrice, salonId, magazineId);
+      // console.warn(dressId, givenPrice, salonId, magazineId);
       Alert.alert('Заполните все поля');
     }
   };

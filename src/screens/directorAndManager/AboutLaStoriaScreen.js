@@ -133,7 +133,9 @@ const AboutLaStoriaScreen = () => {
         style={tw`flex-row border-b border-[rgba(0,0,0,0.5)] justify-between w-11/12 mx-auto`}>
         <Text
           style={tw`font-bold text-base`}
-          onPress={() => console.warn(salonList)}>
+          onPress={() => {
+            return;
+          }}>
           Salonlar ro`yxati
         </Text>
 

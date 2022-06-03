@@ -55,7 +55,9 @@ const AddProduct = () => {
         setTypeImage(image.assets[0].type);
         setWareHouseRegisterModalVisible(false);
       })
-      .catch(err => console.log(err));
+      .catch(_err => {
+        return;
+      });
   }, []);
 
   const registerProduct = async () => {
@@ -83,10 +85,10 @@ const AddProduct = () => {
       let responseJson = await res.json();
       if (responseJson) {
         // clear inputs
-        console.log(responseJson);
+        // console.log(responseJson);
         setProduct_name('');
         setModalVisible(false);
-        console.error(res.status);
+        // console.error(res.status);
         if (res.status === 201) {
           Alert.alert("Maxsulot ro'yhatdan o'tdi");
         } else {
@@ -121,7 +123,7 @@ const AddProduct = () => {
             },
           })
             .then(res => {
-              console.warn(res.data);
+              // console.warn(res.data);
               setProduct_count('');
               setProduct_price('');
               setNote('');
@@ -131,11 +133,13 @@ const AddProduct = () => {
                 Alert.alert('Ошибка при добавлении продукта');
               }
             })
-            .catch(err => {
-              console.error(err);
+            .catch(_err => {
+              // console.error(err);
             });
         })
-        .catch(err => console.error(err));
+        .catch(_err => {
+          return;
+        });
     } else {
       Alert.alert("Noto'g'ri kiritilgan");
     }
@@ -153,17 +157,18 @@ const AddProduct = () => {
           },
         })
           .then(res => {
-            console.warn(res.data);
+            // console.warn(res.data);
             setAllProducts(res.data);
             setRefreshing(false);
           })
-          .catch(err => {
-            console.warn(err);
+          .catch(_err => {
+            // console.warn(err);
             setRefreshing(false);
           });
       })
       .catch(_err => {
-        console.error(_err);
+        return;
+        // console.error(_err);
       });
   };
 
@@ -313,7 +318,9 @@ const AddProduct = () => {
                   isVisible={wareHouseRegisterModalVisible}
                   onClose={() => setWareHouseRegisterModalVisible(false)}
                   onImageLibraryPress={onImageLibraryPress}
-                  onCameraPress={() => console.log('camera pressed')}
+                  onCameraPress={() => {
+                    return;
+                  }}
                 />
 
                 <View

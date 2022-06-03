@@ -115,7 +115,7 @@ const Header = ({headerName, isRegister}) => {
                 dispatch(setIsLogIn(false));
                 dispatch(setRole(''));
               });
-            console.log('Logged out!');
+            // console.log('Logged out!');
           },
           style: 'destructive',
         },
