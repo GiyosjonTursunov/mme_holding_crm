@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
-  FlatList,
-  Dimensions,
+  RefreshControl,
 } from 'react-native';
 import tw from 'twrnc';
 
@@ -21,12 +20,20 @@ import ImageZoomCustom from '../../components/modal/ImageZoomCustom';
 
 const OrdersById = ({route}) => {
   const [sale, setSale] = useState([]);
-  const [dressImg, setDressImg] = useState([]);
+  // const [dressImg, setDressImg] = useState([]);
 
   const [selectedDressImg, setSelectedDressImg] = useState();
   const {token, role} = useSelector(state => state.userReducer);
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  // const [dressZoomImg, setDressZoomImg] = useState(false);
+
+  const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
+    useState(false);
+
   const started = () => {
+    setRefreshing(true);
     axios({
       url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
       method: 'PUT',
@@ -45,21 +52,19 @@ const OrdersById = ({route}) => {
         })
           .then(resSale => {
             // console.warn(resSale.data);
+            setRefreshing(false);
             setSale(resSale.data);
-            setDressImg([
-              resSale.data?.dress?.img1,
-              resSale.data?.dress?.img2,
-              resSale.data?.dress?.img3,
-            ]);
+            // setDressImg(resSale.data?.dress?.img);
           })
           .catch(_err => {
             const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
             Alert.alert(newLocal);
+            setRefreshing(false);
             // console.log(_err);
           });
       })
       .catch(_error => {
-        return;
+        setRefreshing(false);
         // console.log(_error);
       });
   };
@@ -83,6 +88,7 @@ const OrdersById = ({route}) => {
   };
 
   useEffect(() => {
+    setRefreshing(true);
     axios({
       url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
       method: 'GET',
@@ -91,61 +97,74 @@ const OrdersById = ({route}) => {
       },
     })
       .then(res => {
-        // console.warn(res.data);
         setSale(res.data);
-        setDressImg([
-          res.data.dress.img1,
-          res.data.dress.img2,
-          res.data.dress.img3,
-        ]);
+        setRefreshing(false);
       })
       .catch(_err => {
         const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
         Alert.alert(newLocal);
         // console.log(_err);
+        setRefreshing(false);
       });
   }, [route.params.saleId, token]);
-
-  const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
-    useState(false);
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <Header
         headerName={route.params?.supplier ? 'Yetkazib beruvchi' : 'Sotuvchi'}
       />
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        pagingEnabled
-        data={dressImg}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={tw`w-60 h-80 mx-1 mb-[${
-              Dimensions.get('window').height / 7
-            }px]`}
-            activeOpacity={0.8}
-            onPress={() => {
-              setSelectedDressImg(mainUrl + 'media/' + item);
-              setSelectedDressImgModalVisible(true);
-            }}>
-            <Image
-              source={{uri: `${mainUrl + 'media/' + item}`}}
-              style={tw`w-full h-full rounded-xl`}
-              resizeMode="contain"
-            />
-            <ImageZoomCustom
-              selectedDressImgModalVisible={selectedDressImgModalVisible}
-              setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
-              selectedDressImg={selectedDressImg}
-            />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
       <ScrollView
         style={tw`w-11/12 bg-white mx-auto`}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              axios({
+                url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+                method: 'GET',
+                headers: {
+                  Authorization: `token ${token}`,
+                },
+              })
+                .then(res => {
+                  setSale(res.data);
+                  setRefreshing(false);
+                })
+                .catch(_err => {
+                  const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
+                  Alert.alert(newLocal);
+                  // console.log(_err);
+                  setRefreshing(false);
+                });
+            }}
+            colors={['#6c63ff', '#6c63ff']}
+            tintColor="#6c63ff"
+            title="Yangilash"
+            titleColor="#6c63ff"
+          />
+        }>
+        <TouchableOpacity
+          style={tw`w-full h-100 mx-auto`}
+          activeOpacity={0.8}
+          onPress={() => {
+            console.warn(mainUrl + 'media/' + sale?.dress?.img);
+            setSelectedDressImg(mainUrl + 'media/' + sale?.dress?.img);
+            setSelectedDressImgModalVisible(true);
+          }}>
+          <Image
+            source={{uri: `${mainUrl + 'media/' + sale?.dress?.img}`}}
+            style={tw`w-full h-full`}
+            resizeMode="contain"
+          />
+          <ImageZoomCustom
+            selectedDressImgModalVisible={selectedDressImgModalVisible}
+            setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
+            selectedDressImg={selectedDressImg}
+          />
+        </TouchableOpacity>
+
         <View style={tw`border-b w-4/12 ml-4`}>
           <Text style={tw`text-xl mt-2 ml-2 `}>#{route?.params.saleId}</Text>
         </View>
@@ -214,14 +233,34 @@ const OrdersById = ({route}) => {
         <Text style={tw`text-xl mx-auto`}>Komentariya : {sale?.note}</Text>
 
         {Number(sale?.status) === 1 ? (
-          <TouchableOpacity
-            onPress={started}
-            activeOpacity={0.8}
-            style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3 mb-5`}>
-            <Text style={tw`text-white font-semibold m-auto text-xl`}>
-              Qabul qilindi
-            </Text>
-          </TouchableOpacity>
+          sale.decorator_manager && role === 'DECORATOR_MANAGER' ? (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={tw`bg-[#000] mx-10 rounded-xl h-15 mt-3 mb-5 flex-col`}>
+              <Text style={tw`text-white font-semibold m-auto text-xl`}>
+                Qabul qildingiz
+              </Text>
+              <Text style={tw`text-white m-auto`}>Omborchi kutilmoqda</Text>
+            </TouchableOpacity>
+          ) : sale.warehouse_manager && role === 'WAREHOUSE_MANAGER' ? (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3 mb-5 flex-col`}>
+              <Text style={tw`text-white font-semibold m-auto text-xl`}>
+                Qabul qildingiz
+              </Text>
+              <Text style={tw`text-white m-auto`}>Dekoratorchi kutilmoqda</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={started}
+              activeOpacity={0.8}
+              style={tw`bg-[#00DC7D] mx-10 rounded-xl h-15 mt-3 mb-5`}>
+              <Text style={tw`text-white font-semibold m-auto text-xl`}>
+                Qabul qilish
+              </Text>
+            </TouchableOpacity>
+          )
         ) : (
           <TouchableOpacity
             onPress={sended}

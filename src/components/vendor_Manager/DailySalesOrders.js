@@ -184,7 +184,7 @@ const DailySalesOrders = () => {
     // console.warn(item);
     return (
       <Item
-        img={item?.dress?.img1}
+        img={item?.dress?.img}
         dress_name={item?.dress?.name}
         salon_name={item?.salon?.name}
         salonchi_name={item?.salon?.user}

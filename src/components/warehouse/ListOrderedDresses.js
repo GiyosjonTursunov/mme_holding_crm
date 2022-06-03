@@ -49,17 +49,16 @@ const ListOrderedDresses = () => {
       .then(res => {
         setSalonList(res.data);
         setRefreshing(false);
-        // console.warn(res.data);
+        console.error(res.data);
       })
       .catch(_error => {
-        // console.log(_error);
         setRefreshing(false);
       });
   };
 
   useEffect(() => {
     getOrder();
-  }, []);
+  }, [token]);
 
   const Item = ({
     name,
@@ -140,7 +139,7 @@ const ListOrderedDresses = () => {
   );
 
   return (
-    <ScrollView
+    <View
       style={tw`flex-1 bg-white pt-5`}
       refreshControl={
         <RefreshControl onRefresh={getOrder} refreshing={refreshing} />
@@ -161,9 +160,12 @@ const ListOrderedDresses = () => {
           data={salonList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
+          refreshControl={
+            <RefreshControl onRefresh={getOrder} refreshing={refreshing} />
+          }
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

@@ -1,7 +1,7 @@
 import {View, Modal, Dimensions, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import ImageZoom from 'react-native-image-pan-zoom';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 
 import tw from 'twrnc';
 // import ImageOptimize from '../global/CustomImage';
@@ -34,7 +34,7 @@ const ImageZoomCustom = ({
           />
         </ImageZoom>
         <TouchableOpacity
-          style={tw`absolute top-0 left-0 mt-15 ml-5`}
+          style={tw`absolute top-0 left-0 mt-8 ml-3`}
           onPress={() => {
             setSelectedDressImgModalVisible(false);
           }}>

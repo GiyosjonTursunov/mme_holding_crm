@@ -39,6 +39,7 @@ const OrdersById = ({route}) => {
         })
           .then(res => {
             Alert.alert('Yangilandi');
+            console.warn(res.data);
           })
           .catch(_error => {
             return;
@@ -87,12 +88,7 @@ const OrdersById = ({route}) => {
           .then(res => {
             // console.warn(res.data);
             setSale(res.data);
-            setDressImg([
-              res.data.dress.img1,
-              res.data.dress.img2,
-              res.data.dress.img3,
-              res.data.dress.img4,
-            ]);
+            setDressImg(res.data.dress.img);
           })
           .catch(_err => {
             Alert.alert('Bazaga ulanishda xatolik yuz berdi!');

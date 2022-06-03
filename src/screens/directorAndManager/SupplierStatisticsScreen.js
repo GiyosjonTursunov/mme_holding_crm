@@ -92,7 +92,7 @@ const SupplierStatisticsScreen = () => {
       given_price={item.given_price}
       salon_given_price={item.salon_given_price}
       date_created={item.date_created}
-      image={item.dress?.img1}
+      image={item.dress?.img}
     />
   );
 

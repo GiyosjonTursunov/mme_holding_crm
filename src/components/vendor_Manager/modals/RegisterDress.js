@@ -79,6 +79,7 @@ const RegisterDress = ({
       },
     })
       .then(res => {
+        // console.warn('dresslar galdi');
         if (res.data.length === dressList.length) {
           return null;
         } else {
@@ -103,6 +104,8 @@ const RegisterDress = ({
 
   const [selectedDressImg, setSelectedDressImg] = useState();
 
+  // const [selectedDressImgU, setSelectedDressImg] = useState();
+
   const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
     useState(false);
 
@@ -121,7 +124,6 @@ const RegisterDress = ({
         style={tw`w-11.7/12 border-b flex-row border-[rgba(0,0,0,0.1)] mx-auto m-2`}>
         <TouchableOpacity
           onPress={() => {
-            // console.warn('img1', baseUrl + img1);
             setSelectedDressImg(baseUrl + img1);
             setSelectedDressImgModalVisible(true);
           }}
@@ -206,9 +208,11 @@ const RegisterDress = ({
           Authorization: 'token ' + token,
         },
       });
+      setShowLoading(false);
       if (res.status === 201) {
-        setShowLoading(false);
-        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(true);
+        }, 100);
         setTimeout(() => {
           setShowSuccess(false);
         }, 2000);
@@ -354,8 +358,36 @@ const RegisterDress = ({
                   <Text style={tw`ml-[2%]`}>Old</Text>
                 </View>
 
+                <ImageZoomCustom
+                  setSelectedDressImgModalVisible={
+                    setSelectedDressImgModalVisible
+                  }
+                  selectedDressImg={selectedDressImg}
+                  selectedDressImgModalVisible={selectedDressImgModalVisible}
+                />
+
                 {uriImage1 ? (
-                  <Image source={{uri: uriImage1}} style={tw`w-full h-50`} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedDressImg(uriImage1);
+                      setSelectedDressImgModalVisible(true);
+                    }}
+                    style={tw`w-full h-150`}>
+                    <Image
+                      source={{uri: uriImage1}}
+                      style={tw`w-full h-full`}
+                      resizeMode="contain"
+                    />
+                    <ImageZoomCustom
+                      selectedDressImgModalVisible={
+                        selectedDressImgModalVisible
+                      }
+                      setSelectedDressImgModalVisible={
+                        setSelectedDressImgModalVisible
+                      }
+                      selectedDressImg={selectedDressImg}
+                    />
+                  </TouchableOpacity>
                 ) : null}
 
                 <View

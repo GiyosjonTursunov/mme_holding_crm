@@ -51,7 +51,7 @@ const SimpleSale = () => {
     if (dressId && givenPrice >= 0 && salonId && magazineId) {
       setShowSuccess(true);
       axios({
-        url: `${mainUrl}lastoria/simple-sales/`,
+        url: `${mainUrl}lastoria/simple-sales/add/`,
         method: 'POST',
         data: dataForSimpleSale,
         headers: {

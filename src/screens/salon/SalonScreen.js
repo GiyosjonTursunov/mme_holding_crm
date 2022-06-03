@@ -67,7 +67,7 @@ const SalonScreen = ({navigation}) => {
               .then(dressNewsRes => {
                 setNews(dressNewsRes.data);
                 axios({
-                  url: `${mainUrl}lastoria/user-simple-sales/${
+                  url: `${mainUrl}lastoria/simple-sales/${
                     JSON.parse(dataString)?.salon_id[0]?.id
                   }/`,
                   method: 'GET',
@@ -78,7 +78,7 @@ const SalonScreen = ({navigation}) => {
                   .then(salesimpleRes => {
                     setSaleSimple(salesimpleRes.data);
                     axios({
-                      url: `${mainUrl}lastoria/user-5050-sales/${
+                      url: `${mainUrl}lastoria/5050-sales/${
                         JSON.parse(dataString)?.salon_id[0]?.id
                       }/`,
                       method: 'GET',
@@ -433,7 +433,7 @@ const SalonScreen = ({navigation}) => {
                     },
                   ]}>
                   <Image
-                    source={{uri: mainUrl + 'media/' + item.dress?.img1}}
+                    source={{uri: mainUrl + 'media/' + item.dress?.img}}
                     style={tw`absolute w-18 h-18 rounded-full right-0 top-0`}
                     resizeMode="cover"
                   />
@@ -504,7 +504,7 @@ const SalonScreen = ({navigation}) => {
                     },
                   ]}>
                   <Image
-                    source={{uri: mainUrl + 'media/' + item.dress?.img1}}
+                    source={{uri: mainUrl + 'media/' + item.dress?.img}}
                     style={tw`absolute w-18 h-18 rounded-full right-0 top-0`}
                     resizeMode="cover"
                   />
@@ -575,7 +575,7 @@ const SalonScreen = ({navigation}) => {
                     },
                   ]}>
                   <Image
-                    source={{uri: mainUrl + 'media/' + item.dress?.img1}}
+                    source={{uri: mainUrl + 'media/' + item.dress?.}}
                     style={tw`absolute w-18 h-18 rounded-full right-0 top-0`}
                     resizeMode="cover"
                   />
