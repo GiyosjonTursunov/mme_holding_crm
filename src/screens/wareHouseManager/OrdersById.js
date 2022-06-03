@@ -65,7 +65,8 @@ const OrdersById = ({route}) => {
   };
 
   const sended = () => {
-    console.log('sended function need to realize');
+    return;
+    // console.log('sended function need to realize');
     // axios({
     //   url: `${mainUrl}lastoria/warehouse-order-views/${route.params.saleId}/`,
     //   method: 'POST',
