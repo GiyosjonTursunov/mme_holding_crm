@@ -34,7 +34,7 @@ const DoubleBtn = ({
             setIsSale(true);
             secondBtnFunction ? secondBtnFunction() : null;
           }}
-          style={tw`flex-1 rounded-2xl ${isSale ? 'bg-white' : null}`}>
+          style={tw`flex-1 rounded-xl ${isSale ? 'bg-white' : null}`}>
           <Text
             style={tw`m-auto ${isSale ? 'text-black' : 'text-white'} text-xl`}>
             {secondBtnName}

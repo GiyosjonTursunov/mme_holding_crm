@@ -12,7 +12,7 @@ const BusinessTypes = ({ishHaqida}) => {
       onPress={() => {
         // navigation.navigate(businessName.link);
         {
-          businessName.name == 'LaStoria' && ishHaqida
+          businessName.name === 'LaStoria' && ishHaqida
             ? navigation.navigate('AboutLaStoriaScreen')
             : navigation.navigate('CostTypesScreen');
         }
@@ -23,7 +23,7 @@ const BusinessTypes = ({ishHaqida}) => {
       </View>
       <Text
         style={tw`text-base mt-[40%] text-[${
-          businessName.name == 'LaStoria' ? '#7F288E' : '#000'
+          businessName.name === 'LaStoria' ? '#7F288E' : '#000'
         }]`}>
         {businessName.name}
       </Text>

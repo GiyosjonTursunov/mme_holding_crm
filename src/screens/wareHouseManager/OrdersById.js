@@ -145,25 +145,27 @@ const OrdersById = ({route}) => {
             titleColor="#6c63ff"
           />
         }>
-        <TouchableOpacity
-          style={tw`w-full h-100 mx-auto`}
-          activeOpacity={0.8}
-          onPress={() => {
-            console.warn(mainUrl + 'media/' + sale?.dress?.img);
-            setSelectedDressImg(mainUrl + 'media/' + sale?.dress?.img);
-            setSelectedDressImgModalVisible(true);
-          }}>
-          <Image
-            source={{uri: `${mainUrl + 'media/' + sale?.dress?.img}`}}
-            style={tw`w-full h-full`}
-            resizeMode="contain"
-          />
-          <ImageZoomCustom
-            selectedDressImgModalVisible={selectedDressImgModalVisible}
-            setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
-            selectedDressImg={selectedDressImg}
-          />
-        </TouchableOpacity>
+        {sale?.dress?.img ? (
+          <TouchableOpacity
+            style={tw`w-full h-100 mx-auto`}
+            activeOpacity={0.8}
+            onPress={() => {
+              console.warn(mainUrl + 'media/' + sale?.dress?.img);
+              setSelectedDressImg(mainUrl + 'media/' + sale?.dress?.img);
+              setSelectedDressImgModalVisible(true);
+            }}>
+            <Image
+              source={{uri: `${mainUrl + 'media/' + sale?.dress?.img}`}}
+              style={tw`w-full h-full`}
+              resizeMode="contain"
+            />
+            <ImageZoomCustom
+              selectedDressImgModalVisible={selectedDressImgModalVisible}
+              setSelectedDressImgModalVisible={setSelectedDressImgModalVisible}
+              selectedDressImg={selectedDressImg}
+            />
+          </TouchableOpacity>
+        ) : null}
 
         <View style={tw`border-b w-4/12 ml-4`}>
           <Text style={tw`text-xl mt-2 ml-2 `}>#{route?.params.saleId}</Text>

@@ -575,7 +575,7 @@ const SalonScreen = ({navigation}) => {
                     },
                   ]}>
                   <Image
-                    source={{uri: mainUrl + 'media/' + item.dress?.}}
+                    source={{uri: mainUrl + 'media/' + item.dress?.img}}
                     style={tw`absolute w-18 h-18 rounded-full right-0 top-0`}
                     resizeMode="cover"
                   />

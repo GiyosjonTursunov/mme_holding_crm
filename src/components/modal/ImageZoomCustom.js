@@ -34,7 +34,7 @@ const ImageZoomCustom = ({
           />
         </ImageZoom>
         <TouchableOpacity
-          style={tw`absolute top-0 left-0 mt-8 ml-3`}
+          style={tw`absolute top-0 left-0 mt-13 ml-3`}
           onPress={() => {
             setSelectedDressImgModalVisible(false);
           }}>

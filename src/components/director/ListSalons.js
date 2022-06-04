@@ -17,7 +17,7 @@ const ListSalons = ({dataList}) => {
         })
       }
       style={[
-        tw`w-90 h-20 mx-auto mt-[2%] flex-row justify-center items-center rounded-xl bg-white my-2 mx-4`,
+        tw`w-90 h-20 flex-row justify-center items-center rounded-xl bg-white mx-4 mt-1`,
         {
           shadowColor: '#000',
           shadowOpacity: 0.17,

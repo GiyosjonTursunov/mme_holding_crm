@@ -26,20 +26,20 @@ const ReportScreen = () => {
 
   const getDailyReports = async () => {
     setRefreshing(true);
-    // console.warn(token);
     axios({
       url: `${mainUrl}lastoria/orders-report-all/`,
-      method: 'get',
+      method: 'GET',
       headers: {
         Authorization: `token ${token}`,
       },
     })
       .then(res => {
+        // console.warn(res.data);
         setRefreshing(false);
         setReportList(res.data);
-        // console.warn(res.data);
       })
-      .catch(() => {
+      .catch(_err => {
+        // console.error('error', _err);
         setRefreshing(false);
         Alert.alert('Error', 'Something went wrong');
       });

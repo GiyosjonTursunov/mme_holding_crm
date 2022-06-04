@@ -81,7 +81,8 @@ const DailySalesOrders = () => {
   }, [token, red]);
 
   function choooseColor(item) {
-    if (item.mortgage) {
+    // console.error(item.mortgage);
+    if (item.mortgage >= 0) {
       return '#E05C58';
     } else if (item.girl_name) {
       return '#67CEAF';
@@ -90,15 +91,7 @@ const DailySalesOrders = () => {
     }
   }
 
-  const Item = ({
-    img,
-    dress_name,
-    salon_name,
-    user_name,
-    salonchi_name,
-    item,
-    price,
-  }) => (
+  const Item = ({img, dress_name, user_name, salonchi_name, item, price}) => (
     <View
       style={[
         tw`w-[${Dimensions.get('screen').width / 1.35}px] h-45 ml-[${
@@ -157,9 +150,7 @@ const DailySalesOrders = () => {
           Dimensions.get('screen').width / 20
         }px] w-6/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
         <Text style={tw`text-white text-lg`}>Narxi : </Text>
-        <Text style={tw`text-lg text-white truncate text-ellipsis`}>
-          {price}
-        </Text>
+        <Text style={tw`text-lg text-white`}>{price}</Text>
       </View>
 
       <View
@@ -181,12 +172,11 @@ const DailySalesOrders = () => {
   );
 
   const renderItem = ({item}) => {
-    // console.warn(item);
+    // console.error(item);
     return (
       <Item
         img={item?.dress?.img}
         dress_name={item?.dress?.name}
-        salon_name={item?.salon?.name}
         salonchi_name={item?.salon?.user}
         user_name={item?.user?.name}
         price={item?.main_price}

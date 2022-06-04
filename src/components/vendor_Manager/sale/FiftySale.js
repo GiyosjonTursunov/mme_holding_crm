@@ -5,6 +5,8 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState} from 'react';
 import tw from 'twrnc';
@@ -82,95 +84,114 @@ const FiftySale = () => {
     }
   };
 
+  // const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
+
   return (
-    <ScrollView style={tw`flex-1 bg-white`}>
-      <View style={tw`mt-[3%]`}>
-        <RegisterDress
-          setDressId={setDressId}
-          setMainPriceSale={setMainPrice}
-          setColorId={setColorId}
-          setSelectedShleftId={setSelectedShleftId}
-          setSelectedShleftName={setSelectedShleftName}
-        />
-      </View>
-      <TextInput
-        placeholder={String(mainPrice) || 'Narx'}
-        defaultValue={mainPrice}
-        onChangeText={text => {
-          if (givenPrice && text - givenPrice >= 0) {
-            setMainPrice(text);
-            setLeftPrice(text - givenPrice);
-          } else if (!givenPrice) {
-            setMainPrice(text);
-          }
-        }}
-        style={tw`w-11/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center mx-auto`}
-        keyboardType="numeric"
-      />
-
-      <View
-        style={tw`flex-row w-11/12 mx-auto justify-between my-1 items-center`}>
-        <TextInput
-          placeholder={'Kelin ismi'}
-          defaultValue={girlName}
-          onChangeText={setGirlName}
-          style={tw`w-6/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-3`}
-        />
-
-        <View style={tw`w-5.5/12 items-center`}>
-          <Text style={tw`text-base`}>Kelin bergan pul</Text>
-          <Text style={tw`text-lg`}>{Number(Number(mainPrice) / 2) || 0}</Text>
+    <ScrollView
+      style={tw`flex-1 bg-white`}
+      showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        // keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <View style={tw`mt-[3%]`}>
+          <RegisterDress
+            setDressId={setDressId}
+            setMainPriceSale={setMainPrice}
+            setColorId={setColorId}
+            setSelectedShleftId={setSelectedShleftId}
+            setSelectedShleftName={setSelectedShleftName}
+          />
         </View>
-      </View>
-
-      <View
-        style={tw`w-11/12 flex-row justify-between items-center mx-auto my-[1%]`}>
-        <Text style={tw`text-base`}>Ko'ylak chiqarish sanasi</Text>
-        <DatePickerCustom setNeedDate={setDeliveryDate} text={deliveryDate} />
-      </View>
-
-      <RegisterSalon setSalonId={setSalonId} />
-
-      <View style={tw`w-11/12 flex-row mx-auto my-[1%] justify-between`}>
         <TextInput
-          placeholder="Berilgan"
-          value={givenPrice}
+          placeholder={String(mainPrice) || 'Narx'}
+          value={mainPrice}
+          placeholderTextColor={mainPrice ? '#000' : null}
           onChangeText={text => {
-            if (mainPrice && mainPrice - text >= 0) {
-              setGivenPrice(text);
-              setLeftPrice(mainPrice / 2 - text);
+            if (givenPrice && text - givenPrice >= 0) {
+              setMainPrice(text);
+              setLeftPrice(text - givenPrice);
+            } else if (!givenPrice) {
+              setMainPrice(text);
             }
           }}
-          style={tw`w-6/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-3`}
+          style={tw`w-11/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] text-center mx-auto`}
           keyboardType="numeric"
         />
 
-        <View style={tw`w-4/12 justify-center items-center`}>
-          <Text>Qoldi</Text>
-          <Text style={tw`text-lg`}>{leftPrice}</Text>
+        <View
+          style={tw`flex-row w-11/12 mx-auto justify-between my-1 items-center`}>
+          <TextInput
+            placeholder={'Kelin ismi'}
+            value={girlName}
+            onChangeText={setGirlName}
+            style={tw`w-6/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-3`}
+          />
+
+          <View style={tw`w-5.5/12 items-center`}>
+            <Text style={tw`text-base`}>Kelin bergan pul</Text>
+            <Text style={tw`text-lg`}>
+              {Number(Number(mainPrice) / 2) || 0}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <View
-        style={tw`w-11/12 flex-row justify-between items-center mx-auto my-[1%]`}>
-        <Text style={tw`text-lg`}>Pul berilish sanasi</Text>
-        <DatePickerCustom setNeedDate={setMoneyGiveDate} text={moneyGiveDate} />
-      </View>
+        <View
+          style={tw`w-11/12 flex-row justify-between items-center mx-auto my-[1%]`}>
+          <Text style={tw`text-base`}>Ko'ylak chiqarish sanasi</Text>
+          <DatePickerCustom
+            setNeedDate={setDeliveryDate}
+            text={deliveryDate}
+            secondFunc={setMoneyGiveDate}
+          />
+        </View>
 
-      <TextInput
-        multiline
-        placeholder="Qo'shimcha ma'lumotlar"
-        value={note}
-        onChangeText={setNote}
-        style={tw`w-10.5/12 h-20 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] mx-auto my-[1%] px-2 py-2`}
-      />
+        <RegisterSalon setSalonId={setSalonId} />
 
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={sendSimpleSale}
-        style={tw`w-5/12 h-15 bg-[#323054] mx-auto my-2 rounded-xl`}>
-        <Text style={tw`text-white text-xl m-auto`}>Saqlash</Text>
-      </TouchableOpacity>
+        <View style={tw`w-11/12 flex-row mx-auto my-[1%] justify-between`}>
+          <TextInput
+            placeholder="Berilgan"
+            value={givenPrice}
+            onChangeText={text => {
+              if (mainPrice && mainPrice - text >= 0) {
+                setGivenPrice(text);
+                setLeftPrice(mainPrice / 2 - text);
+              }
+            }}
+            style={tw`w-6/12 h-11 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] pl-3`}
+            keyboardType="numeric"
+          />
+
+          <View style={tw`w-4/12 justify-center items-center`}>
+            <Text>Qoldi</Text>
+            <Text style={tw`text-lg`}>{leftPrice}</Text>
+          </View>
+        </View>
+
+        <View
+          style={tw`w-11/12 flex-row justify-between items-center mx-auto my-[1%]`}>
+          <Text style={tw`text-lg`}>Pul berilish sanasi</Text>
+          <DatePickerCustom
+            setNeedDate={setMoneyGiveDate}
+            text={moneyGiveDate}
+          />
+        </View>
+
+        <TextInput
+          multiline
+          placeholder="Qo'shimcha ma'lumotlar"
+          value={note}
+          onChangeText={setNote}
+          style={tw`w-10.5/12 h-20 border text-base font-semibold rounded-xl border-[rgba(0,0,0,0.5)] mx-auto my-[1%] px-2 py-2`}
+        />
+
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={sendSimpleSale}
+          style={tw`w-5/12 h-15 bg-[#323054] mx-auto my-2 rounded-xl`}>
+          <Text style={tw`text-white text-xl m-auto`}>Saqlash</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };

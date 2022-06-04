@@ -34,13 +34,14 @@ const AboutWorkScreen = () => {
   const getAllDataForThisPage = () => {
     setRefreshing(true);
     axios({
-      url: `${mainUrl}dashboard/lastoria-orders-count/`,
+      url: `${mainUrl}dashboard/lastoria/orders-count/`,
       method: 'GET',
       headers: {
         Authorization: `token ${token}`,
       },
     })
       .then(res => {
+        // console.error(res.data);
         setDostavkaCount(res.data);
       })
       .catch(_err => {
@@ -48,13 +49,14 @@ const AboutWorkScreen = () => {
         // console.error(err);
       });
     axios({
-      url: `${mainUrl}dashboard/warehouse-product-count/`,
+      url: `${mainUrl}dashboard/warehouse/product-count/`,
       method: 'GET',
       headers: {
         Authorization: `token ${token}`,
       },
     })
       .then(res => {
+        // console.error(res.data);
         setProductCount(res.data);
       })
       .catch(_err => {
@@ -177,7 +179,7 @@ const AboutWorkScreen = () => {
               },
             ]}>
             <Text style={tw`text-black`}>{dostavkaCount}</Text>
-            <Text style={tw`text-base font-semibold text-black`}>Dostavka</Text>
+            <Text style={tw`text-base font-semibold text-black`}>Zakazlar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Product')}
@@ -223,7 +225,7 @@ const AboutWorkScreen = () => {
           <Text style={tw`font-bold text-base`}>{salonList?.length || 0}</Text>
         </View>
 
-        <View style={tw`h-[${Dimensions.get('screen').height / 8}px]`}>
+        <View style={tw`h-[${Dimensions.get('screen').height / 7}px] mt-4`}>
           <ListSalons dataList={salonList} />
         </View>
       </ScrollView>

@@ -75,7 +75,7 @@ const AboutSalonScreen = ({route}) => {
 
       <AboutShopSalonStatistics
         name={'Berilgan pullar'}
-        number={salon.left_price}
+        number={salon.given_price}
         children={
           <Image
             source={require('../../../assets/given_price.png')}
@@ -86,7 +86,7 @@ const AboutSalonScreen = ({route}) => {
 
       <AboutShopSalonStatistics
         name={'Beriladigan pullar'}
-        number={salon.given_price}
+        number={salon.left_price}
         children={
           <Image
             source={require('../../../assets/left_price.png')}

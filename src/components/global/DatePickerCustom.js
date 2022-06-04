@@ -3,16 +3,17 @@ import {Image, Text, View, TouchableOpacity} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import tw from 'twrnc';
 
-const DatePickerCustom = ({setNeedDate, func, text}) => {
-  const date = new Date();
+const DatePickerCustom = ({setNeedDate, func, text, secondFunc}) => {
+  const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
   return (
     <TouchableOpacity
       onPress={() => setOpen(true)}
       activeOpacity={0.8}
       style={tw`w-6/12 flex flex-row items-center border border-[rgba(0,0,0,0.7)] rounded-2xl h-10.5`}>
       <Text style={tw`m-auto text-${text ? 'black' : 'gray-500'} text-base`}>
-        {text || '15/04/2022'}
+        {text || '00/00/2022'}
       </Text>
       <View
         style={tw`bg-[#323054] h-full w-5/12 rounded-tr-2xl rounded-br-2xl items-center justify-center`}>
@@ -35,6 +36,8 @@ const DatePickerCustom = ({setNeedDate, func, text}) => {
             const validDay = day < 10 ? `0${day}` : day;
             const date_today = `${year}-${validMonth}-${validDay}`;
             setNeedDate(date_today);
+            setDate(dateF);
+            secondFunc ? secondFunc(date_today) : null;
             func ? func() : null;
           }}
           onCancel={() => {

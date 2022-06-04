@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import {Platform, KeyboardAvoidingView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import RegisterScreen from './src/screens/account/RegisterScreen';
@@ -30,11 +31,17 @@ import {Store} from './src/redux/store';
 // import ReportOrders from './src/components/vendor/ReportOrders';
 import ChooseScreen from './src/ChooseScreen';
 
+// const keyboardVerticalOffset = Platform.OS === 'ios' ? 80 : 0;
+
 const App = () => {
   return (
     <Provider store={Store}>
       <NavigationContainer>
+        {/* <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}> */}
         <ChooseScreen />
+        {/* </KeyboardAvoidingView> */}
       </NavigationContainer>
     </Provider>
   );

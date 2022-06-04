@@ -10,10 +10,15 @@ import {useNavigation} from '@react-navigation/native';
 import FiftySale from './sale/FiftySale';
 const Stack = createNativeStackNavigator();
 
+// const keyboardVerticalOffset = Platform.OS === 'ios' ? 80 : 0;
+
 const SaleDress = () => {
   const navigation = useNavigation();
   return (
     <View style={tw`flex-1 bg-white`}>
+      {/* <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}> */}
       <Header headerName={'Sotuvchi'} />
 
       <DoubleBtn
@@ -35,6 +40,7 @@ const SaleDress = () => {
           options={{headerShown: false}}
         />
       </Stack.Navigator>
+      {/* </KeyboardAvoidingView> */}
     </View>
   );
 };

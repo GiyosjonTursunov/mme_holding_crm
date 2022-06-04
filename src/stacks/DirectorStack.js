@@ -8,6 +8,7 @@ import AboutShopsScreen from '../screens/directorAndManager/AboutShopsScreen';
 import AboutSalonScreen from '../screens/directorAndManager/AboutSalonScreen';
 import ReportScreen from '../screens/directorAndManager/ReportScreen';
 import DailySalesStatisticsScreen from '../screens/directorAndManager/DailySalesStatisticsScreen';
+import OrdersById from '../screens/wareHouseManager/OrdersById';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ const DirectorStack = () => {
       />
       <Stack.Screen name="AboutWorkScreen" component={AboutWorkScreen} />
       <Stack.Screen name="ListOrderedDresses" component={ListOrderedDresses} />
+      <Stack.Screen name="OrdersById" component={OrdersById} />
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="AboutShopsScreen" component={AboutShopsScreen} />
       <Stack.Screen name="AboutSalonScreen" component={AboutSalonScreen} />

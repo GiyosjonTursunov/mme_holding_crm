@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
   RefreshControl,
-  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
@@ -17,19 +16,6 @@ import Header from '../global/Header';
 import axios from 'axios';
 import {mainUrl} from '../../config/apiUrl';
 import {useSelector} from 'react-redux';
-
-// refreshControl={
-//   <RefreshControl
-//     onRefresh={() =>
-//       directorGController.getAllSalesForVendor(
-//         setSalonList,
-//         setRefreshing,
-//         'refresh',
-//       )
-//     }
-//     refreshing={refreshing}
-//   />
-// }
 
 const ListOrderedDresses = () => {
   const navigation = useNavigation();
@@ -49,7 +35,7 @@ const ListOrderedDresses = () => {
       .then(res => {
         setSalonList(res.data);
         setRefreshing(false);
-        console.error(res.data);
+        // console.error(res.data);
       })
       .catch(_error => {
         setRefreshing(false);
@@ -66,7 +52,6 @@ const ListOrderedDresses = () => {
     id,
     del_date,
     index,
-    status,
     wrManager,
     drManager,
   }) => (
