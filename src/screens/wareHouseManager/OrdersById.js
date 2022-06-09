@@ -60,7 +60,6 @@ const OrdersById = ({route}) => {
             const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
             Alert.alert(newLocal);
             setRefreshing(false);
-            // console.log(_err);
           });
       })
       .catch(_error => {
@@ -89,6 +88,7 @@ const OrdersById = ({route}) => {
 
   useEffect(() => {
     setRefreshing(true);
+    console.warn(route.params.saleId);
     axios({
       url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
       method: 'GET',
@@ -97,13 +97,14 @@ const OrdersById = ({route}) => {
       },
     })
       .then(res => {
+        console.warn(res.data);
         setSale(res.data);
         setRefreshing(false);
       })
       .catch(_err => {
+        // console.error(_err);
         const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
         Alert.alert(newLocal);
-        // console.log(_err);
         setRefreshing(false);
       });
   }, [route.params.saleId, token]);
@@ -232,9 +233,41 @@ const OrdersById = ({route}) => {
           </View>
         )}
 
+        {role === 'DIRECTOR' ? (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>Summa</Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale.main_price}
+            </Text>
+          </View>
+        ) : null}
+
+        {role === 'DIRECTOR' ? (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>
+              Berilgan || Zaklad
+            </Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale.given_price} || {sale.mortgage}
+            </Text>
+          </View>
+        ) : null}
+
+        {role === 'DIRECTOR' ? (
+          <View
+            style={tw`w-11/12 h-10 border-b border-[rgba(0,0,0,0.3)] mx-auto flex-row justify-between items-end my-[2%]`}>
+            <Text style={tw`text-base font-semibold text-black`}>Qoldi</Text>
+            <Text style={tw`text-base font-semibold text-black`}>
+              {sale.left_price}
+            </Text>
+          </View>
+        ) : null}
+
         <Text style={tw`text-xl mx-auto`}>Komentariya : {sale?.note}</Text>
 
-        {Number(sale?.status) === 1 ? (
+        {role === 'DIRECTOR' ? null : Number(sale?.status) === 1 ? (
           sale.decorator_manager && role === 'DECORATOR_MANAGER' ? (
             <TouchableOpacity
               activeOpacity={0.8}

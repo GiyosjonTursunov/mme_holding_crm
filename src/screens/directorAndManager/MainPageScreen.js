@@ -22,6 +22,7 @@ const MainPageScreen = () => {
   const {token} = useSelector(state => state.userReducer);
 
   useEffect(() => {
+    // console.warn(token);
     axios({
       url: `${mainUrl}dashboard/companies/`,
       method: 'GET',

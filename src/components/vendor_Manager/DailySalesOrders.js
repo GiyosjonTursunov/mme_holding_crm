@@ -29,6 +29,7 @@ const DailySalesOrders = () => {
     // console.warn(token);
     if (red) {
       setRefreshing(true);
+      // dashboard/sale-and-orders-view/${route.params.report_id}/
       axios({
         method: 'GET',
         url: `${mainUrl}lastoria/simple-sales/`,
@@ -135,13 +136,7 @@ const DailySalesOrders = () => {
         style={tw`flex-row my-1 items-center justify-end pr-[${
           Dimensions.get('screen').width / 15
         }px] w-9/12 h-[${Dimensions.get('screen').height / 25}px] self-end`}>
-        <Text
-          style={tw`text-white text-lg`}
-          onPress={() => {
-            return;
-          }}>
-          Ko'ylak :{' '}
-        </Text>
+        <Text style={tw`text-white text-lg`}>Ko'ylak : </Text>
         <Text style={tw`text-lg text-white`}>{dress_name}</Text>
       </View>
 
@@ -188,7 +183,7 @@ const DailySalesOrders = () => {
   function mapData() {
     return (
       <>
-        {simpleSales.length ? (
+        {simpleSales?.length ? (
           <>
             <Text style={tw`text-2xl text-black ml-3 mt-3`}>Sotuvlar</Text>
             <View style={[tw`w-11/12 ml-3`, {borderWidth: 0.3}]} />
@@ -201,7 +196,7 @@ const DailySalesOrders = () => {
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
         />
-        {saleFifty.length ? (
+        {saleFifty?.length ? (
           <>
             <Text style={tw`text-2xl text-black ml-3 mt-3`}>
               50/50 sotuvlar
@@ -218,7 +213,7 @@ const DailySalesOrders = () => {
           showsHorizontalScrollIndicator={false}
         />
 
-        {orders.length ? (
+        {orders?.length ? (
           <>
             <Text style={tw`text-2xl text-black ml-3 mt-5`}>Buyurtmalar</Text>
             <View style={tw`border w-11/12 ml-3 border-[rgba(0,0,0,0.4)]`} />
@@ -246,7 +241,7 @@ const DailySalesOrders = () => {
           onRefresh={() => setRed(true)}
         />
       }>
-      {!simpleSales.length && !saleFifty.length && !orders.length ? (
+      {!simpleSales?.length && !saleFifty?.length && !orders?.length ? (
         <LottieView
           source={require('../../../assets/lottie/search.json')}
           style={[tw`w-full`, {aspectRatio: 1}]}

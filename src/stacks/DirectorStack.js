@@ -9,10 +9,12 @@ import AboutSalonScreen from '../screens/directorAndManager/AboutSalonScreen';
 import ReportScreen from '../screens/directorAndManager/ReportScreen';
 import DailySalesStatisticsScreen from '../screens/directorAndManager/DailySalesStatisticsScreen';
 import OrdersById from '../screens/wareHouseManager/OrdersById';
+// import DailySalesOrders from '../components/vendor_Manager/DailySalesOrders';
 
 const Stack = createNativeStackNavigator();
 
 const DirectorStack = () => {
+  // DailySalesOrders
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -31,6 +33,7 @@ const DirectorStack = () => {
         name="DailySalesStatisticsScreen"
         component={DailySalesStatisticsScreen}
       />
+      {/* <Stack.Screen name="DailySalesOrders" component={OrdersById} /> */}
     </Stack.Navigator>
   );
 };

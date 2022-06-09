@@ -53,7 +53,7 @@ const ReportSales = () => {
           Alert.alert('Ошибка', 'Не удалось получить данные');
           setRefreshing(false);
           setRed(false);
-          // console.error(err);
+          console.error(_err);
         });
     }
   }, [red, token]);

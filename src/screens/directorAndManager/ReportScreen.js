@@ -2,10 +2,10 @@
 import {
   View,
   Text,
-  ScrollView,
+  // ScrollView,
   Alert,
   FlatList,
-  RefreshControl,
+  // RefreshControl,
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect} from 'react';
@@ -48,16 +48,14 @@ const ReportScreen = () => {
   useEffect(() => {
     getDailyReports();
   }, [token]);
-
+  // refreshControl={
+  //   <RefreshControl refreshing={refreshing} onRefresh={getDailyReports} />
+  // }
   return (
-    <ScrollView
-      style={tw`flex-1 bg-white`}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={getDailyReports} />
-      }>
+    <View style={tw`flex-1 bg-white`}>
       <Header headerName={'Otchet'} />
 
-      <DoubleBtn firstBtnName={'Buyurtmalar'} secondBtnName={'Xarajatlar'} />
+      <DoubleBtn firstBtnName={'Otchet berilgan'} secondBtnName={'Hammasi'} />
 
       <FlatList
         data={reportList}
@@ -96,7 +94,7 @@ const ReportScreen = () => {
           getDailyReports();
         }}
       />
-    </ScrollView>
+    </View>
   );
 };
 
