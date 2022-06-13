@@ -11,14 +11,16 @@ import {
   FlatList,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import RegisterDress from '../modals/RegisterDress';
 import RegisterSalon from '../modals/RegisterSalon';
 import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {mainUrl} from '../../../config/apiUrl';
+import {mainUrl, wsSaleUrl} from '../../../config/apiUrl';
+
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const OrderDress = () => {
   const {token, userId, magazineId} = useSelector(state => state.userReducer);
@@ -42,6 +44,8 @@ const OrderDress = () => {
   const [shleftList, setShleftList] = useState([]);
   const [shleftListModalVisible, setShleftListModalVisible] = useState(false);
 
+  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+
   const dataForOrder = {
     dress: dressId,
     color: selectedColorId,
@@ -57,31 +61,63 @@ const OrderDress = () => {
     magazine: magazineId,
   };
 
+  useEffect(() => {
+    saleSocket.onopen = () => {
+      console.log('Connected to news saleSocket');
+    };
+
+    const successSale = () => {
+      Alert.alert('Данные успешно добавлены');
+      setDressId('');
+      setSelectedColorId('');
+      setSelectedShleftId('');
+      setMainPrice('');
+      setGivenPrice('');
+      setLeftPrice('');
+      setMoneyGiveDate('');
+      setSalonId('');
+      setNote('');
+      setSelectedShleftName('');
+    };
+
+    saleSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+
+      if (data.type === 'saved_sale') {
+        console.warn('saved_sale =>', data);
+        if (data.sale === 'order') {
+          if (
+            data.data.dress.id === dressId &&
+            data.data.salon.id === salonId
+          ) {
+            successSale();
+          } else if (
+            !data.data.dress.id === !dressId &&
+            !data.data.salon.id === !salonId
+          ) {
+            Alert.alert('Данные не добавлены');
+          }
+        }
+      }
+    };
+
+    saleSocket.onerror = e => {
+      console.error('Error: ' + e.data);
+    };
+    saleSocket.onclose = e => {
+      console.warn('Closed: ' + e.data);
+    };
+  }, [saleSocket, dressId, salonId]);
+
   const sendOrder = () => {
     if (dressId && moneyGiveDate && givenPrice && deliveryDate) {
-      axios
-        .post(`${mainUrl}lastoria/orders/`, dataForOrder, {
-          headers: {
-            Authorization: `token ${token}`,
-          },
-        })
-        .then(res => {
-          Alert.alert("Jo'natildi");
-          setDressId('');
-          setSelectedColorId('');
-          setSelectedShleftId('');
-          setMainPrice('');
-          setGivenPrice('');
-          setLeftPrice('');
-          setMoneyGiveDate('');
-          setSalonId('');
-          setNote('');
-          setSelectedShleftName('');
-        })
-        .catch(_err => {
-          console.log(_err);
-          Alert.alert('Xatolik');
-        });
+      saleSocket.send(
+        JSON.stringify({
+          type: 'create',
+          sale: 'order',
+          data: dataForOrder,
+        }),
+      );
     } else {
       Alert.alert("To'liq kiriting");
     }
@@ -95,14 +131,9 @@ const OrderDress = () => {
     }
   };
 
-  // const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
-
   return (
     <ScrollView style={tw`flex-1 bg-white`}>
-      <KeyboardAvoidingView
-        behavior="position"
-        // keyboardVerticalOffset={keyboardVerticalOffset}
-      >
+      <KeyboardAvoidingView behavior="position">
         <View style={tw`mt-[3%]`}>
           <RegisterDress
             setDressId={setDressId}

@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  Alert,
   Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
@@ -13,9 +14,11 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 
 import tw from 'twrnc';
-import {mainUrl} from '../../config/apiUrl';
+import {mainUrl, wsSaleUrl} from '../../config/apiUrl';
 
 import LottieView from 'lottie-react-native';
+
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const DailySalesOrders = () => {
   const {token} = useSelector(state => state.userReducer);
@@ -25,61 +28,95 @@ const DailySalesOrders = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [red, setRed] = useState(true);
 
+  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+
   useEffect(() => {
-    // console.warn(token);
-    if (red) {
-      setRefreshing(true);
-      // dashboard/sale-and-orders-view/${route.params.report_id}/
-      axios({
-        method: 'GET',
-        url: `${mainUrl}lastoria/simple-sales/`,
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-        .then(resSimple => {
-          setSimpleSales(resSimple.data);
-          axios({
-            method: 'GET',
-            url: `${mainUrl}lastoria/sales-5050/`,
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          })
-            .then(res => {
-              setSaleFifty(res.data);
-              // console.warn('50/50 =>', res.data);
-              axios({
-                url: `${mainUrl}lastoria/orders/`,
-                method: 'GET',
-                headers: {
-                  Authorization: `token ${token}`,
-                },
-              })
-                .then(resOrder => {
-                  setOrders(resOrder.data);
-                  setRefreshing(false);
-                  setRed(false);
-                })
-                .catch(_err => {
-                  // console.log(_err);
-                  setRefreshing(false);
-                  setRed(false);
-                });
-            })
-            .catch(_err => {
-              // console.error(err);
-              setRefreshing(false);
-              setRed(false);
-            });
-        })
-        .catch(_err => {
-          // console.log(err);
-          setRefreshing(false);
-          setRed(false);
-        });
-    }
-  }, [token, red]);
+    saleSocket.onopen = () => {
+      console.log('Connected to news saleSocket');
+    };
+
+    saleSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+
+      if (data.type === 'all_sale') {
+        setSimpleSales(data.simple_sale);
+        setSaleFifty(data.sale_5050);
+        setOrders(data.orders);
+      } else if (data.type === 'saved_sale') {
+        if (data.sale === '5050') {
+          console.warn('data 5050 =>', data);
+          setSaleFifty([data?.data, ...saleFifty]);
+        } else if (data.sale === 'simple') {
+          setSimpleSales([data?.data, ...simpleSales]);
+        } else if (data.sale === 'order') {
+          setOrders([data?.data, ...orders]);
+        }
+      }
+    };
+
+    saleSocket.onerror = e => {
+      console.error('Error: ' + e.data);
+    };
+    saleSocket.onclose = e => {
+      console.warn('Closed: ' + e.data);
+    };
+  }, [saleSocket, saleFifty, simpleSales, orders]);
+
+  // useEffect(() => {
+  //   console.warn(token);
+  //   if (red) {
+  //     setRefreshing(true);
+  //     // dashboard/sale-and-orders-view/${route.params.report_id}/
+  //     axios({
+  //       method: 'GET',
+  //       url: `${mainUrl}lastoria/simple-sales/`,
+  //       headers: {
+  //         Authorization: `token ${token}`,
+  //       },
+  //     })
+  //       .then(resSimple => {
+  //         setSimpleSales(resSimple.data);
+  //         axios({
+  //           method: 'GET',
+  //           url: `${mainUrl}lastoria/sales-5050/`,
+  //           headers: {
+  //             Authorization: `token ${token}`,
+  //           },
+  //         })
+  //           .then(res => {
+  //             setSaleFifty(res.data);
+  //             // console.warn('50/50 =>', res.data);
+  //             axios({
+  //               url: `${mainUrl}lastoria/orders/`,
+  //               method: 'GET',
+  //               headers: {
+  //                 Authorization: `token ${token}`,
+  //               },
+  //             })
+  //               .then(resOrder => {
+  //                 setOrders(resOrder.data);
+  //                 setRefreshing(false);
+  //                 setRed(false);
+  //               })
+  //               .catch(_err => {
+  //                 // console.log(_err);
+  //                 setRefreshing(false);
+  //                 setRed(false);
+  //               });
+  //           })
+  //           .catch(_err => {
+  //             // console.error(err);
+  //             setRefreshing(false);
+  //             setRed(false);
+  //           });
+  //       })
+  //       .catch(_err => {
+  //         // console.log(err);
+  //         setRefreshing(false);
+  //         setRed(false);
+  //       });
+  //   }
+  // }, [token, red]);
 
   function choooseColor(item) {
     // console.error(item.mortgage);

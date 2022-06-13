@@ -8,15 +8,17 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import RegisterDress from '../modals/RegisterDress';
 import RegisterSalon from '../modals/RegisterSalon';
 import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {mainUrl} from '../../../config/apiUrl';
+import {mainUrl, wsSaleUrl} from '../../../config/apiUrl';
 import LoadingLottie from '../../global/LoadingLottie';
+
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const SimpleSale = () => {
   const [dressId, setDressId] = useState();
@@ -35,6 +37,57 @@ const SimpleSale = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+
+  useEffect(() => {
+    saleSocket.onopen = () => {
+      console.log('Connected to news saleSocket');
+    };
+
+    const successSale = () => {
+      setShowSuccess(false);
+      Alert.alert('Данные успешно добавлены');
+      setDressId('');
+      setColorId('');
+      setSelectedShleftId('');
+      setMainPrice('');
+      setGivenPrice('');
+      setLeftPrice('');
+      setMoneyGiveDate('');
+      setSalonId('');
+      setNote('');
+    };
+
+    saleSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+
+      if (data.type === 'saved_sale') {
+        if (data.sale === 'simple') {
+          console.warn('data =>', data.data);
+          if (
+            data.data.dress.id === dressId &&
+            data.data.salon.id === salonId
+          ) {
+            successSale();
+          } else if (
+            !data.data.dress.id === !dressId &&
+            !data.data.salon.id === !salonId
+          ) {
+            setShowSuccess(false);
+            Alert.alert('Данные не добавлены');
+          }
+        }
+      }
+    };
+
+    saleSocket.onerror = e => {
+      console.error('Error: ' + e.data);
+    };
+    saleSocket.onclose = e => {
+      console.warn('Closed: ' + e.data);
+    };
+  }, [saleSocket, dressId, salonId]);
+
   const dataForSimpleSale = {
     dress: dressId,
     color: colorId,
@@ -44,50 +97,56 @@ const SimpleSale = () => {
     left_price: leftPrice,
     salon: salonId,
     user: userId,
-    date_left_price: moneyGiveDate,
+    delivery_date: moneyGiveDate,
     magazine_id: magazineId,
   };
 
   const sendSimpleSale = () => {
-    // console.warn('dataForSimpleSale =>', dataForSimpleSale);
     if (dressId && givenPrice >= 0 && salonId && magazineId) {
-      setShowSuccess(true);
-      axios({
-        url: `${mainUrl}lastoria/simple-sales/add/`,
-        method: 'POST',
-        data: dataForSimpleSale,
-        headers: {
-          Authorization: 'token ' + token,
-        },
-      })
-        .then(res => {
-          setShowSuccess(true);
-          setTimeout(() => {
-            setShowSuccess(false);
-          }, 2000);
+      // setShowSuccess(true);
+      console.warn('nim abu');
+      saleSocket.send(
+        JSON.stringify({
+          type: 'create',
+          sale: 'simple',
+          data: dataForSimpleSale,
+        }),
+      );
+      // axios({
+      //   url: `${mainUrl}lastoria/simple-sales/add/`,
+      //   method: 'POST',
+      //   data: dataForSimpleSale,
+      //   headers: {
+      //     Authorization: 'token ' + token,
+      //   },
+      // })
+      //   .then(res => {
+      //     setShowSuccess(true);
+      //     setTimeout(() => {
+      //       setShowSuccess(false);
+      //     }, 2000);
 
-          setDressId('');
-          setColorId('');
-          setSelectedShleftId('');
-          setMainPrice('');
-          setGivenPrice('');
-          setLeftPrice('');
-          setMoneyGiveDate('');
-          setSalonId('');
-          setNote('');
-        })
-        .catch(err => {
-          setShowSuccess(false);
-          if (
-            err.response.status === 401 ||
-            err.response.status === 400 ||
-            err.response.status === 403
-          ) {
-            Alert.alert('Вы не авторизованы');
-          }
-        });
+      //     setDressId('');
+      //     setColorId('');
+      //     setSelectedShleftId('');
+      //     setMainPrice('');
+      //     setGivenPrice('');
+      //     setLeftPrice('');
+      //     setMoneyGiveDate('');
+      //     setSalonId('');
+      //     setNote('');
+      //   })
+      //   .catch(err => {
+      //     setShowSuccess(false);
+      //     if (
+      //       err.response.status === 401 ||
+      //       err.response.status === 400 ||
+      //       err.response.status === 403
+      //     ) {
+      //       Alert.alert('Вы не авторизованы');
+      //     }
+      //   });
     } else {
-      // console.warn(dressId, givenPrice, salonId, magazineId);
       Alert.alert('Заполните все поля');
     }
   };

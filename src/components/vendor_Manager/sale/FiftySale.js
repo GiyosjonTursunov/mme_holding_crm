@@ -5,17 +5,18 @@ import {
   TextInput,
   Alert,
   ScrollView,
-  Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import tw from 'twrnc';
 import RegisterDress from '../modals/RegisterDress';
 import RegisterSalon from '../modals/RegisterSalon';
 import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
-import {mainUrl} from '../../../config/apiUrl';
+// import axios from 'axios';
+import {wsSaleUrl} from '../../../config/apiUrl';
+
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const FiftySale = () => {
   const [dressId, setDressId] = useState();
@@ -33,6 +34,63 @@ const FiftySale = () => {
   const {userId, token, magazineId} = useSelector(state => state.userReducer);
 
   const [selectedShleftName, setSelectedShleftName] = useState();
+
+  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+
+  useEffect(() => {
+    saleSocket.onopen = () => {
+      console.log('Connected to news saleSocket');
+    };
+
+    const successSale = () => {
+      Alert.alert('Данные успешно добавлены');
+      setDressId('');
+      setColorId('');
+      setSelectedShleftId('');
+      setMainPrice('');
+      setGivenPrice('');
+      setLeftPrice('');
+      setMoneyGiveDate('');
+      setSalonId('');
+      setNote('');
+      setGirlName('');
+      setDeliveryDate('');
+    };
+
+    saleSocket.onmessage = e => {
+      const data = JSON.parse(e.data);
+      // console.warn('data =>', data);
+
+      if (data.type === 'saved_sale') {
+        // Alert.alert('Неизвестный тип события');
+        if (data.sale === '5050') {
+          if (
+            data.data.dress.id === dressId &&
+            data.data.salon.id === salonId
+          ) {
+            successSale();
+          } else if (
+            data.data.dress.id === dressId &&
+            !data.data.salon.id === !salonId
+          ) {
+            successSale();
+          } else if (
+            !data.data.dress.id === !dressId &&
+            !data.data.salon.id === !salonId
+          ) {
+            Alert.alert('Данные не добавлены');
+          }
+        }
+      }
+    };
+
+    saleSocket.onerror = e => {
+      console.error('Error: ' + e.data);
+    };
+    saleSocket.onclose = e => {
+      console.warn('Closed: ' + e.data);
+    };
+  }, [saleSocket, dressId, salonId]);
 
   const dataForFiftySale = {
     dress: dressId,
@@ -52,33 +110,41 @@ const FiftySale = () => {
 
   const sendSimpleSale = () => {
     if (dressId && girlName && deliveryDate) {
-      axios({
-        url: `${mainUrl}lastoria/sales-5050/`,
-        method: 'POST',
-        data: dataForFiftySale,
-        headers: {
-          Authorization: 'token ' + token,
-        },
-      })
-        .then(res => {
-          Alert.alert('Продажа успешно добавлена');
-          // clear all fields
-          setDressId('');
-          setColorId('');
-          setSelectedShleftId('');
-          setMainPrice('');
-          setGivenPrice('');
-          setLeftPrice('');
-          setMoneyGiveDate('');
-          setSalonId('');
-          setNote('');
-          setGirlName('');
-          setDeliveryDate('');
-        })
-        .catch(_err => {
-          // console.error(err);
-          Alert.alert('Error');
-        });
+      saleSocket.send(
+        JSON.stringify({
+          type: 'create',
+          sale: '5050',
+          data: dataForFiftySale,
+        }),
+      );
+      // axios({
+      //   url: `${mainUrl}lastoria/sales-5050/`,
+      //   method: 'POST',
+      //   data: dataForFiftySale,
+      //   headers: {
+      //     Authorization: 'token ' + token,
+      //   },
+      // })
+      //   .then(res => {
+      //     console.error('res =>', res);
+      //     Alert.alert('Продажа успешно добавлена');
+      //     // clear all fields
+      //     setDressId('');
+      //     setColorId('');
+      //     setSelectedShleftId('');
+      //     setMainPrice('');
+      //     setGivenPrice('');
+      //     setLeftPrice('');
+      //     setMoneyGiveDate('');
+      //     setSalonId('');
+      //     setNote('');
+      //     setGirlName('');
+      //     setDeliveryDate('');
+      //   })
+      //   .catch(_err => {
+      //     // console.error(err);
+      //     Alert.alert('Error');
+      //   });
     } else {
       Alert.alert('Заполните все поля');
     }
