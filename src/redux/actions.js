@@ -4,6 +4,10 @@ export const SET_Token = 'SET_Token';
 export const SET_UserId = 'SET_UserId';
 export const SET_MAGAZINE_ID = 'SET_MAGAZINE_ID';
 
+// websocket
+export const SET_WS_VENDOR_MANAGER_SALE = 'SET_WS_VENDOR_MANAGER_SALE';
+// export const SET_WS_VENDOR_SALE = 'SET_WS_VENDOR_SALE';
+
 export const setIsLogIn = isLogIn => dispatch => {
   dispatch({
     type: SET_IsLogIn,
@@ -40,3 +44,17 @@ export const setMagazineId = magazineId => dispatch => {
     payload: magazineId,
   });
 };
+
+export const setWsVendorManagerSale = wsVendorManagerSale => dispatch => {
+  dispatch({
+    type: SET_WS_VENDOR_MANAGER_SALE,
+    payload: wsVendorManagerSale,
+  });
+};
+
+// export const setWsVendorSale = wsVendorSale => dispatch => {
+//   dispatch({
+//     type: SET_WS_VENDOR_SALE,
+//     payload: wsVendorSale,
+//   });
+// };

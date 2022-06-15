@@ -13,10 +13,12 @@ import tw from 'twrnc';
 
 import axios from 'axios';
 
-import {mainUrl} from '../../config/apiUrl';
+import {mainUrl, wsSaleManager} from '../../config/apiUrl';
 import Header from '../../components/global/Header';
 import {useSelector} from 'react-redux';
 import ImageZoomCustom from '../../components/modal/ImageZoomCustom';
+import {useMemo} from 'react';
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const OrdersById = ({route}) => {
   const [sale, setSale] = useState([]);
@@ -32,40 +34,61 @@ const OrdersById = ({route}) => {
   const [selectedDressImgModalVisible, setSelectedDressImgModalVisible] =
     useState(false);
 
+  const saleSocket = useMemo(() => {
+    return new W3CWebSocket(wsSaleManager);
+  }, []);
+
   const started = () => {
-    setRefreshing(true);
-    axios({
-      url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
-      method: 'PUT',
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    })
-      .then(res => {
-        Alert.alert('Yangilandi');
-        axios({
-          url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
-          method: 'GET',
-          headers: {
-            Authorization: `token ${token}`,
-          },
-        })
-          .then(resSale => {
-            // console.warn(resSale.data);
-            setRefreshing(false);
-            setSale(resSale.data);
-            // setDressImg(resSale.data?.dress?.img);
-          })
-          .catch(_err => {
-            const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
-            Alert.alert(newLocal);
-            setRefreshing(false);
-          });
-      })
-      .catch(_error => {
-        setRefreshing(false);
-        // console.log(_error);
-      });
+    // if (role) {
+    // if (dressId && girlName && deliveryDate) {
+    saleSocket.send(
+      JSON.stringify({
+        type: 'update',
+        sale: 'order',
+        data: {
+          role: role,
+          order_id: route.params.saleId,
+        },
+      }),
+    );
+    // }
+    // else {
+    //   Alert.alert('Заполните все поля');
+    // }
+    // }
+    // setRefreshing(true);
+    // axios({
+    //   url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+    //   method: 'PUT',
+    //   headers: {
+    //     Authorization: `token ${token}`,
+    //   },
+    // })
+    //   .then(res => {
+    //     Alert.alert('Yangilandi');
+    //     axios({
+    //       url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+    //       method: 'GET',
+    //       headers: {
+    //         Authorization: `token ${token}`,
+    //       },
+    //     })
+    //       .then(resSale => {
+    //         // console.warn(resSale.data);
+    //         setRefreshing(false);
+    //         setSale(resSale.data);
+    //         // setDressImg(resSale.data?.dress?.img);
+    //       })
+    //       .catch(_err => {
+    //         const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
+    //         Alert.alert(newLocal);
+    //         setRefreshing(false);
+    //       });
+    //   })
+    //   .catch(_error => {
+    //     setRefreshing(false);
+    //     // console.log(_error);
+    //   });
   };
 
   const sended = () => {
@@ -87,8 +110,84 @@ const OrdersById = ({route}) => {
   };
 
   useEffect(() => {
+    if (role === 'WAREHOUSE_MANAGER' && sale.warehouse_manager) {
+      return;
+    } else if (role === 'DECORATOR_MANAGER' && sale.decorator_manager) {
+      return;
+    } else {
+      if (saleSocket) {
+        const successSale = () => {
+          Alert.alert('Данные успешно добавлены');
+        };
+
+        saleSocket.onmessage = e => {
+          const data = JSON.parse(e.data);
+
+          if (data.type === 'updated') {
+            if (data.sale === 'order') {
+              if (data.data.order_id === route.params.saleId) {
+                if (data.data.role === role) {
+                  if (role === 'WAREHOUSE_MANAGER') {
+                    successSale();
+                    setRefreshing(true);
+                    axios({
+                      url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+                      method: 'GET',
+                      headers: {
+                        Authorization: `token ${token}`,
+                      },
+                    })
+                      .then(res => {
+                        // console.warn(res.data);
+                        setSale(res.data);
+                        setRefreshing(false);
+                      })
+                      .catch(_err => {
+                        // console.error(_err);
+                        const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
+                        Alert.alert(newLocal);
+                        setRefreshing(false);
+                      });
+                  } else {
+                    successSale();
+                    setRefreshing(true);
+                    axios({
+                      url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
+                      method: 'GET',
+                      headers: {
+                        Authorization: `token ${token}`,
+                      },
+                    })
+                      .then(res => {
+                        // console.warn(res.data);
+                        setSale(res.data);
+                        setRefreshing(false);
+                      })
+                      .catch(_err => {
+                        // console.error(_err);
+                        const newLocal = 'Bazaga ulanishda xatolik yuz berdi!';
+                        Alert.alert(newLocal);
+                        setRefreshing(false);
+                      });
+                  }
+                }
+              }
+            }
+          }
+        };
+      }
+
+      saleSocket.onerror = e => {
+        console.error('Error: ' + e.data);
+      };
+      saleSocket.onclose = e => {
+        console.warn('Closed: ' + e.data);
+      };
+    }
+  }, [role, route.params.saleId, saleSocket, sale, token]);
+
+  useEffect(() => {
     setRefreshing(true);
-    console.warn(route.params.saleId);
     axios({
       url: `${mainUrl}lastoria/warehouse-orders/${route.params.saleId}/`,
       method: 'GET',
@@ -97,7 +196,7 @@ const OrdersById = ({route}) => {
       },
     })
       .then(res => {
-        console.warn(res.data);
+        // console.warn(res.data);
         setSale(res.data);
         setRefreshing(false);
       })
@@ -107,7 +206,7 @@ const OrdersById = ({route}) => {
         Alert.alert(newLocal);
         setRefreshing(false);
       });
-  }, [route.params.saleId, token]);
+  }, [role, route.params.saleId, token]);
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -151,7 +250,7 @@ const OrdersById = ({route}) => {
             style={tw`w-full h-100 mx-auto`}
             activeOpacity={0.8}
             onPress={() => {
-              console.warn(mainUrl + 'media/' + sale?.dress?.img);
+              // console.warn(mainUrl + 'media/' + sale?.dress?.img);
               setSelectedDressImg(mainUrl + 'media/' + sale?.dress?.img);
               setSelectedDressImgModalVisible(true);
             }}>

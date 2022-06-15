@@ -14,8 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import DoubleBtn from '../global/DoubleBtn';
 import Header from '../global/Header';
 import axios from 'axios';
-import {mainUrl} from '../../config/apiUrl';
+import {mainUrl, wsSaleManager} from '../../config/apiUrl';
 import {useSelector} from 'react-redux';
+import {useMemo} from 'react';
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const ListOrderedDresses = () => {
   const navigation = useNavigation();
@@ -42,9 +44,39 @@ const ListOrderedDresses = () => {
       });
   };
 
+  // const saleSocket = React.useRef(
+  //   new W3CWebSocket(wsSaleManager + '?orders=1'),
+  // );
+  const saleSocket = useMemo(() => {
+    return new W3CWebSocket(wsSaleManager + '?order=1');
+  }, []);
+
   useEffect(() => {
-    getOrder();
-  }, [token]);
+    if (saleSocket) {
+      saleSocket.onmessage = e => {
+        // console.error('ishladi hanna');
+        const data = JSON.parse(e.data);
+        // console.error('data => ', data.type);
+        if (data.type === 'order') {
+          // console.error('data.orders => ', data.orders);
+          setSalonList(data?.orders);
+        } else if (data.type === 'updated') {
+          getOrder();
+        }
+      };
+
+      saleSocket.onerror = e => {
+        console.error('Error: ' + e.data);
+      };
+      saleSocket.onclose = e => {
+        console.warn('Closed: ' + e.data);
+      };
+    }
+  }, [salonList, saleSocket]);
+
+  // useEffect(() => {
+  //   getOrder();
+  // }, [token]);
 
   const Item = ({
     name,

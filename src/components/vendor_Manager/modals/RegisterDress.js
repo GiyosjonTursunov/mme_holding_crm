@@ -190,7 +190,7 @@ const RegisterDress = ({
       formDataImg.append('price', mainPrice);
       formDataImg.append('user', userId);
       formDataImg.append('note', dressNote);
-      console.warn('shleft =>', shleftId);
+      // console.warn('shleft =>', shleftId);
       formDataImg.append('shleft', shleftId);
       formDataImg.append('color', selectedColorId);
 

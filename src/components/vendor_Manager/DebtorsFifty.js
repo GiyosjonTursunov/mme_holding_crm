@@ -101,7 +101,7 @@ const DebtorsFifty = () => {
   };
 
   useEffect(() => {
-    console.error(token);
+    // console.error(token);
     getData();
   }, [token]);
 

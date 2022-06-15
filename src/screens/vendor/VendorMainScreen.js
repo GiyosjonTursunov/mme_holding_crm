@@ -1,5 +1,5 @@
-import React from 'react';
-import {SafeAreaView, TouchableOpacity, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {SafeAreaView, TouchableOpacity, Text, AppState} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import FiftySale from '../../components/vendor_Manager/sale/FiftySale';
 import VendorScreen from './VendorScreen';
@@ -9,11 +9,46 @@ import Header from '../../components/global/Header';
 import {useNavigation} from '@react-navigation/native';
 import ThreeBtn from '../../components/global/ThreeBtn';
 import DebtorsScreen from '../vendor_Manager/DebtorsScreen';
+import {setWsVendorManagerSale} from '../../redux/actions';
+import {wsSaleManager} from '../../config/apiUrl';
+import {useDispatch, useSelector} from 'react-redux';
+// import {useSelector} from 'react-redux';
+// import {setWsVendorSale} from '../../redux/actions';
+//
+// import {useDispatch} from 'react-redux';
+// import {wsSaleVendor} from '../../config/apiUrl';
 
 const Stack = createNativeStackNavigator();
 
 const VendorMainScreen = () => {
   const navigation = useNavigation();
+
+  const {wsVendorManagerSale, userId} = useSelector(state => state.userReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(
+        setWsVendorManagerSale(
+          new WebSocket(wsSaleManager + '?user_id=' + `${userId}`),
+        ),
+      );
+    }
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (wsVendorManagerSale) {
+      AppState.addEventListener('change', nextAppState => {
+        if (nextAppState === 'background') {
+          // close connection
+          // console.error('close connection');
+          return wsVendorManagerSale.close();
+        }
+      });
+    }
+  }, [wsVendorManagerSale]);
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <Header headerName={'Sotuvchi'} />
@@ -25,6 +60,7 @@ const VendorMainScreen = () => {
         thirdBtnName={'Zakaz'}
         thirdBtnNavigation={() => navigation.navigate('OrderDress')}
       />
+
       <Stack.Navigator>
         <Stack.Screen
           name="VendorScreen"

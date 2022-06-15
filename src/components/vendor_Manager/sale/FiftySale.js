@@ -14,9 +14,9 @@ import RegisterSalon from '../modals/RegisterSalon';
 import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
 // import axios from 'axios';
-import {wsSaleUrl} from '../../../config/apiUrl';
+// import {wsSaleUrl} from '../../../config/apiUrl';
 
-import {w3cwebsocket as W3CWebSocket} from 'websocket';
+// import {w3cwebsocket as W3CWebSocket} from 'websocket';
 
 const FiftySale = () => {
   const [dressId, setDressId] = useState();
@@ -31,66 +31,65 @@ const FiftySale = () => {
 
   const [girlName, setGirlName] = useState();
   const [deliveryDate, setDeliveryDate] = useState();
-  const {userId, token, magazineId} = useSelector(state => state.userReducer);
+  const {userId, token, magazineId, wsVendorManagerSale, role} = useSelector(
+    state => state.userReducer,
+  );
 
   const [selectedShleftName, setSelectedShleftName] = useState();
 
-  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+  // const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
 
   useEffect(() => {
-    saleSocket.onopen = () => {
-      console.log('Connected to news saleSocket');
-    };
+    if (wsVendorManagerSale) {
+      const successSale = () => {
+        Alert.alert('Данные успешно добавлены');
+        setDressId();
+        setColorId();
+        setSelectedShleftId();
+        setMainPrice();
+        setGivenPrice();
+        setLeftPrice();
+        setMoneyGiveDate();
+        setSalonId();
+        setNote();
+        setGirlName();
+        setDeliveryDate();
+      };
 
-    const successSale = () => {
-      Alert.alert('Данные успешно добавлены');
-      setDressId('');
-      setColorId('');
-      setSelectedShleftId('');
-      setMainPrice('');
-      setGivenPrice('');
-      setLeftPrice('');
-      setMoneyGiveDate('');
-      setSalonId('');
-      setNote('');
-      setGirlName('');
-      setDeliveryDate('');
-    };
+      wsVendorManagerSale.onmessage = e => {
+        const data = JSON.parse(e.data);
 
-    saleSocket.onmessage = e => {
-      const data = JSON.parse(e.data);
-      // console.warn('data =>', data);
-
-      if (data.type === 'saved_sale') {
-        // Alert.alert('Неизвестный тип события');
-        if (data.sale === '5050') {
-          if (
-            data.data.dress.id === dressId &&
-            data.data.salon.id === salonId
-          ) {
-            successSale();
-          } else if (
-            data.data.dress.id === dressId &&
-            !data.data.salon.id === !salonId
-          ) {
-            successSale();
-          } else if (
-            !data.data.dress.id === !dressId &&
-            !data.data.salon.id === !salonId
-          ) {
-            Alert.alert('Данные не добавлены');
+        if (data.type === 'saved_sale') {
+          // Alert.alert('Неизвестный тип события');
+          if (data.sale === '5050') {
+            if (
+              data?.data?.dress?.id === dressId &&
+              data?.data?.salon?.id === salonId
+            ) {
+              successSale();
+            } else if (
+              data?.data?.dress?.id === dressId &&
+              !data?.data?.salon?.id === !salonId
+            ) {
+              successSale();
+            } else if (
+              !data?.data?.dress?.id === !dressId &&
+              !data?.data?.salon?.id === !salonId
+            ) {
+              Alert.alert('Данные не добавлены');
+            }
           }
         }
-      }
-    };
+      };
 
-    saleSocket.onerror = e => {
-      console.error('Error: ' + e.data);
-    };
-    saleSocket.onclose = e => {
-      console.warn('Closed: ' + e.data);
-    };
-  }, [saleSocket, dressId, salonId]);
+      wsVendorManagerSale.onerror = e => {
+        console.error('Error: ' + e.data);
+      };
+      wsVendorManagerSale.onclose = e => {
+        console.warn('Closed: ' + e.data);
+      };
+    }
+  }, [wsVendorManagerSale, dressId, salonId, role]);
 
   const dataForFiftySale = {
     dress: dressId,
@@ -109,44 +108,18 @@ const FiftySale = () => {
   };
 
   const sendSimpleSale = () => {
-    if (dressId && girlName && deliveryDate) {
-      saleSocket.send(
-        JSON.stringify({
-          type: 'create',
-          sale: '5050',
-          data: dataForFiftySale,
-        }),
-      );
-      // axios({
-      //   url: `${mainUrl}lastoria/sales-5050/`,
-      //   method: 'POST',
-      //   data: dataForFiftySale,
-      //   headers: {
-      //     Authorization: 'token ' + token,
-      //   },
-      // })
-      //   .then(res => {
-      //     console.error('res =>', res);
-      //     Alert.alert('Продажа успешно добавлена');
-      //     // clear all fields
-      //     setDressId('');
-      //     setColorId('');
-      //     setSelectedShleftId('');
-      //     setMainPrice('');
-      //     setGivenPrice('');
-      //     setLeftPrice('');
-      //     setMoneyGiveDate('');
-      //     setSalonId('');
-      //     setNote('');
-      //     setGirlName('');
-      //     setDeliveryDate('');
-      //   })
-      //   .catch(_err => {
-      //     // console.error(err);
-      //     Alert.alert('Error');
-      //   });
-    } else {
-      Alert.alert('Заполните все поля');
+    if (wsVendorManagerSale) {
+      if (dressId && girlName && deliveryDate) {
+        wsVendorManagerSale.send(
+          JSON.stringify({
+            type: 'create',
+            sale: '5050',
+            data: dataForFiftySale,
+          }),
+        );
+      } else {
+        Alert.alert('Заполните все поля');
+      }
     }
   };
 

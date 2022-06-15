@@ -4,8 +4,13 @@ import {
   SET_Role,
   SET_Token,
   SET_UserId,
+  SET_WS_VENDOR_MANAGER_SALE,
+  // SET_WS_VENDOR_SALE,
 } from './actions';
 import {AsyncStorage} from 'react-native';
+
+// import {w3cwebsocket as W3CWebSocket} from 'websocket';
+// import {wsSaleUrl, wsTest} from '../config/apiUrl';
 
 const isUserStorage = AsyncStorage.getItem('@user').then(value => {
   if (value) {
@@ -21,6 +26,9 @@ const initialState = {
   token: '',
   userId: '',
   magazineId: '',
+  wsVendorManagerSale: null,
+  // wsVendorSale: null,
+  // wsTest: new W3CWebSocket(wsTest),
 };
 
 function userReducer(state = initialState, action) {
@@ -50,6 +58,16 @@ function userReducer(state = initialState, action) {
         ...state,
         magazineId: action.payload,
       };
+    case SET_WS_VENDOR_MANAGER_SALE:
+      return {
+        ...state,
+        wsVendorManagerSale: action.payload,
+      };
+    // case SET_WS_VENDOR_SALE:
+    //   return {
+    //     ...state,
+    //     wsVendorSale: action.payload,
+    //   };
     default:
       return state;
   }

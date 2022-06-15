@@ -39,7 +39,7 @@ const OrdersById = ({route}) => {
         })
           .then(res => {
             Alert.alert('Yangilandi');
-            console.warn(res.data);
+            // console.warn(res.data);
           })
           .catch(_error => {
             return;

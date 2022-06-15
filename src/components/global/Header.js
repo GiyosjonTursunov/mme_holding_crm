@@ -50,6 +50,7 @@ const Header = ({headerName, isRegister}) => {
           dispatch(setToken(parsedJson.token));
           // console.log('userToken ', parsedJson.token);
           dispatch(setMagazineId(parsedJson.magazine_id));
+          // console.warn('user id ', parsedJson.id);
           dispatch(setUserId(parsedJson.id));
         }
       } else {

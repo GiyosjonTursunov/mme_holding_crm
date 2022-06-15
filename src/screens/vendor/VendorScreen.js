@@ -8,69 +8,92 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import tw from 'twrnc';
-import {mainUrl} from '../../config/apiUrl';
-import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {mainUrl, wsSaleManager} from '../../config/apiUrl';
+// import axios from 'axios';
+// import {useSelector} from 'react-redux';
 
 import LottieView from 'lottie-react-native';
 
+import {w3cwebsocket as W3CWebSocket} from 'websocket';
+import {useSelector} from 'react-redux';
+
 const VendorScreen = () => {
-  const {token} = useSelector(state => state.userReducer);
+  // const {wsVendorSale} = useSelector(state => state.userReducer);
+  const {userId} = useSelector(state => state.userReducer);
 
   const [orders, setOrders] = useState([]);
   const [saleFifty, setSaleFifty] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [red, setRed] = useState(true);
 
-  useEffect(() => {
-    if (red) {
-      setRefreshing(true);
-      // console.warn(token);
-      axios({
-        url: `${mainUrl}lastoria/user-orders-daily/`,
-        method: 'GET',
-        headers: {
-          Authorization: `token ${token}`,
-        },
-      })
-        .then(res => {
-          // console.error('kunlik zakaz sotuvchi => ', res.data);
-          setOrders(res.data);
-          axios({
-            url: `${mainUrl}lastoria/user-sales-5050/`,
-            method: 'GET',
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          })
-            .then(resFifty => {
-              setSaleFifty(resFifty.data);
-              setRefreshing(false);
-              setRed(false);
-              // console.warn(resFifty.data);
-            })
-            .catch(_err => {
-              // console.log(err);
-              setRefreshing(false);
-              setRed(false);
-            });
-        })
-        .catch(_err => {
-          return;
-          // console.log(err);
-        });
+  const saleSocket = useMemo(() => {
+    if (userId) {
+      return new W3CWebSocket(wsSaleManager + '?user_id=' + `${userId}`);
     }
-  }, [red, token]);
+  }, [userId]);
 
-  const Item = ({img, dress_name, salon_name, user_name, salonchi_name}) => (
+  useEffect(() => {
+    // console.warn('rendered DailySalesOrder');
+    // console.warn('borakanu salesocket');
+    if (saleSocket) {
+      saleSocket.onmessage = e => {
+        const data = JSON.parse(e.data);
+
+        // console.error('userId', userId);
+        // console.error('saved_data vendorscreen  =>', e);
+
+        if (data?.type === 'two_sale') {
+          // setSimpleSales(data?.simple_sale);
+          setSaleFifty(data?.sale_5050);
+          setOrders(data?.orders);
+        } else if (data?.type === 'saved_sale') {
+          if (data.sale === '5050') {
+            if (data?.data?.user?.id === userId) {
+              // console.warn('data 5050 =>', data);
+              setSaleFifty([data?.data, ...saleFifty]);
+            }
+          } else if (data?.sale === 'order') {
+            setOrders([data?.data, ...orders]);
+          }
+        }
+      };
+
+      saleSocket.onerror = e => {
+        console.error('Error: ' + e.data);
+      };
+      saleSocket.onclose = e => {
+        console.warn('Closed: ' + e.data);
+      };
+    }
+  }, [saleFifty, orders, saleSocket, userId]);
+
+  function choooseColor(item) {
+    // console.error(item.mortgage);
+    if (item.mortgage >= 0) {
+      return '#E05C58';
+    } else if (item.girl_name) {
+      return '#67CEAF';
+    } else {
+      return '#468CE4';
+    }
+  }
+
+  const Item = ({
+    img,
+    dress_name,
+    salon_name,
+    user_name,
+    salonchi_name,
+    item,
+  }) => (
     <View
       style={tw`w-[${Dimensions.get('screen').width / 1.35}px] h-45 ml-[${
         Dimensions.get('screen').width / 6.5
-      }px] mt-[${
-        Dimensions.get('screen').width / 14
-      }px] bg-[#468CE4] rounded-3xl`}>
+      }px] mt-[${Dimensions.get('screen').width / 14}px] bg-[${choooseColor(
+        item,
+      )}] rounded-3xl`}>
       <Image
         source={{uri: mainUrl + 'media/' + img}}
         style={tw`w-[${
@@ -121,6 +144,7 @@ const VendorScreen = () => {
       salon_name={item?.salon?.name}
       salonchi_name={item?.salon?.user}
       user_name={item?.user?.name}
+      item={item}
     />
   );
 

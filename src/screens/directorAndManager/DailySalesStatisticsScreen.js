@@ -267,7 +267,7 @@ const DailySalesStatisticsScreen = ({route}) => {
   );
 
   const renderItem = ({item}) => {
-    console.error(item);
+    // console.error(item);
     return (
       <Item
         id={item.id}

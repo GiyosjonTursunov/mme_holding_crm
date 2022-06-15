@@ -18,21 +18,24 @@ import RegisterSalon from '../modals/RegisterSalon';
 import DatePickerCustom from '../../global/DatePickerCustom';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {mainUrl, wsSaleUrl} from '../../../config/apiUrl';
+import {mainUrl} from '../../../config/apiUrl';
 
-import {w3cwebsocket as W3CWebSocket} from 'websocket';
+// import {w3cwebsocket as W3CWebSocket} from 'websocket';
+// import {setWsVendorManagerSale} from '../../../redux/actions';
 
 const OrderDress = () => {
-  const {token, userId, magazineId} = useSelector(state => state.userReducer);
+  const {token, userId, magazineId, wsVendorManagerSale, role} = useSelector(
+    state => state.userReducer,
+  );
 
   const [dressId, setDressId] = useState();
   const [selectedShleftId, setSelectedShleftId] = useState();
   const [selectedShleftName, setSelectedShleftName] = useState();
 
   const [mainPrice, setMainPrice] = useState('');
-  const [givenPrice, setGivenPrice] = useState();
-  const [leftPrice, setLeftPrice] = useState();
-  const [moneyGiveDate, setMoneyGiveDate] = useState();
+  const [givenPrice, setGivenPrice] = useState('');
+  const [leftPrice, setLeftPrice] = useState('');
+  const [moneyGiveDate, setMoneyGiveDate] = useState('');
   const [salonId, setSalonId] = useState();
   const [note, setNote] = useState();
   // delivery_date
@@ -44,7 +47,7 @@ const OrderDress = () => {
   const [shleftList, setShleftList] = useState([]);
   const [shleftListModalVisible, setShleftListModalVisible] = useState(false);
 
-  const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
+  // const saleSocket = React.useRef(new W3CWebSocket(wsSaleUrl)).current;
 
   const dataForOrder = {
     dress: dressId,
@@ -62,56 +65,59 @@ const OrderDress = () => {
   };
 
   useEffect(() => {
-    saleSocket.onopen = () => {
-      console.log('Connected to news saleSocket');
-    };
+    if (wsVendorManagerSale) {
+      // wsVendorManagerSale.onopen = () => {
+      //   console.log('Connected to news wsVendorManagerSale');
+      //   // saleSocket.close();
+      // };
 
-    const successSale = () => {
-      Alert.alert('Данные успешно добавлены');
-      setDressId('');
-      setSelectedColorId('');
-      setSelectedShleftId('');
-      setMainPrice('');
-      setGivenPrice('');
-      setLeftPrice('');
-      setMoneyGiveDate('');
-      setSalonId('');
-      setNote('');
-      setSelectedShleftName('');
-    };
+      const successSale = () => {
+        Alert.alert('Данные успешно добавлены');
+        setDressId('');
+        setSelectedColorId('');
+        setSelectedShleftId('');
+        setMainPrice('');
+        setGivenPrice('');
+        setLeftPrice('');
+        setMoneyGiveDate('');
+        setSalonId('');
+        setNote('');
+        setSelectedShleftName('');
+      };
 
-    saleSocket.onmessage = e => {
-      const data = JSON.parse(e.data);
+      wsVendorManagerSale.onmessage = e => {
+        const data = JSON.parse(e.data);
 
-      if (data.type === 'saved_sale') {
-        console.warn('saved_sale =>', data);
-        if (data.sale === 'order') {
-          if (
-            data.data.dress.id === dressId &&
-            data.data.salon.id === salonId
-          ) {
-            successSale();
-          } else if (
-            !data.data.dress.id === !dressId &&
-            !data.data.salon.id === !salonId
-          ) {
-            Alert.alert('Данные не добавлены');
+        if (data.type === 'saved_sale') {
+          // console.warn('saved_sale =>', data);
+          if (data.sale === 'order') {
+            if (
+              data.data.dress.id === dressId &&
+              data.data.salon.id === salonId
+            ) {
+              successSale();
+            } else if (
+              !data.data.dress.id === !dressId &&
+              !data.data.salon.id === !salonId
+            ) {
+              Alert.alert('Данные не добавлены');
+            }
           }
         }
-      }
-    };
+      };
 
-    saleSocket.onerror = e => {
-      console.error('Error: ' + e.data);
-    };
-    saleSocket.onclose = e => {
-      console.warn('Closed: ' + e.data);
-    };
-  }, [saleSocket, dressId, salonId]);
+      wsVendorManagerSale.onerror = e => {
+        console.error('Error: ' + e.data);
+      };
+      wsVendorManagerSale.onclose = e => {
+        console.warn('Closed: ' + e.data);
+      };
+    }
+  }, [wsVendorManagerSale, dressId, salonId, role]);
 
   const sendOrder = () => {
     if (dressId && moneyGiveDate && givenPrice && deliveryDate) {
-      saleSocket.send(
+      wsVendorManagerSale.send(
         JSON.stringify({
           type: 'create',
           sale: 'order',
@@ -119,7 +125,7 @@ const OrderDress = () => {
         }),
       );
     } else {
-      Alert.alert("To'liq kiriting");
+      Alert.alert("To'liq kiriting!");
     }
   };
 
