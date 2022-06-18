@@ -66,7 +66,8 @@ const LoginScreen = ({route}) => {
             data.role === 'WAREHOUSE_MANAGER' ||
             data.role === 'DECORATOR_MANAGER' ||
             data.role === 'SALON' ||
-            data.role === 'SMM') &&
+            data.role === 'SMM' ||
+            data.role === 'MARKETOLOG') &&
           route.params?.key === 'LaStoria'
         ) {
           storeData(data);
@@ -80,7 +81,8 @@ const LoginScreen = ({route}) => {
               roleUser === 'WAREHOUSE_MANAGER' ||
               roleUser === 'DECORATOR_MANAGER' ||
               roleUser === 'SALON' ||
-              roleUser === 'SMM'
+              roleUser === 'SMM' ||
+              roleUser === 'MARKETOLOG'
             ) {
               return 'LaStoria';
             } else if (roleUser === 'TEXNOSTYLE_MANAGER') {

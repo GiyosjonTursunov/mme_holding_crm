@@ -13,6 +13,7 @@ import DirectorStack from './stacks/DirectorStack';
 import SalonStack from './stacks/SalonStack';
 import SMMStack from './stacks/SMMStack';
 import TexnoStyleManagerStack from './stacks/TexnoStyle/TexnoStyleManagerStack';
+import MarketologStack from './stacks/MarketologStack';
 
 export const ChooseNavigation = role_user => {
   if (!role_user) {
@@ -33,6 +34,8 @@ export const ChooseNavigation = role_user => {
     return <SMMStack />;
   } else if (role_user === 'TEXNOSTYLE_MANAGER') {
     return <TexnoStyleManagerStack />;
+  } else if (role_user === 'MARKETOLOG') {
+    return <MarketologStack />;
   } else {
     // console.warn(role_user);
     return <NotLoggedIn />;
