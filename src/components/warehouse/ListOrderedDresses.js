@@ -37,7 +37,7 @@ const ListOrderedDresses = () => {
       .then(res => {
         setSalonList(res.data);
         setRefreshing(false);
-        console.error('getOrder =>', res.data);
+        // console.error('getOrder =>', res.data);
       })
       .catch(_error => {
         setRefreshing(false);
@@ -51,7 +51,7 @@ const ListOrderedDresses = () => {
   useEffect(() => {
     if (saleSocket) {
       saleSocket.onmessage = e => {
-        console.warn('order=1', e.data);
+        // console.warn('order=1', e.data);
         const data = JSON.parse(e.data);
         if (data.type === 'order') {
           setSalonList(data?.orders);
@@ -70,10 +70,6 @@ const ListOrderedDresses = () => {
       };
     }
   }, [salonList, saleSocket]);
-
-  // useEffect(() => {
-  //   getOrder();
-  // }, [token]);
 
   const Item = ({
     name,

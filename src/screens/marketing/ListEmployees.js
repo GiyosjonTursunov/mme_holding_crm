@@ -156,17 +156,19 @@ const ListEmployees = () => {
           renderItem={({item}) => (
             <View
               style={tw`w-11/12 h-18 mx-auto my-2 rounded-lg ${
+                item?.worker_date_work[0] &&
                 item?.worker_date_work[0]?.work_date === getTodayDate()
                   ? 'border-red-700'
                   : null
               } ${
+                item?.worker_date_work[0] &&
                 item?.worker_date_work[0]?.work_date === getTodayDate()
                   ? 'border-2'
                   : 'border'
               } flex-row justify-between items-center px-1`}>
               <View>
-                <Text style={tw`text-lg`}>{item.first_name}</Text>
-                <Text style={tw`text-lg`}>{item.last_name}</Text>
+                <Text style={tw`text-lg`}>{item?.first_name}</Text>
+                <Text style={tw`text-lg`}>{item?.last_name}</Text>
               </View>
               {/* <View style={tw`w-5/12 h-[100%]`}> */}
               <Text style={tw`text-lg m-auto`}>{item?.role?.name}</Text>
@@ -174,7 +176,7 @@ const ListEmployees = () => {
               <TouchableOpacity
                 onPress={() => {
                   setDateModalVisible(true);
-                  setEmployeeId(item.id);
+                  setEmployeeId(item?.id);
                 }}
                 style={tw`m-auto`}>
                 <Modal
@@ -223,7 +225,7 @@ const ListEmployees = () => {
               </TouchableOpacity>
             </View>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item?.id}
         />
       </View>
     </SafeAreaView>
