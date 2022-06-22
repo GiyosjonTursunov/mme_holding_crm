@@ -37,16 +37,13 @@ const ListOrderedDresses = () => {
       .then(res => {
         setSalonList(res.data);
         setRefreshing(false);
-        // console.error(res.data);
+        console.error('getOrder =>', res.data);
       })
       .catch(_error => {
         setRefreshing(false);
       });
   };
 
-  // const saleSocket = React.useRef(
-  //   new W3CWebSocket(wsSaleManager + '?orders=1'),
-  // );
   const saleSocket = useMemo(() => {
     return new W3CWebSocket(wsSaleManager + '?order=1');
   }, []);
@@ -54,13 +51,13 @@ const ListOrderedDresses = () => {
   useEffect(() => {
     if (saleSocket) {
       saleSocket.onmessage = e => {
-        // console.error('ishladi hanna');
+        console.warn('order=1', e.data);
         const data = JSON.parse(e.data);
-        // console.error('data => ', data.type);
         if (data.type === 'order') {
-          // console.error('data.orders => ', data.orders);
           setSalonList(data?.orders);
         } else if (data.type === 'updated') {
+          getOrder();
+        } else if (data.type === 'saved_sale') {
           getOrder();
         }
       };

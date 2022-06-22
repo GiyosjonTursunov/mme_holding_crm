@@ -3,7 +3,7 @@ import {Image, Text, View, TouchableOpacity} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import tw from 'twrnc';
 
-const DatePickerCustom = ({setNeedDate, func, text, secondFunc}) => {
+const DatePickerCustom = ({setNeedDate, func, text, secondFunc, workDate}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -11,7 +11,9 @@ const DatePickerCustom = ({setNeedDate, func, text, secondFunc}) => {
     <TouchableOpacity
       onPress={() => setOpen(true)}
       activeOpacity={0.8}
-      style={tw`w-6/12 flex flex-row items-center border border-[rgba(0,0,0,0.7)] rounded-2xl h-10.5`}>
+      style={tw`w-${
+        workDate ? '8/12' : '6/12'
+      } flex flex-row items-center border border-[rgba(0,0,0,0.7)] rounded-2xl h-10.5`}>
       <Text style={tw`m-auto text-${text ? 'black' : 'gray-500'} text-base`}>
         {text || '00/00/2022'}
       </Text>
